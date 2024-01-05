@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoardFunctions.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardFunctions_H.h" />
+    <ClInclude Include="Point_H.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
