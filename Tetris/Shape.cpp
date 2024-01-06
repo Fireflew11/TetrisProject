@@ -1,7 +1,7 @@
 #include "Shape.h"
 
 enum  ShapeType{ I = 1, O, T, S, Z, J, L};
-/*
+
 Shape::Shape(int x, int y)
 {
 	int random_shape = rand() % 7;
@@ -56,7 +56,7 @@ Shape::Shape(int x, int y)
 	}
 	
 }
-*/
+
 const Cube* const Shape::get_cubes()
 {
 	return cubes; 

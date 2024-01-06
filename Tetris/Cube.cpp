@@ -1,4 +1,5 @@
 #include "Cube.h"
+
 int Cube::get_X() const
 {
 	return coord.X; 
@@ -35,6 +36,22 @@ void Cube::drawCube(int x, int y, const bool isActive, const int size) {
 
     std::cout << "\033[0m";   // Reset ANSI escape codes
 }
+
+
+
+void Cube::set_coord(const int& x, const int& y)
+{
+    coord.X = x; 
+    coord.Y = y;
+}
+
+Cube::Cube(int x, int y, bool active)
+{
+    coord.X = x;
+    coord.Y = y;
+    isActive = active;
+}
+
 /*
 void  Cube::set_X(const int& x)
 {

@@ -32,12 +32,14 @@ void Board::display_board()
 	Board::print_Line(); 
 }
 
-Board::Board() {
-	for (int i = 0; i < width; i++)
+Board::Board() 
+{
+	for (int i = 0; i < height; i++)
 	{
-		for (int j = 0; j < height; j++)
+		for (int j = 0; j < width; j++)
 		{
-			//board_game[i][j] = ' '; //this line creates an error !!
+			board_game[i][j].set_coord(height + i, j); 
+			board_game[i][j].setIsActive(false); 
 		}
 	}
 }
