@@ -9,6 +9,7 @@ public:
 	const int& get_Y() const;
 	//void set_X(const int& x); 
 	//void set_Y(const int& y); 
-	Cube(int startX, int startY) : x(startX), y(startY) {};
+	
+	Cube(int startX=0, int startY=0) : x(startX), y(startY) {}; 
 };
 
