@@ -2,11 +2,9 @@
 
 enum  ShapeType{ I = 1, O, T, S, Z, J, L};
 
-Shape::Shape()
+Shape::Shape(int x, int y)
 {
 	int random_shape = rand() % 7;
-	int x = starting_cube.get_X(); 
-	int y = starting_cube.get_Y(); 
 	switch (random_shape)
 	{
 	case I: 
@@ -57,4 +55,9 @@ Shape::Shape()
 		break;
 	}
 	
+}
+
+const Cube* const Shape::get_cubes()
+{
+	return cubes; 
 }

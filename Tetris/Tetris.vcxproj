@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="BoardFunctions.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Shape.cpp" />
@@ -136,7 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
-    <ClInclude Include="BoardFunctions_H.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Shape.h" />

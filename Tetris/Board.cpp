@@ -17,6 +17,7 @@ void Board::print_Line()
 	}
 	cout << endl; 
 }
+
 void Board::display_board()
 {
 	Board::print_Line();
@@ -28,4 +29,20 @@ void Board::display_board()
 		cout << "|" << endl; 
 	}
 	Board::print_Line(); 
+}
+
+Board::Board()
+{
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			board_game[i][j] = ' '; 
+		}
+	}
+}
+
+void  Board::insert_Shape(const Shape& shape)
+{
+
 }
