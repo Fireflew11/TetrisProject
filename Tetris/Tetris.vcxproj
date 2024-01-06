@@ -127,13 +127,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardFunctions.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
     <ClInclude Include="BoardFunctions_H.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Shape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
