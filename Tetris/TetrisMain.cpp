@@ -1,5 +1,8 @@
 #include <iostream>
-using namespace std;
-void main() {
-	cout << "Hello World";
+#include <windows.h>
+#include "Board.h"
+
+int main() {
+	Board board;
+	board.display_board();
 }
