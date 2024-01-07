@@ -1,5 +1,4 @@
 #include "Cube.h"
-
 int Cube::get_X() const
 {
 	return coord.X; 
@@ -14,14 +13,8 @@ bool Cube::getIsActive()const {
 void Cube::setIsActive(const bool isActive) {
 	this->isActive = isActive;
 }
-void Cube::gotoxy(int x, int y) {
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-void Cube::drawCube(int x, int y, const bool isActive, const int size) {
-    gotoxy(x, y);
+void Cube::drawCube(const bool isActive, const int size) const {
+    gotoxy(coord.X, coord.Y);
     if(isActive)
         cout << "\033[41m";  // red background color
     else
@@ -31,10 +24,10 @@ void Cube::drawCube(int x, int y, const bool isActive, const int size) {
         for (int j = 0; j < size * 2; ++j) {
             cout << " "; // The cube is represented by a single character (1x1)
         }
-        gotoxy(x, ++y);
+        gotoxy(coord.X, coord.Y);
     }
 
-    std::cout << "\033[0m";   // Reset ANSI escape codes
+    cout << "\033[0m";   // Reset ANSI escape codes
 }
 
 

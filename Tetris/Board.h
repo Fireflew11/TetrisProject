@@ -17,7 +17,7 @@ class Board
 public:
 	const int& get_height() const; 
 	const int& get_width() const; 
-	void display_board();
+	void display_board(const int startingX);
 	void insert_Shape(const Shape& shape); 
 
 	Board();
