@@ -12,22 +12,26 @@ const int& Board:: get_width() const
 
 void Board::print_Line() 
 {
-	for (int i = 0; i < width; i++)
+	for (int i = 0; i < width * 2 + 2; i++)
 	{
 		cout << "-";
 	}
 	cout << endl; 
 }
 
-void Board::display_board()
+void Board::display_board(int startingX) //board draws at (startingX, 0) at the moment
 {
+	int i, j;
+	gotoxy(startingX, 0);
 	Board::print_Line();
-	for (int i = 1; i < height-1; i++)
+	gotoxy(startingX, 1);
+	for (i = 1; i < height+1; i++)
 	{
 		cout << "|";
-		for (int j = 1; j < (width - 1); j++)
+		for (j = 1; j < width*2 + 1; j++)
 			cout << " "; 
 		cout << "|" << endl; 
+		gotoxy(startingX, i);
 	}
 	Board::print_Line(); 
 }

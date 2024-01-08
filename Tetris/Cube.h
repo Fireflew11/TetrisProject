@@ -1,10 +1,11 @@
 #pragma once
 #include <Windows.h>
 #include<iostream>
+#include"GlobalFunctions.h"
 using namespace std;
 class Cube
 {
-	//cube size 1x1
+	//cube size 1x2 (1 height pixel = 2 width pixel
 private:
 	COORD coord;
 	bool isActive;
@@ -13,8 +14,7 @@ public:
 	int get_Y() const;
 	bool getIsActive() const;
 	void setIsActive(const bool isActive);
-	void drawCube(int x, int y, const bool isActive, const int size = 1);
-	void gotoxy(int x, int y);
+	void drawCube(const bool isActive, const int size = 1) const;
 	void set_coord(const int& x, const int& y); 
 
 	//void set_X(const int& x); 
