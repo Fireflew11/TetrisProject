@@ -45,13 +45,12 @@ Cube::Cube(int x, int y, bool active)
     isActive = active;
 }
 
-/*
+
 void  Cube::set_X(const int& x)
 {
-	this->x = x; 
+	coord.X = x; 
 }
 void Cube::set_Y(const int& y)
 {
-	this->y = y; 
+	coord.Y = y; 
 }
-*/

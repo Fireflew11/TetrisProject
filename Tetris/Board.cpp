@@ -52,3 +52,69 @@ void Board::insert_Shape(const Shape& shape)
 {
 
 }
+
+void Board:: move_Left(Shape& shape)
+{
+	int x = shape.get_cubes()[0].get_X();
+	int y = shape.get_cubes()[0].get_Y();
+	Shape temp(x,y, 0);
+	x = x - 2; 
+	for (int i = 0; i < 4; i++)
+	{
+		Cube temp_cube(x, y, true); 
+		temp.set_cubes_by_Index(i, temp_cube); 
+	}
+	if (check_valid_move(temp) == true)
+		shape = temp; 
+	shape = temp; 
+}
+
+
+
+void Board:: move_right(Shape& shape)
+{
+	int x = shape.get_cubes()[0].get_X();
+	int y = shape.get_cubes()[0].get_Y();
+	Shape temp(x, y, 0);
+	x = x +2 ;
+	for (int i = 0; i < 4; i++)
+	{
+		Cube temp_cube(x, y, true);
+		temp.set_cubes_by_Index(i, temp_cube);
+	}
+	if (check_valid_move(temp) == true)
+		shape = temp;
+	shape = temp;
+}
+void Board:: rotate_Clock_wise()
+{
+
+}
+void Board:: rotate_CounterClock_wise()
+{
+
+
+
+}
+void  Board:: drop_Shape()
+{
+
+}
+
+bool Board::check_valid_move( const Shape& shape) const
+{
+	for (int i = 0; i < 4; i++)
+	{
+		int x = shape.get_cubes()[i].get_X(); 
+		int y= shape.get_cubes()[i].get_Y();
+		if ((x >= width + startingX) || (x <= startingX))
+			return false; 
+		if (y >= height || y <= 1)
+			return false; 
+		if (board_game[x - startingX][y-1].getIsActive() == false)
+			return false;
+
+	}
+	return true; 
+	
+}

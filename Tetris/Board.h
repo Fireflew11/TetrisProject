@@ -9,10 +9,12 @@ using namespace std;
 
 class Board
 {
-	const int height = 18;//זה צריך להיות 12 לא? 
-	const int width = 12;// זה צריך להיות 18 לא? 
+	const int height = 18;
+	const int width = 12; 
 	//char board_game[width][height]; 
 	Cube board_game[18][12]; 
+	int startingX; 
+	//int startingY; 
 
 public:
 	const int& get_height() const; 
@@ -24,5 +26,11 @@ public:
 
 private: 
 	void print_Line(); 
+	void move_Left(Shape& shape);
+	void move_right(Shape& shape);
+	void rotate_Clock_wise();
+	void rotate_CounterClock_wise();
+	void drop_Shape();
+	bool check_valid_move(const Shape& shape) const; 
 };
 

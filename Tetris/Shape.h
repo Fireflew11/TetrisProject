@@ -11,7 +11,12 @@ class Shape
 	Cube cubes[4];
 
 public: 
-	Shape(int x, int y, int cheatShape = 0); // הנקודה הזה תתן לי את מרכז הלוח שבו אני רוצה להתחיל את נפילת הקוביה 
-	const Cube* const get_cubes(); 
+	Shape(int x, int y, int cheatShape = 0);// הנקודה הזה תתן לי את מרכז הלוח שבו אני רוצה להתחיל את נפילת הקוביה 
+
+	const Cube* const get_cubes() const;
+	void set_cubes_by_Index(int i,  Cube cube); 
+
+   
+    
 };
 
