@@ -8,7 +8,12 @@ const int& Board:: get_width() const
 {
 	return width; 
 }
-
+Shape* Board::getCurShape() const {
+	return curShape;
+}
+void Board::setCurShape(Shape* curShape) {
+	this->curShape = curShape;
+}
 
 void Board::print_Line() 
 {
@@ -86,9 +91,13 @@ void Board:: move_right(Shape& shape)
 		shape = temp;
 	shape = temp;
 }
-void Board:: rotate_Clock_wise()
+void Board:: rotate_Clock_wise(Shape& shape)
 {
-
+	
+	shape.rotateShape(RIGHT);
+	if (!check_valid_move(shape))
+		shape.rotateShape(LEFT);
+	shape.drawShape();
 }
 void Board:: rotate_CounterClock_wise()
 {
@@ -107,11 +116,11 @@ bool Board::check_valid_move( const Shape& shape) const
 	{
 		int x = shape.get_cubes()[i].get_X(); 
 		int y= shape.get_cubes()[i].get_Y();
-		if ((x >= width + startingX) || (x <= startingX))
+		if ((x >= width*2 + startingX) || (x <= startingX))
 			return false; 
-		if (y >= height || y <= 1)
+		if (y >= height || y < 1)
 			return false; 
-		if (board_game[x - startingX][y-1].getIsActive() == false)
+		if (board_game[x - startingX][y-1].getIsActive() == true)
 			return false;
 
 	}

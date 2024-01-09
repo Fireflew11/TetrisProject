@@ -15,5 +15,7 @@ private:
 	//int score; 
 public: 
 	void keyChoice(); 
+	Player();
+	Board& getPlayerBoard();
 };
 
