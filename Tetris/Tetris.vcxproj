@@ -130,6 +130,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GlobalFunctions.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
   </ItemGroup>
@@ -137,6 +138,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GlobalFunctions.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Shape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
