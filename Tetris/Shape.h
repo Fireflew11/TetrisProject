@@ -13,7 +13,7 @@ class Shape
 	Cube cubes[4];
 	int id;
 	int startingX, startingY;
-	int color; 
+	//int color; 
 	bool isIVertical = true; //unique for I shape, starts true
 
 public: 
@@ -33,10 +33,13 @@ public:
 	~Shape();
 
 
-	//
 	void rotate_CounterClock_wise2(const Board& board);
 	void rotate_Clock_wise2(const Board& board);
-	bool check_valid_move(const Board& board) const; 
+	void move_Left(const Board& board);
+	void move_Right(const Board& board); 
+	void drop(const Board& board);
+
+
 
 
    

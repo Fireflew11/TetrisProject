@@ -10,7 +10,8 @@ int main() {
 	curShape.drawShape();
 	Sleep(1000);
 	curShape.drawShape(false);
-	curShape.rotate_Clock_wise2(p1.getPlayerBoard());
+	//curShape.rotate_Clock_wise2(p1.getPlayerBoard());
+	curShape.move_Right(p1.getPlayerBoard()); 
 	curShape.drawShape();
 	
 	gotoxy(0, gameConfig::GAME_HEIGHT + 1);

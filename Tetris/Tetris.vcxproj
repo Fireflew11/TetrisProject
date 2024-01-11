@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="GlobalFunctions.cpp" />
     <ClCompile Include="Player.cpp" />

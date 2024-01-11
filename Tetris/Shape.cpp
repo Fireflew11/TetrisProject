@@ -118,6 +118,7 @@ void Shape::set_cubes_by_Index(int i,  Cube cube)
 	cubes[i] = cube; 
 }
 
+
 int Shape::getRowsAmount() const {
 	if (id == 1)
 		return 4;
@@ -132,6 +133,9 @@ void Shape::deleteCubesBlock() {
 		}
 	}
 }
+
+
+
 void Shape::drawShape(bool isActive) const {
 	for (int i = 0; i < 4; i++)
 	{
@@ -219,7 +223,66 @@ void Shape::rotate_Clock_wise2(const Board& board)
     }
 
     // Check if the rotated shape is a valid move on the board
-    if (board.check_valid_move(tempShape)) {
+    if (board.check_valid_move(tempShape)) 
+	{
         *this = tempShape;  // Update the current shape if the move is valid
     }
+}
+
+
+void Shape::move_Left(const Board& board)
+{
+	/*
+	int x = cubes[0].get_X(); 
+	int y = cubes[0].get_Y(); 
+	Shape temp(x, y, 0);
+
+	x = x - 2;
+	for (int i = 0; i < 4; i++)
+	{
+		Cube temp_cube(x, y, true);
+		temp.set_cubes_by_Index(i, temp_cube);
+	}
+
+	if (board.check_valid_move(temp) == true)
+		*this= temp;
+*/
+
+	Shape temp = *this;
+
+	for (int i = 0; i < 4; ++i)
+	{
+		int x = temp.cubes[i].get_X() - 2;
+		Cube temp_cube(x, temp.cubes[i].get_Y(), true);
+		temp.set_cubes_by_Index(i, temp_cube);
+	}
+
+	if (board.check_valid_move(temp))
+	{
+		*this = temp;
+	}
+}
+
+
+
+void Shape::move_Right(const Board& board)
+{
+	Shape temp = *this;
+
+	for (int i = 0; i < 4; ++i) 
+	{
+		int x = temp.cubes[i].get_X() + 2; 
+		Cube temp_cube(x, temp.cubes[i].get_Y(), true);
+		temp.set_cubes_by_Index(i, temp_cube);
+	}
+
+	if (board.check_valid_move(temp))
+	{
+		*this = temp;
+	}
+}
+
+void Shape::drop(const Board& board)
+{
+
 }

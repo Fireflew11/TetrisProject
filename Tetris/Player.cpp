@@ -3,7 +3,8 @@
 
 //enum { LeftPlayer = 1, RightPlayer=2 };
 
-Player::Player() {
+Player::Player()
+{
 
 }
 
@@ -12,6 +13,7 @@ Board& Player::getPlayerBoard()
     return playerBoard;
 }
 
+/*
 void Player::keyChoice()
 {
     
@@ -45,3 +47,4 @@ void Player::keyChoice()
     }
 }
     
+*/

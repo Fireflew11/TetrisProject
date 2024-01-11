@@ -1,17 +1,7 @@
-#include "Board.h"
+﻿#include "Board.h"
 #include "gameConfig.h"
 
-/*
-const int&  Board::get_height() const
-{
-	return height; 
-}
-const int& Board:: get_width() const
-{
-	return width; 
-}
 
-*/
 
 
 Shape* Board::getCurShape() const {
@@ -47,7 +37,7 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 	Board::print_Line(); 
 }
 
-Board::Board() 
+Board::Board(int starting_X, int starting_Y):startingX(starting_X),startingY(starting_Y)
 {
 	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
 	{
@@ -64,65 +54,10 @@ void Board::insert_Shape(const Shape& shape)
 
 }
 
-void Board:: move_Left(Shape& shape)
-{
-	int x = shape.get_cubes()[0].get_X();
-	int y = shape.get_cubes()[0].get_Y();
-	Shape temp(x,y, 0);
-	x = x - 2; 
-	for (int i = 0; i < 4; i++)
-	{
-		Cube temp_cube(x, y, true); 
-		temp.set_cubes_by_Index(i, temp_cube); 
-	}
-	if (check_valid_move(temp) == true)
-		shape = temp; 
-	shape = temp; 
-}
 
-
-
-void Board:: move_right(Shape& shape)
-{
-	int x = shape.get_cubes()[0].get_X();
-	int y = shape.get_cubes()[0].get_Y();
-	Shape temp(x, y, 0);
-	x = x +2 ;
-	for (int i = 0; i < 4; i++)
-	{
-		Cube temp_cube(x, y, true);
-		temp.set_cubes_by_Index(i, temp_cube);
-	}
-	if (check_valid_move(temp) == true)
-		shape = temp;
-	shape = temp;
-}
-/*
-void Board:: rotate_Clock_wise(Shape& shape)
-{
-	
-	shape.rotateShape(RIGHT);
-	if (!check_valid_move(shape))
-		shape.rotateShape(LEFT);
-	shape.drawShape();
-}
-void Board:: rotate_CounterClock_wise()
-{
-
-
-
-}
-void  Board:: drop_Shape()
-{
-
-}
-
-*/
 const Cube(&Board::getBoardGame() const)[18][12]{
 	return board_game;
 }
-
-
 
 
 bool Board::check_valid_move(const Shape& shape) const
@@ -135,7 +70,7 @@ bool Board::check_valid_move(const Shape& shape) const
 			return false;
 		if (y >= gameConfig::GAME_HEIGHT || y < 1)
 			return false;
-		if (board_game[x - startingX][y - 1].getIsActive() == true)
+		if (board_game[x - startingX][y - 1].getIsActive() == true) //למה פה שמנו Y-1? 
 			return false;
 
 	}
@@ -143,15 +78,21 @@ bool Board::check_valid_move(const Shape& shape) const
 
 }
 
-
-
-
-
-
-/*********/
-/*
-void Board::rotate_Clock_wise1(Shape& shape)
+void Board:: updateBoard(const Shape& shape)
 {
 
+	for (int i = 0; i < 4; ++i)
+	{
+		int x = shape.get_cubes()[i].get_X();
+		int y = shape.get_cubes()[i].get_Y();
+		board_game[x - startingX][y-startingY].set_coord(x, y);
+		board_game[x - startingX][y-startingY].setIsActive(true);
+	}
 }
-*/
+
+
+
+
+
+
+
