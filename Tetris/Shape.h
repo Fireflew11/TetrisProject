@@ -5,6 +5,7 @@
 #include "Board.h"
 enum Direction { RIGHT = 1, LEFT };
 class Cube; 
+class Board; 
 
 class Shape
 {
@@ -12,9 +13,8 @@ class Shape
 	Cube cubes[4];
 	int id;
 	int startingX, startingY;
+	int color; 
 	bool isIVertical = true; //unique for I shape, starts true
-public:
-	Cube* cubesBlock[][3];
 
 public: 
 	Shape(int x, int y, int cheatShape = 0);  // הנקודה הזה תתן לי את מרכז הלוח שבו אני רוצה להתחיל את נפילת הקוביה 
@@ -23,7 +23,7 @@ public:
 	void set_cubes_by_Index(int i,  Cube cube); 
 	void initializeCubesBlock();
 	void deleteCubesBlock();
-	void drawShape() const;
+	void drawShape(bool isActive = true) const;
 	int getRowsAmount() const;
 	int getId();
 	void rotateMatrixClockwise();
@@ -31,6 +31,13 @@ public:
 	void transposeMatrix();
 	void rotateShape(Direction direction);
 	~Shape();
+
+
+	//
+	void rotate_CounterClock_wise2(const Board& board);
+	void rotate_Clock_wise2(const Board& board);
+	bool check_valid_move(const Board& board) const; 
+
 
    
     

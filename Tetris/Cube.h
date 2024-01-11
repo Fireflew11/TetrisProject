@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include<iostream>
 #include"GlobalFunctions.h"
+
 using namespace std;
 class Cube
 {
@@ -21,6 +22,9 @@ public:
 	void set_Y(const int& y); 
 
 	Cube(int x=0, int y=0, bool active = true);
+///
+	void move();
+	void draw(char ch); 
 
 	//Cube(int startX = 0, int startY = 0, bool isActive = false);
 	

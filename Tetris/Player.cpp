@@ -1,6 +1,7 @@
 #include "Player.h"
 
-enum { LeftPlayer = 1, RightPlayer=2 };
+
+//enum { LeftPlayer = 1, RightPlayer=2 };
 
 Player::Player() {
 
@@ -23,7 +24,7 @@ void Player::keyChoice()
     {
     case 'a':
     case 'A':
-        playerBoard.rotate_Clock_wise(*(playerBoard.getCurShape()));
+//playerBoard.rotate_Clock_wise(*(playerBoard.getCurShape()));
         break;
     case 'd':
     case 'D':

@@ -1,5 +1,7 @@
 #include "Board.h"
+#include "gameConfig.h"
 
+/*
 const int&  Board::get_height() const
 {
 	return height; 
@@ -8,6 +10,10 @@ const int& Board:: get_width() const
 {
 	return width; 
 }
+
+*/
+
+
 Shape* Board::getCurShape() const {
 	return curShape;
 }
@@ -17,7 +23,7 @@ void Board::setCurShape(Shape* curShape) {
 
 void Board::print_Line() 
 {
-	for (int i = 0; i < width * 2 + 2; i++)
+	for (int i = 0; i < gameConfig::GAME_WIDTH * 2 + 2; i++)
 	{
 		cout << "-";
 	}
@@ -30,10 +36,10 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 	gotoxy(startingX, 0);
 	Board::print_Line();
 	gotoxy(startingX, 1);
-	for (i = 1; i < height+1; i++)
+	for (i = 1; i < gameConfig::GAME_HEIGHT +1; i++)
 	{
 		cout << "|";
-		for (j = 1; j < width*2 + 1; j++)
+		for (j = 1; j < gameConfig::GAME_WIDTH *2 + 1; j++)
 			cout << " "; 
 		cout << "|" << endl; 
 		gotoxy(startingX, i);
@@ -43,11 +49,11 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 
 Board::Board() 
 {
-	for (int i = 0; i < height; i++)
+	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
 	{
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
 		{
-			board_game[i][j].set_coord(height + i, j); 
+			board_game[i][j].set_coord(gameConfig::GAME_HEIGHT  + i, j); 
 			board_game[i][j].setIsActive(false); 
 		}
 	}
@@ -91,6 +97,7 @@ void Board:: move_right(Shape& shape)
 		shape = temp;
 	shape = temp;
 }
+/*
 void Board:: rotate_Clock_wise(Shape& shape)
 {
 	
@@ -110,20 +117,41 @@ void  Board:: drop_Shape()
 
 }
 
-bool Board::check_valid_move( const Shape& shape) const
+*/
+const Cube(&Board::getBoardGame() const)[18][12]{
+	return board_game;
+}
+
+
+
+
+bool Board::check_valid_move(const Shape& shape) const
 {
 	for (int i = 0; i < 4; i++)
 	{
 		int x = shape.get_cubes()[i].get_X(); 
-		int y= shape.get_cubes()[i].get_Y();
-		if ((x >= width*2 + startingX) || (x <= startingX))
-			return false; 
-		if (y >= height || y < 1)
-			return false; 
-		if (board_game[x - startingX][y-1].getIsActive() == true)
+		int y = shape.get_cubes()[i].get_Y();   
+		if ((x >= gameConfig::GAME_WIDTH * 2 + startingX) || (x <= startingX))
+			return false;
+		if (y >= gameConfig::GAME_HEIGHT || y < 1)
+			return false;
+		if (board_game[x - startingX][y - 1].getIsActive() == true)
 			return false;
 
 	}
-	return true; 
-	
+	return true;
+
 }
+
+
+
+
+
+
+/*********/
+/*
+void Board::rotate_Clock_wise1(Shape& shape)
+{
+
+}
+*/

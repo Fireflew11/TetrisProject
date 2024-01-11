@@ -11,7 +11,7 @@ class Player
 {
 private: 
 	int playerType; 
-	Board playerBoard; //אולי עדיך לעשות את זה כמצביע? 
+	Board playerBoard; 
 	//int score; 
 public: 
 	void keyChoice(); 

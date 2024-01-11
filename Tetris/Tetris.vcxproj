@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="GlobalFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
@@ -137,6 +138,8 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="gameConfig.h" />
     <ClInclude Include="GlobalFunctions.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shape.h" />
