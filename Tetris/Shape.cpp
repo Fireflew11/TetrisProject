@@ -6,10 +6,11 @@
 
 Shape::Shape(int x, int y, int cheatShape) //added cheat for checks, will be removed in final version (default value 0 means no cheat
 {	
+	initializeMoveFunctions();
 	srand(time(0));
 	int random_shape;
 	if (cheatShape == 0)
-		random_shape = rand() % 7;
+		random_shape = rand() % 7 + 1;
 	else
 		random_shape = cheatShape;
 	startingX = x;
@@ -144,29 +145,6 @@ void Shape::drawShape(bool isActive) const {
 	
 }
 
-void Shape::transposeMatrix() {
-	int direction;
-	for (int i = 0; i < 4; i++)
-	{
-		cubes[i].setIsActive(false);
-	}
-	drawShape();
-	if (isIVertical)
-		direction = 1;
-	else
-		direction = -1;
-	cubes[0].set_X(cubes[0].get_X() + (-2) * direction);
-	cubes[0].set_Y(cubes[0].get_Y() + (+1) * direction);
-	cubes[2].set_X(cubes[2].get_X() + (+2) * direction);
-	cubes[2].set_Y(cubes[2].get_Y() + (-1) * direction);
-	cubes[3].set_X(cubes[3].get_X() + (+4) * direction);
-	cubes[3].set_Y(cubes[3].get_Y() + (-2) * direction);
-	for (int i = 0; i < 4; i++)
-	{
-		cubes[i].setIsActive(true);
-	}
-	isIVertical = !isIVertical;
-}
 int Shape::getId() {
 	return id;
 }
@@ -179,6 +157,7 @@ Shape::~Shape() {
 
 void Shape::rotate_CounterClock_wise2(const Board& board)
 {
+	drawShape(false);
 	Shape tempShape = *this; 
 	int centerX = tempShape.cubes[0].get_X();  // Assuming the first cube is the center of the shape
 	int centerY = tempShape.cubes[0].get_Y();
@@ -197,11 +176,13 @@ void Shape::rotate_CounterClock_wise2(const Board& board)
 	{
 		*this = tempShape;
 	}
+	drawShape(true);
 }
 
 
 void Shape::rotate_Clock_wise2(const Board& board)
 {
+	drawShape(false);
 	Shape tempShape = *this;
     int centerX = tempShape.get_cubes()[0].get_X();  // Assuming the first cube is the center of the shape
     int centerY = tempShape.get_cubes()[0].get_Y();
@@ -227,6 +208,7 @@ void Shape::rotate_Clock_wise2(const Board& board)
 	{
         *this = tempShape;  // Update the current shape if the move is valid
     }
+	drawShape(true);
 }
 
 
@@ -247,7 +229,7 @@ void Shape::move_Left(const Board& board)
 	if (board.check_valid_move(temp) == true)
 		*this= temp;
 */
-
+	drawShape(false);
 	Shape temp = *this;
 
 	for (int i = 0; i < 4; ++i)
@@ -261,12 +243,14 @@ void Shape::move_Left(const Board& board)
 	{
 		*this = temp;
 	}
+	drawShape(true);
 }
 
 
 
 void Shape::move_Right(const Board& board)
 {
+	drawShape(false);
 	Shape temp = *this;
 
 	for (int i = 0; i < 4; ++i) 
@@ -280,6 +264,64 @@ void Shape::move_Right(const Board& board)
 	{
 		*this = temp;
 	}
+	drawShape(true);
+}
+
+bool Shape::continueMovingDown(const Board& board)
+{
+	bool didSucceed = false;
+	drawShape(false);
+	Shape temp = *this;
+	for (int i = 0; i < 4; i++)
+	{
+		int y = temp.cubes[i].get_Y() + 1;
+		Cube tempCube(temp.cubes[i].get_X(), y, true);
+		temp.set_cubes_by_Index(i, tempCube);
+	}
+	if (board.check_valid_move(temp))
+	{
+		*this = temp;
+		didSucceed = true;
+	}
+	drawShape(true);
+	return didSucceed;
+}
+
+void Shape::initializeMoveFunctions() {
+	for (int i = 0; i < 128; i++)
+	{
+		moveFunctions[i] = nullptr;
+	}
+	moveFunctions['w'] = &Shape::rotate_CounterClock_wise2;
+	moveFunctions['s'] = &Shape::rotate_Clock_wise2;
+	moveFunctions['a'] = &Shape::move_Left;
+	moveFunctions['d'] = &Shape::move_Right;
+	moveFunctions['x'] = &Shape::drop;
+
+	moveFunctions['W'] = &Shape::rotate_CounterClock_wise2;
+	moveFunctions['S'] = &Shape::rotate_Clock_wise2;
+	moveFunctions['A'] = &Shape::move_Left;
+	moveFunctions['D'] = &Shape::move_Right;
+	moveFunctions['X'] = &Shape::drop;
+
+	moveFunctions['i'] = &Shape::rotate_CounterClock_wise2;
+	moveFunctions['k'] = &Shape::rotate_Clock_wise2;
+	moveFunctions['j'] = &Shape::move_Left;
+	moveFunctions['l'] = &Shape::move_Right;
+	moveFunctions['m'] = &Shape::drop;
+
+	moveFunctions['I'] = &Shape::rotate_CounterClock_wise2;
+	moveFunctions['K'] = &Shape::rotate_Clock_wise2;
+	moveFunctions['J'] = &Shape::move_Left;
+	moveFunctions['L'] = &Shape::move_Right;
+	moveFunctions['M'] = &Shape::drop;
+}
+
+void Shape::executeMove(char input, const Board& board) {
+	if (moveFunctions[input] != nullptr) {
+		(this->*moveFunctions[input])(board);
+	}
+
 }
 
 void Shape::drop(const Board& board)

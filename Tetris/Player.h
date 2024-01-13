@@ -14,7 +14,8 @@ private:
 	Board playerBoard; 
 	//int score; 
 public: 
-	Player();
+	Player(int startingX, int startingY);
 	Board& getPlayerBoard();
+	void GameLoop();
 };
 
