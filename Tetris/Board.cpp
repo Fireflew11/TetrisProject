@@ -70,7 +70,7 @@ bool Board::check_valid_move(const Shape& shape) const
 			return false;
 		if (y >= gameConfig::GAME_HEIGHT || y < 1)
 			return false;
-		if (board_game[x - startingX][y - 1].getIsActive() == true) //למה פה שמנו Y-1? 
+		if (board_game[x - startingX][y - 1].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
 			return false;
 
 	}
@@ -85,14 +85,14 @@ void Board:: updateBoard(const Shape& shape)// לבדוק אם ערכי הY שש
 	{
 		int x = shape.get_cubes()[i].get_X();
 		int y = shape.get_cubes()[i].get_Y();
-		board_game[x - startingX][y-startingY].set_coord(x, y);
-		board_game[x - startingX][y-startingY].setIsActive(true);
+		board_game[x - startingX][y-startingY-1].set_coord(x, y);
+		board_game[x - startingX][y-startingY-1].setIsActive(true);
 	}
 }
 
 void Board::clearLine(int index_line)
 {
-//board_game[index_line][i].drawCube(false); // צריכה להביןאיך אני משנה את הציורים של הצורות
+//board_game[index_line][i].drawCube(false); //לשנות את ההצרות במסך עצמו להבין 
 	for (int i = index_line; i > 0; i--)
 	{
 		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
@@ -110,7 +110,7 @@ bool Board::IsLineFull(int index_line)
 {
 	for (int i = 0; i < gameConfig::GAME_WIDTH; i++)
 	{
-		if (board_game[index_line][i].getIsActive() == true)
+		if (board_game[index_line][i].getIsActive() == false)
 			return false; 
 	}
 	return true; 
@@ -124,11 +124,9 @@ void  Board::clearFullLines()
 		if (IsLineFull(i))
 		{
 			numClearedLines++; 
-			clearLine(i); 
+			clearLine(i);  
 		}
 	}
-
-
 }
 /*
 bool Board::isGameOver()
