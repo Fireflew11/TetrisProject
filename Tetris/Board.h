@@ -11,7 +11,7 @@ using namespace std;
 
 class Board
 {
-	Cube board_game[gameConfig::GAME_WIDTH][gameConfig::GAME_HEIGHT]; 
+	Cube board_game[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
 	int startingX;
 	int startingY; 
 
@@ -23,7 +23,7 @@ public:
 
 	
 	//const Cube(&getBoardGame() const)[12][18];
-	const Cube(&getBoardGame() const)[gameConfig::GAME_WIDTH][gameConfig::GAME_HEIGHT];
+	const Cube(&getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
 
 
 	bool check_valid_move(const Shape& shape) const;
@@ -31,9 +31,8 @@ public:
 
 	void clearLine(int index_line); 
 	bool IsLineFull(int index_line);
-	void clearFullLines();
+	int clearFullLines();
 	void implementShapeToBoard(const Shape& shape);
-
 
 private: 
 	void print_Line(); 

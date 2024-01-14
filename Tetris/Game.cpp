@@ -2,6 +2,7 @@
 #include "gameConfig.h"
 #include "Shape.h" 
 #include "Board.h"
+#include <cctype>
 
 void Game::keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
 {
@@ -55,7 +56,8 @@ void Game::GameLoop()
     int keyPressed = 0;
     while (!isGameOver) 
     {
-        Shape curShape(gameConfig::GAME_WIDTH + 1, 1);
+        Shape curShape(gameConfig::PlayerType(1));
+        //Shape curShape(gameConfig::GAME_WIDTH + 1, 1);
         while (true) 
         {
             if (_kbhit()) 
@@ -68,15 +70,19 @@ void Game::GameLoop()
                 }
                 else 
                 {
-                    curShape.executeMove(keyPressed, playerBoard, moveFunctions);
+                    keyPressed = toupper(keyPressed);
+                    keyChoice(gameConfig::keys(keyPressed), curShape, players[0].getPlayerBoard(), gameConfig::PlayerType(1));
+                    //curShape.executeMove(keyPressed, playerBoard, moveFunctions);
                 }
             }
-            else {
+            else 
+            {
 
                 Sleep(500);
-                if (!curShape.continueMovingDown(playerBoard)) 
+                if (!curShape.continueMovingDown(players[0].getPlayerBoard()))
                 {
-                    playerBoard.implementShapeToBoard(curShape);
+                    players[0].getPlayerBoard().implementShapeToBoard(curShape);
+                    //playerBoard.implementShapeToBoard(curShape);
                     break;
                 }
             }
@@ -90,17 +96,19 @@ void Game::GameLoop()
 void Game::GameLoop()
 {
     bool isGameOver = false;
-    int keyPressed = 0;
+    int keyPressedPlayer1 = 0;
+    int keyPressedPlayer2 = 0;
 
     while (!isGameOver)
     {
-        for (int playerIndex = 0; playerIndex < gameConfig::NUM_OF_PLAYERS; ++playerIndex)
-        {
-            Shape curShape(gameConfig::PlayerType(playerIndex + 1));
+        Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER);
+        Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER);
 
+        while (true)
+        {
             if (_kbhit())
             {
-                keyPressed = _getch();
+                int keyPressed = _getch();
                 if (keyPressed == (int)gameConfig::keys::ESC)
                 {
                     isGameOver = true;
@@ -108,20 +116,38 @@ void Game::GameLoop()
                 }
                 else
                 {
-                    keyChoice(gameConfig::keys(keyPressed), curShape, players[playerIndex].getPlayerBoard(), gameConfig::PlayerType(playerIndex));
+                    keyPressed = toupper(keyPressed);
+
+                    if (keyPressed == 'A' || keyPressed == 'D' || keyPressed == 'S' || keyPressed == 'W' || keyPressed == 'X')
+                    {
+                        keyChoice(gameConfig::keys(keyPressed), curShapePlayer1, players[0].getPlayerBoard(), gameConfig::PlayerType::LEFT_PLAYER);
+                    }
+
+                    else if (keyPressed == 'J' || keyPressed == 'L' || keyPressed == 'K' || keyPressed == 'I' || keyPressed == 'M')
+                    {
+                        keyChoice(gameConfig::keys(keyPressed), curShapePlayer2, players[1].getPlayerBoard(), gameConfig::PlayerType::RIGHT_PLAYER);
+                    }
                 }
             }
             else
             {
                 Sleep(500);
-                if (!curShape.continueMovingDown(players[playerIndex].getPlayerBoard()))
+                if (!curShapePlayer1.continueMovingDown(players[0].getPlayerBoard()))
                 {
-                    players[playerIndex].getPlayerBoard().implementShapeToBoard(curShape);
+                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                    break;
+                }
+                if (!curShapePlayer2.continueMovingDown(players[1].getPlayerBoard()))
+                {
+                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                    break;
                 }
             }
         }
     }
 }
+
+
 
 
 

@@ -15,6 +15,8 @@ Board& Player::getPlayerBoard()
 {
     return playerBoard;
 }
+
+
 /*
 void Player::GameLoop()
 {
@@ -45,6 +47,9 @@ void Player::GameLoop()
     }
 }
 */
+
+
+
 
 void Player::initializeMoveFunctions()
 {
@@ -87,7 +92,7 @@ void Player::initializeMoveFunctions()
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
     (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD) 
  {
-     initializeMoveFunctions();
+
  }
 
 

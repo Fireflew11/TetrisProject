@@ -308,13 +308,13 @@ Shape::Shape(gameConfig::PlayerType playerType)
 	int randomShape= rand() % 7 + 1;
 	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
 	{
-		x = gameConfig::MIN_X_LEFT_BOARD; 
-		y = gameConfig::MIN_Y_LEFT_BOARD; 
+		x = gameConfig::GAME_WIDTH +gameConfig::MIN_X_LEFT_BOARD; 
+		y = gameConfig::MIN_Y_LEFT_BOARD+1; 
 	}
 	else
 	{
-		x = gameConfig::MIN_X_RIGHT_BOARD;
-		y = gameConfig::MIN_Y_RIGHT_BOARD;
+		x = gameConfig::GAME_WIDTH+ gameConfig::MIN_X_RIGHT_BOARD;
+		y = gameConfig::MIN_Y_RIGHT_BOARD+1;
 	}
 
 	switch ((gameConfig::ShapeType)randomShape)

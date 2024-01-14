@@ -20,6 +20,7 @@ public:
 	Board& getPlayerBoard();
 	//void GameLoop();
 	void initializeMoveFunctions();
+	void updateScore(int numClearedLines);
 
 	Player(gameConfig::PlayerType); 
 };

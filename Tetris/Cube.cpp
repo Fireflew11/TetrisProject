@@ -15,7 +15,8 @@ int Cube::get_Y() const
 bool Cube::getIsActive()const {
 	return isActive;
 }
-void Cube::setIsActive(const bool isActive) {
+void Cube::setIsActive(const bool isActive) 
+{
 	this->isActive = isActive;
 }
 void Cube::drawCube(const bool isActive, const int size) const 

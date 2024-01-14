@@ -34,14 +34,15 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 
 Board::Board(int starting_X, int starting_Y):startingX(starting_X),startingY(starting_Y)
 {
-	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
+	for (int i = 0; i <(int)gameConfig::GAME_HEIGHT; i++)
 	{
-		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
+		for (int j = 0; j < (int)gameConfig::GAME_WIDTH; j++)
 		{
-			board_game[i][j].set_coord(gameConfig::GAME_HEIGHT  + i, j); 
+			board_game[i][j].set_coord(startingX + i, j+startingY); 
 			board_game[i][j].setIsActive(false); 
 		}
 	}
+	this->display_board(starting_X);
 }
 /*
 void Board::insert_Shape(const Shape& shape)
@@ -50,7 +51,7 @@ void Board::insert_Shape(const Shape& shape)
 }
 */
 
-const Cube(&Board::getBoardGame() const)[gameConfig::GAME_WIDTH][gameConfig::GAME_HEIGHT]
+const Cube(&Board::getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
 {
 	return board_game;
 }
@@ -71,7 +72,7 @@ bool Board::check_valid_move(const Shape& shape) const
 			return false;
 		if (y >= gameConfig::GAME_HEIGHT || y < 1)
 			return false;
-		if (board_game[x - startingX][y - 1].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
+		if (board_game[(x - startingX - 1) / 2][y - 1].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
 			return false;
 
 	}
@@ -116,7 +117,7 @@ bool Board::IsLineFull(int index_line)
 	return true; 
 }
 
-void  Board::clearFullLines()
+int  Board::clearFullLines()
 {
 	int numClearedLines = 0;
 	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
@@ -127,8 +128,18 @@ void  Board::clearFullLines()
 			clearLine(i);  
 		}
 	}
+	return numClearedLines; 
 }
 
+
+
+void Board::implementShapeToBoard(const Shape& shape) 
+{
+	for (int i = 0; i < 4; i++)
+	{
+		board_game[(shape.get_cubes()[i].get_X() - startingX - 1) / 2][shape.get_cubes()[i].get_Y() - 1].setIsActive(true);
+	}
+}
 
 /*
 bool Board::isGameOver()
