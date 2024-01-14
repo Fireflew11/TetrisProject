@@ -17,7 +17,6 @@ class Shape
 	//int color; 
 	bool isIVertical = true; //unique for I shape, starts true
 	using MoveFunction = void (Shape::*)(const Board&);  // Directly define the type of moveFunctions
-	MoveFunction moveFunctions[128];  // Use the MoveFunction type directly
 
 
 public: 
@@ -38,8 +37,7 @@ public:
 	void move_Right(const Board& board); 
 	bool continueMovingDown(const Board& board);
 	void drop(const Board& board);
-	void initializeMoveFunctions();
-	void executeMove(char input, const Board& board);
+	void executeMove(char input, const Board& board, MoveFunction moveFunctions[]);
 
 
 

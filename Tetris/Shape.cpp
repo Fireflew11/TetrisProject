@@ -6,7 +6,6 @@
 
 Shape::Shape(int x, int y, int cheatShape) //added cheat for checks, will be removed in final version (default value 0 means no cheat
 {	
-	initializeMoveFunctions();
 	srand(time(0));
 	int random_shape;
 	if (cheatShape == 0)
@@ -287,37 +286,8 @@ bool Shape::continueMovingDown(const Board& board)
 	return didSucceed;
 }
 
-void Shape::initializeMoveFunctions() {
-	for (int i = 0; i < 128; i++)
-	{
-		moveFunctions[i] = nullptr;
-	}
-	moveFunctions['w'] = &Shape::rotate_CounterClock_wise2;
-	moveFunctions['s'] = &Shape::rotate_Clock_wise2;
-	moveFunctions['a'] = &Shape::move_Left;
-	moveFunctions['d'] = &Shape::move_Right;
-	moveFunctions['x'] = &Shape::drop;
 
-	moveFunctions['W'] = &Shape::rotate_CounterClock_wise2;
-	moveFunctions['S'] = &Shape::rotate_Clock_wise2;
-	moveFunctions['A'] = &Shape::move_Left;
-	moveFunctions['D'] = &Shape::move_Right;
-	moveFunctions['X'] = &Shape::drop;
-
-	moveFunctions['i'] = &Shape::rotate_CounterClock_wise2;
-	moveFunctions['k'] = &Shape::rotate_Clock_wise2;
-	moveFunctions['j'] = &Shape::move_Left;
-	moveFunctions['l'] = &Shape::move_Right;
-	moveFunctions['m'] = &Shape::drop;
-
-	moveFunctions['I'] = &Shape::rotate_CounterClock_wise2;
-	moveFunctions['K'] = &Shape::rotate_Clock_wise2;
-	moveFunctions['J'] = &Shape::move_Left;
-	moveFunctions['L'] = &Shape::move_Right;
-	moveFunctions['M'] = &Shape::drop;
-}
-
-void Shape::executeMove(char input, const Board& board) {
+void Shape::executeMove(char input, const Board& board, MoveFunction moveFunctions[]) {
 	if (moveFunctions[input] != nullptr) {
 		(this->*moveFunctions[input])(board);
 	}

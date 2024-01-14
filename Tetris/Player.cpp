@@ -28,10 +28,11 @@ void Player::GameLoop()
                     break;
                 }
                 else {
-                    curShape.executeMove(keyPressed, this->getPlayerBoard());
+                    curShape.executeMove(keyPressed, playerBoard, moveFunctions);
                 }
             }
             else {
+
                 Sleep(500);
                 if (!curShape.continueMovingDown(playerBoard)) {
                     playerBoard.implementShapeToBoard(curShape);
@@ -39,6 +40,40 @@ void Player::GameLoop()
                 }
             }
         }
+    }
+}
+
+void Player::initializeMoveFunctions(int id)
+{
+    for (int i = 0; i < 128; i++)
+    {
+        moveFunctions[i] = nullptr;
+    }
+    if (id == 1) {
+        moveFunctions[(int)(gameConfig::keys::LP_ROTATE_CLOCK_WISE)] = &Shape::rotate_CounterClock_wise2;
+        moveFunctions['s'] = &Shape::rotate_Clock_wise2;
+        moveFunctions['a'] = &Shape::move_Left;
+        moveFunctions['d'] = &Shape::move_Right;
+        moveFunctions['x'] = &Shape::drop;
+
+        moveFunctions['W'] = &Shape::rotate_CounterClock_wise2;
+        moveFunctions['S'] = &Shape::rotate_Clock_wise2;
+        moveFunctions['A'] = &Shape::move_Left;
+        moveFunctions['D'] = &Shape::move_Right;
+        moveFunctions['X'] = &Shape::drop;
+    }
+    else {
+        moveFunctions['i'] = &Shape::rotate_CounterClock_wise2;
+        moveFunctions['k'] = &Shape::rotate_Clock_wise2;
+        moveFunctions['j'] = &Shape::move_Left;
+        moveFunctions['l'] = &Shape::move_Right;
+        moveFunctions['m'] = &Shape::drop;
+
+        moveFunctions['I'] = &Shape::rotate_CounterClock_wise2;
+        moveFunctions['K'] = &Shape::rotate_Clock_wise2;
+        moveFunctions['J'] = &Shape::move_Left;
+        moveFunctions['L'] = &Shape::move_Right;
+        moveFunctions['M'] = &Shape::drop;
     }
 }
 
