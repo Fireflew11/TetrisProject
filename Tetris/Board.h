@@ -31,7 +31,7 @@ public:
 
 	void clearLine(int index_line); 
 	bool IsLineFull(int index_line);
-	void clearFullLines();
+	int clearFullLines();
 	bool isGameOver(); 
 
 

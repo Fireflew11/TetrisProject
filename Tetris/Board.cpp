@@ -85,8 +85,7 @@ void Board:: updateBoard(const Shape& shape)// לבדוק אם ערכי הY שש
 	{
 		int x = shape.get_cubes()[i].get_X();
 		int y = shape.get_cubes()[i].get_Y();
-		board_game[x - startingX][y-startingY-1].set_coord(x, y);
-		board_game[x - startingX][y-startingY-1].setIsActive(true);
+		board_game[x/2 - startingX][y-startingY-1].setIsActive(true);
 	}
 }
 
@@ -116,7 +115,7 @@ bool Board::IsLineFull(int index_line)
 	return true; 
 }
 
-void  Board::clearFullLines()
+int Board::clearFullLines()
 {
 	int numClearedLines = 0;
 	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
@@ -127,6 +126,7 @@ void  Board::clearFullLines()
 			clearLine(i);  
 		}
 	}
+	return numClearedLines; 
 }
 /*
 bool Board::isGameOver()

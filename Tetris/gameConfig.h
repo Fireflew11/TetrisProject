@@ -11,14 +11,15 @@ public:
 	static constexpr int GAME_WIDTH = 12; 
 	static constexpr int GAME_HEIGHT = 18; 
 
-	static constexpr int MIN_X = 0; 
-	static constexpr int MIN_Y= 5; 
+	
 
 	static const int COLORS[]; 
 	static constexpr int  NUM_OF_COLORS = 8; 
 	static constexpr int NUM_OF_SHAPES = 7; 
 
-	//static constexpr int MIN_X_BOARD2 = 50;
-	//static constexpr int MIN_Y_BOARD2 = 5;
+	static constexpr int MIN_X_BOARD1 = 0;
+	static constexpr int MIN_Y_BOARD1 = 5;
+	static constexpr int MIN_X_BOARD2 = 50;
+	static constexpr int MIN_Y_BOARD2 = 5;
 };
 
