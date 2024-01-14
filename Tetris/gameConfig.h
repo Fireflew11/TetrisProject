@@ -7,6 +7,7 @@ public:
 
 	enum class ShapeType { I = 1, O, T, S, Z, J, L };
 
+	enum class Score{SINGLE_LINE_CLEAR=100, DOUBLE_LINE_CLEAR= 300, TRIPLE_LINE_CLEAR=500, TETRIS_LINE_CLEAR=400};
 
 	static constexpr int GAME_WIDTH = 12; 
 	static constexpr int GAME_HEIGHT = 18; 

@@ -93,7 +93,6 @@ void Board:: updateBoard(const Shape& shape)// לבדוק אם ערכי הY שש
 	{
 		int x = shape.get_cubes()[i].get_X();
 		int y = shape.get_cubes()[i].get_Y();
-		board_game[x - startingX][y-startingY-1].set_coord(x, y);
 		board_game[x - startingX][y-startingY-1].setIsActive(true);
 	}
 }
@@ -142,6 +141,7 @@ void Board::implementShapeToBoard(const Shape& shape) {
 		board_game[(shape.get_cubes()[i].get_X() - startingX - 1 ) / 2][shape.get_cubes()[i].get_Y() - 1].setIsActive(true);
 	}
 }
+
 /*
 bool Board::isGameOver()
 {
