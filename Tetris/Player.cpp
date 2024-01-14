@@ -1,19 +1,21 @@
 #include "Player.h"
 
 
-//enum { LeftPlayer = 1, RightPlayer=2 };
 
+
+/*
 Player::Player(int startingX, int startingY)
 {
     playerBoard.setStartingX(startingX);
     playerBoard.setStartingY(startingY);
 }
+*/
 
 Board& Player::getPlayerBoard()
 {
     return playerBoard;
 }
-
+/*
 void Player::GameLoop()
 {
     bool isGameOver = false;
@@ -42,15 +44,17 @@ void Player::GameLoop()
         }
     }
 }
+*/
 
-void Player::initializeMoveFunctions(int id)
+void Player::initializeMoveFunctions()
 {
     for (int i = 0; i < 128; i++)
     {
         moveFunctions[i] = nullptr;
     }
-    if (id == 1) {
-        moveFunctions[(int)(gameConfig::keys::LP_ROTATE_CLOCK_WISE)] = &Shape::rotate_CounterClock_wise2;
+    if (this->playerType == gameConfig::PlayerType::LEFT_PLAYER) 
+    {
+        moveFunctions['w'] = &Shape::rotate_CounterClock_wise2;
         moveFunctions['s'] = &Shape::rotate_Clock_wise2;
         moveFunctions['a'] = &Shape::move_Left;
         moveFunctions['d'] = &Shape::move_Right;
@@ -76,4 +80,14 @@ void Player::initializeMoveFunctions(int id)
         moveFunctions['M'] = &Shape::drop;
     }
 }
+
+
+
+ Player:: Player(gameConfig:: PlayerType playerType) : score(0), playerType(playerType), playerBoard(
+    (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
+    (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD) 
+ {
+     initializeMoveFunctions();
+ }
+
 

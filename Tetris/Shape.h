@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "Board.h"
+#include "gameConfig.h"
 enum Direction { RIGHT = 1, LEFT };
 class Cube; 
 class Board; 
@@ -15,7 +16,6 @@ class Shape
 	int id;
 	int startingX, startingY;
 	//int color; 
-	bool isIVertical = true; //unique for I shape, starts true
 	using MoveFunction = void (Shape::*)(const Board&);  // Directly define the type of moveFunctions
 
 
@@ -38,6 +38,8 @@ public:
 	bool continueMovingDown(const Board& board);
 	void drop(const Board& board);
 	void executeMove(char input, const Board& board, MoveFunction moveFunctions[]);
+
+	Shape(gameConfig::PlayerType playerType);
 
 
 

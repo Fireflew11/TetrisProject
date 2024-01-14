@@ -2,7 +2,7 @@
 #include <ctime>
 #include "gameConfig.h"
 #include "Board.h"
-
+#include <cctype>
 
 Shape::Shape(int x, int y, int cheatShape) //added cheat for checks, will be removed in final version (default value 0 means no cheat
 {	
@@ -289,12 +289,121 @@ bool Shape::continueMovingDown(const Board& board)
 
 void Shape::executeMove(char input, const Board& board, MoveFunction moveFunctions[]) {
 	if (moveFunctions[input] != nullptr) {
-		(this->*moveFunctions[input])(board);
+		(this->*moveFunctions[toupper(input)])(board);
 	}
 
 }
 
+
+
 void Shape::drop(const Board& board)
 {
+
+}
+
+Shape::Shape(gameConfig::PlayerType playerType) 
+{
+	srand(time(0));
+	int x = 0, y = 0; 
+	int randomShape= rand() % 7 + 1;
+	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
+	{
+		x = gameConfig::MIN_X_LEFT_BOARD; 
+		y = gameConfig::MIN_Y_LEFT_BOARD; 
+	}
+	else
+	{
+		x = gameConfig::MIN_X_RIGHT_BOARD;
+		y = gameConfig::MIN_Y_RIGHT_BOARD;
+	}
+
+	switch ((gameConfig::ShapeType)randomShape)
+	{
+	case gameConfig::ShapeType::I:
+	{
+		/*
+			*
+			*
+			*
+			*
+		*/
+		cubes[0] = Cube(x, y + 1);
+		cubes[1] = Cube(x, y);
+		cubes[2] = Cube(x, y + 2);
+		cubes[3] = Cube(x, y + 3);
+		break;
+	}
+	case  gameConfig::ShapeType::O:
+		/*
+			* *
+			* *
+		*/
+		cubes[0] = Cube(x, y);
+		cubes[1] = Cube(x + 2, y);
+		cubes[2] = Cube(x, y + 1);
+		cubes[3] = Cube(x + 2, y + 1);
+
+
+
+		break;
+	case  gameConfig::ShapeType::T:
+		/*
+			   * * *
+				 *
+		*/
+		cubes[0] = Cube(x, y);
+		cubes[1] = Cube(x - 2, y);
+		cubes[2] = Cube(x + 2, y);
+		cubes[3] = Cube(x, y + 1);
+		break;
+	case  gameConfig::ShapeType::S:
+		/*
+
+			   * *
+			 * *
+		*/
+		cubes[0] = Cube(x, y + 1);
+		cubes[1] = Cube(x + 2, y);
+		cubes[2] = Cube(x - 2, y + 1);
+		cubes[3] = Cube(x, y);
+
+		break;
+	case  gameConfig::ShapeType::Z:
+		/*
+			 * *
+			   * *
+
+		*/
+		cubes[0] = Cube(x, y + 1);
+		cubes[1] = Cube(x - 2, y);
+		cubes[2] = Cube(x, y);
+		cubes[3] = Cube(x + 2, y + 1);
+		break;
+	case  gameConfig::ShapeType::J:
+		/*
+			  *
+			  *
+			* *
+
+		*/
+		cubes[0] = Cube(x, y + 1);
+		cubes[1] = Cube(x, y);
+		cubes[2] = Cube(x - 2, y + 2);
+		cubes[3] = Cube(x, y + 2);
+		break;
+	case  gameConfig::ShapeType::L:
+		/*
+			 *
+			 *
+			 * *
+		*/
+		cubes[0] = Cube(x, y + 1);
+		cubes[1] = Cube(x, y);
+		cubes[2] = Cube(x, y + 2);
+		cubes[3] = Cube(x + 2, y + 2);
+		break;
+	default:
+		break;
+	}
 
 }

@@ -7,18 +7,23 @@ public:
 
 	enum class ShapeType { I = 1, O, T, S, Z, J, L };
 
+	enum class PlayerType{ LEFT_PLAYER= 1, RIGHT_PLAYER=2};
+
 
 	static constexpr int GAME_WIDTH = 12; 
 	static constexpr int GAME_HEIGHT = 18; 
 
-	static constexpr int MIN_X = 0; 
-	static constexpr int MIN_Y= 5; 
+	
 
 	static const int COLORS[]; 
 	static constexpr int  NUM_OF_COLORS = 8; 
 	static constexpr int NUM_OF_SHAPES = 7; 
 
-	//static constexpr int MIN_X_BOARD2 = 50;
-	//static constexpr int MIN_Y_BOARD2 = 5;
+	static constexpr int MIN_X_LEFT_BOARD = 0;
+	static constexpr int MIN_Y_LEFT_BOARD = 5;
+	static constexpr int MIN_X_RIGHT_BOARD = 50;
+	static constexpr int MIN_Y_RIGHT_BOARD = 5;
+
+	static constexpr int NUM_OF_PLAYERS = 2; 
 };
 
