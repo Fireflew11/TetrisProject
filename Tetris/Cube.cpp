@@ -12,18 +12,23 @@ int Cube::get_Y() const
 {
 	return coord.Y;
 }
-bool Cube::getIsActive()const {
+bool Cube::getIsActive()const 
+{
 	return isActive;
 }
 void Cube::setIsActive(const bool isActive) 
 {
 	this->isActive = isActive;
 }
+
+/*
 void Cube::drawCube(const bool isActive, const int size) const 
 {
     gotoxy(coord.X, coord.Y);
-    if(isActive)
+    if (isActive)
+    {
         cout << "\033[41m";  // red background color
+    }
     else
         cout << "\033[40m"; // black background color
 
@@ -31,6 +36,27 @@ void Cube::drawCube(const bool isActive, const int size) const
 
     cout << "\033[0m";   // Reset ANSI escape codes
 }
+*/
+
+void Cube::drawCube(const bool isActive, int colorIndex, const int size) const
+{
+    gotoxy(coord.X, coord.Y);
+
+    if (isActive)
+    {
+        cout << "\033[41m";
+        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+    }
+    else
+    {
+        cout << "\033[40m"; // black background color
+        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), gameConfig::COLORS[3]);
+    }
+    cout << "  ";
+    cout << "\033[0m";
+    //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), gameConfig::COLORS[0]);  
+}
+
 
 
 
@@ -40,10 +66,28 @@ void Cube::set_coord(const int& x, const int& y)
     coord.Y = y;
 }
 
+
+/*
 Cube::Cube(int x, int y, bool active)
 {
     coord.X = x;
     coord.Y = y;
+    isActive = active;
+}
+
+
+Cube::Cube(int x, int y, bool active)
+{
+    coord.X = x;
+    coord.Y = y;
+    isActive = active;
+}
+*/
+Cube::Cube(int x , int y , int colorIndex, bool active )
+{
+    coord.X = x;
+    coord.Y = y;
+    color = colorIndex;
     isActive = active;
 }
 

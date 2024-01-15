@@ -4,6 +4,7 @@
 #include <conio.h>
 #include "Shape.h"
 #include "Board.h"
+#include "gameConfig.h"
 using namespace std;
 class Shape; 
 

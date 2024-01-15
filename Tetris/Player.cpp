@@ -96,3 +96,24 @@ void Player::initializeMoveFunctions()
  }
 
 
+ void Player::updateScore(int numClearedLines)
+ {
+     switch (numClearedLines)
+     {
+     case 1:
+         score += static_cast<int>(gameConfig::Score::SINGLE_LINE_CLEAR);
+         break;
+     case 2:
+         score += static_cast<int>(gameConfig::Score::DOUBLE_LINE_CLEAR);
+         break;
+     case 3:
+         score += static_cast<int>(gameConfig::Score::TRIPLE_LINE_CLEAR);
+         break;
+     case 4:
+         score += static_cast<int>(gameConfig::Score::TETRIS_LINE_CLEAR);
+         break;
+     default:
+         break;
+     }
+ }
+

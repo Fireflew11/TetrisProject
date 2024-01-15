@@ -15,7 +15,7 @@ class Shape
 	Cube cubes[4];
 	int id;
 	int startingX, startingY;
-	//int color; 
+	int color; 
 	using MoveFunction = void (Shape::*)(const Board&);  // Directly define the type of moveFunctions
 
 

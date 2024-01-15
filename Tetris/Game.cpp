@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "gameConfig.h"
 #include "Shape.h" 
 #include "Board.h"
@@ -122,10 +122,76 @@ void Game::GameLoop()
                     {
                         keyChoice(gameConfig::keys(keyPressed), curShapePlayer1, players[0].getPlayerBoard(), gameConfig::PlayerType::LEFT_PLAYER);
                     }
-
                     else if (keyPressed == 'J' || keyPressed == 'L' || keyPressed == 'K' || keyPressed == 'I' || keyPressed == 'M')
                     {
                         keyChoice(gameConfig::keys(keyPressed), curShapePlayer2, players[1].getPlayerBoard(), gameConfig::PlayerType::RIGHT_PLAYER);
+                    }
+                }
+            }
+            else
+            {
+                Sleep(500);
+
+                bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
+                bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
+                
+                if (!movedDownPlayer1 && !movedDownPlayer2)
+                {
+                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                    break;
+                }
+                if (!movedDownPlayer1)
+                {
+                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                    curShapePlayer1 = Shape(gameConfig::PlayerType::LEFT_PLAYER);
+                }
+
+                if (!movedDownPlayer2)
+                {
+                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                    curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER);
+                }
+
+            }
+        }
+    }
+}
+
+/*
+void Game::GameLoop()
+{
+    bool isGameOver = false;
+    int keyPressedPlayer1 = 0;
+    int keyPressedPlayer2 = 0;
+
+    while (!isGameOver)
+    {
+        Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER);
+        Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER);
+
+        while (true)
+        {
+            if (_kbhit())
+            {
+                int keyPressed = _getch();
+                if (keyPressed == (int)gameConfig::keys::ESC)
+                {
+                    isGameOver = true;
+                    break;
+                }
+                else
+                {
+                    keyPressed = toupper(keyPressed);
+
+                    if (keyPressed == 'A' || keyPressed == 'D' || keyPressed == 'S' || keyPressed == 'W' || keyPressed == 'X')
+                    {
+                        keyChoice(gameConfig::keys(keyPressed), curShapePlayer1, players[0].getPlayerBoard(), gameConfig::PlayerType::LEFT_PLAYER);
+                    }
+
+                    else if (keyPressed == 'J' || keyPressed == 'L' || keyPressed == 'K' || keyPressed == 'I' || keyPressed == 'M')
+                    {
+                        keyChoice(gameConfig::keys(keyPressed), curShapePlayer2, players[1].getPlayerBoard(), gameConfig::PlayerType::RIGHT_PLAYER); //אשנה להעמסת פונקציות 
                     }
                 }
             }
@@ -145,7 +211,9 @@ void Game::GameLoop()
             }
         }
     }
-}
+
+
+*/
 
 
 

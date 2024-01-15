@@ -72,7 +72,7 @@ bool Board::check_valid_move(const Shape& shape) const
 			return false;
 		if (y >= gameConfig::GAME_HEIGHT || y < 1)
 			return false;
-		if (board_game[(x - startingX - 1) / 2][y - 1].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
+		if (board_game[(x - startingX-1)/2][y - 1].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
 			return false;
 
 	}
@@ -137,7 +137,7 @@ void Board::implementShapeToBoard(const Shape& shape)
 {
 	for (int i = 0; i < 4; i++)
 	{
-		board_game[(shape.get_cubes()[i].get_X() - startingX - 1) / 2][shape.get_cubes()[i].get_Y() - 1].setIsActive(true);
+		board_game[(shape.get_cubes()[i].get_X() - startingX -1) / 2][shape.get_cubes()[i].get_Y() - 1].setIsActive(true);
 	}
 }
 

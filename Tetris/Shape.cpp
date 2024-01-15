@@ -136,13 +136,15 @@ void Shape::deleteCubesBlock() {
 
 
 
-void Shape::drawShape(bool isActive) const {
+void Shape::drawShape(bool isActive) const 
+{
 	for (int i = 0; i < 4; i++)
 	{
-		cubes[i].drawCube(isActive);
+		cubes[i].drawCube(isActive,color);
 	}
 	
 }
+
 
 int Shape::getId() {
 	return id;
@@ -266,6 +268,29 @@ void Shape::move_Right(const Board& board)
 	drawShape(true);
 }
 
+/*
+bool Shape::continueMovingDown(const Board& board)
+{
+	Shape temp = *this;
+	for (int i = 0; i < 4; i++)
+	{
+		int y = temp.cubes[i].get_Y() + 1;
+		Cube tempCube(temp.cubes[i].get_X(), y, true);
+		temp.set_cubes_by_Index(i, tempCube);
+	}
+
+	if (board.check_valid_move(temp))
+	{
+		drawShape(false);  // Erase the current shape
+		*this = temp;      // Update the shape
+		drawShape(true);   // Draw the shape at its new position
+		return true;
+	}
+
+	return false;
+}
+*/
+
 bool Shape::continueMovingDown(const Board& board)
 {
 	bool didSucceed = false;
@@ -306,15 +331,20 @@ Shape::Shape(gameConfig::PlayerType playerType)
 	srand(time(0));
 	int x = 0, y = 0; 
 	int randomShape= rand() % 7 + 1;
+	color = randomShape;
 	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
 	{
+		startingX = gameConfig::MIN_X_LEFT_BOARD;
+		startingY = gameConfig::MIN_Y_LEFT_BOARD;
 		x = gameConfig::GAME_WIDTH +gameConfig::MIN_X_LEFT_BOARD; 
-		y = gameConfig::MIN_Y_LEFT_BOARD+1; 
+		y = gameConfig::MIN_Y_LEFT_BOARD; 
 	}
 	else
 	{
+		startingX = gameConfig::MIN_X_RIGHT_BOARD; 
+		startingY = gameConfig::MIN_Y_RIGHT_BOARD; 
 		x = gameConfig::GAME_WIDTH+ gameConfig::MIN_X_RIGHT_BOARD;
-		y = gameConfig::MIN_Y_RIGHT_BOARD+1;
+		y = gameConfig::MIN_Y_RIGHT_BOARD;
 	}
 
 	switch ((gameConfig::ShapeType)randomShape)
@@ -327,10 +357,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			*
 			*
 		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x, y);
-		cubes[2] = Cube(x, y + 2);
-		cubes[3] = Cube(x, y + 3);
+		cubes[0] = Cube(x, y + 1,1);
+		cubes[1] = Cube(x, y,1);
+		cubes[2] = Cube(x, y + 2,1);
+		cubes[3] = Cube(x, y + 3,1);
 		break;
 	}
 	case  gameConfig::ShapeType::O:
@@ -338,10 +368,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			* *
 			* *
 		*/
-		cubes[0] = Cube(x, y);
-		cubes[1] = Cube(x + 2, y);
-		cubes[2] = Cube(x, y + 1);
-		cubes[3] = Cube(x + 2, y + 1);
+		cubes[0] = Cube(x, y,2);
+		cubes[1] = Cube(x + 2, y,2);
+		cubes[2] = Cube(x, y + 1,2);
+		cubes[3] = Cube(x + 2, y + 1,2);
 
 
 
@@ -351,10 +381,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			   * * *
 				 *
 		*/
-		cubes[0] = Cube(x, y);
-		cubes[1] = Cube(x - 2, y);
-		cubes[2] = Cube(x + 2, y);
-		cubes[3] = Cube(x, y + 1);
+		cubes[0] = Cube(x, y,3);
+		cubes[1] = Cube(x - 2, y,3);
+		cubes[2] = Cube(x + 2, y,3);
+		cubes[3] = Cube(x, y + 1,3);
 		break;
 	case  gameConfig::ShapeType::S:
 		/*
@@ -362,10 +392,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			   * *
 			 * *
 		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x + 2, y);
-		cubes[2] = Cube(x - 2, y + 1);
-		cubes[3] = Cube(x, y);
+		cubes[0] = Cube(x, y + 1,4);
+		cubes[1] = Cube(x + 2, y,4);
+		cubes[2] = Cube(x - 2, y + 1,4);
+		cubes[3] = Cube(x, y,4);
 
 		break;
 	case  gameConfig::ShapeType::Z:
@@ -374,10 +404,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			   * *
 
 		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x - 2, y);
-		cubes[2] = Cube(x, y);
-		cubes[3] = Cube(x + 2, y + 1);
+		cubes[0] = Cube(x, y + 1,5);
+		cubes[1] = Cube(x - 2, y,5);
+		cubes[2] = Cube(x, y,5);
+		cubes[3] = Cube(x + 2, y + 1,5);
 		break;
 	case  gameConfig::ShapeType::J:
 		/*
@@ -386,10 +416,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			* *
 
 		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x, y);
-		cubes[2] = Cube(x - 2, y + 2);
-		cubes[3] = Cube(x, y + 2);
+		cubes[0] = Cube(x, y + 1,6);
+		cubes[1] = Cube(x, y,6);
+		cubes[2] = Cube(x - 2, y + 2,6);
+		cubes[3] = Cube(x, y + 2,6);
 		break;
 	case  gameConfig::ShapeType::L:
 		/*
@@ -397,10 +427,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			 *
 			 * *
 		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x, y);
-		cubes[2] = Cube(x, y + 2);
-		cubes[3] = Cube(x + 2, y + 2);
+		cubes[0] = Cube(x, y + 1,7);
+		cubes[1] = Cube(x, y,7);
+		cubes[2] = Cube(x, y + 2,7);
+		cubes[3] = Cube(x + 2, y + 2,7);
 		break;
 	default:
 		break;
