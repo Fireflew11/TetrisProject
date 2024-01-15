@@ -38,21 +38,22 @@ void Cube::drawCube(const bool isActive, const int size) const
 }
 */
 
-void Cube::drawCube(const bool isActive, int colorIndex, const int size) const
+void Cube::drawCube(const bool isActive) const
 {
     gotoxy(coord.X, coord.Y);
 
     if (isActive)
     {
         cout << "\033[41m";
-        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
     }
     else
     {
         cout << "\033[40m"; // black background color
-        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), gameConfig::COLORS[3]);
+        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), gameConfig::COLORS[0]);
     }
-    cout << "  ";
+    cout << "  "; // The actual cube in color
+
     cout << "\033[0m";
     //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), gameConfig::COLORS[0]);  
 }
@@ -99,6 +100,11 @@ void  Cube::set_X(const int& x)
 void Cube::set_Y(const int& y)
 {
 	coord.Y = y; 
+}
+
+void Cube::setColor(const int& color)
+{
+    this->color = color;
 }
 
 

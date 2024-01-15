@@ -106,6 +106,10 @@ void Game::GameLoop()
 
         while (true)
         {
+
+            players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
+            players[1].updateScore(players[1].getPlayerBoard().clearFullLines());
+
             if (_kbhit())
             {
                 int keyPressed = _getch();
@@ -221,7 +225,8 @@ void Game::GameLoop()
 
 Game::Game():players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)} 
 {
-
+    players[0].displayScore();
+    players[1].displayScore();
 }
 
 void Game:: Print_Menu()

@@ -102,18 +102,31 @@ void Player::initializeMoveFunctions()
      {
      case 1:
          score += static_cast<int>(gameConfig::Score::SINGLE_LINE_CLEAR);
+         displayScore();
          break;
      case 2:
          score += static_cast<int>(gameConfig::Score::DOUBLE_LINE_CLEAR);
+         displayScore();
          break;
      case 3:
          score += static_cast<int>(gameConfig::Score::TRIPLE_LINE_CLEAR);
+         displayScore();
          break;
      case 4:
          score += static_cast<int>(gameConfig::Score::TETRIS_LINE_CLEAR);
+         displayScore();
          break;
      default:
          break;
      }
+ }
+
+ void Player::displayScore()
+ {
+     if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
+         gotoxy(gameConfig::MAX_X_LEFT_BOARD + 2, 2);
+     else
+         gotoxy(gameConfig::MAX_X_RIGHT_BOARD + 2, 2);
+     cout << "Player " << (int)playerType << " score: " << score;
  }
 

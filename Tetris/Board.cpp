@@ -21,10 +21,10 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 	gotoxy(startingX, 0);
 	Board::print_Line();
 	gotoxy(startingX, 1);
-	for (i = 1; i < gameConfig::GAME_HEIGHT +1; i++)
+	for (i = 1; i < gameConfig::GAME_HEIGHT + 2; i++)
 	{
 		cout << "|";
-		for (j = 1; j < gameConfig::GAME_WIDTH *2 + 1; j++)
+		for (j = 1; j < gameConfig::GAME_WIDTH * 2 + 1; j++)
 			cout << " "; 
 		cout << "|" << endl; 
 		gotoxy(startingX, i);
@@ -38,7 +38,7 @@ Board::Board(int starting_X, int starting_Y):startingX(starting_X),startingY(sta
 	{
 		for (int j = 0; j < (int)gameConfig::GAME_WIDTH; j++)
 		{
-			board_game[i][j].set_coord(startingX + i, j+startingY); 
+			board_game[i][j].set_coord(startingX + 1 + j * 2, startingY + i); 
 			board_game[i][j].setIsActive(false); 
 		}
 	}
@@ -70,9 +70,10 @@ bool Board::check_valid_move(const Shape& shape) const
 		int y = shape.get_cubes()[i].get_Y();   
 		if ((x >= gameConfig::GAME_WIDTH * 2 + startingX) || (x <= startingX))
 			return false;
-		if (y >= gameConfig::GAME_HEIGHT || y < 1)
+		if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
 			return false;
-		if (board_game[(x - startingX-1)/2][y - 1].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
+		if (board_game[y - 1][(x - startingX - 1) / 2].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
+			
 			return false;
 
 	}
@@ -80,7 +81,7 @@ bool Board::check_valid_move(const Shape& shape) const
 
 }
 
-void Board:: updateBoard(const Shape& shape)// לבדוק אם ערכי הY ששמתי טובים פה 
+void Board::updateBoard(const Shape& shape)// לבדוק אם ערכי הY ששמתי טובים פה 
 {
 
 	for (int i = 0; i < 4; ++i)
@@ -106,7 +107,6 @@ void Board::clearLine(int index_line)
 		board_game[0][i].setIsActive(false); 
 	}
 }
-
 bool Board::IsLineFull(int index_line)
 {
 	for (int i = 0; i < gameConfig::GAME_WIDTH; i++)
@@ -128,6 +128,9 @@ int  Board::clearFullLines()
 			clearLine(i);  
 		}
 	}
+	if (numClearedLines > 0)
+		drawBoardCubes();
+
 	return numClearedLines; 
 }
 
@@ -137,7 +140,16 @@ void Board::implementShapeToBoard(const Shape& shape)
 {
 	for (int i = 0; i < 4; i++)
 	{
-		board_game[(shape.get_cubes()[i].get_X() - startingX -1) / 2][shape.get_cubes()[i].get_Y() - 1].setIsActive(true);
+		board_game[shape.get_cubes()[i].get_Y() - 1][(shape.get_cubes()[i].get_X() - startingX - 1) / 2].setIsActive(true);
+		board_game[shape.get_cubes()[i].get_Y() - 1][(shape.get_cubes()[i].get_X() - startingX - 1) / 2].setColor(shape.getColor());
+	}
+	
+}
+void Board::drawBoardCubes() {
+	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
+	{
+		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
+			board_game[i][j].drawCube(board_game[i][j].getIsActive());
 	}
 }
 

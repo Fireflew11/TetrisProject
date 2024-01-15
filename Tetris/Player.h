@@ -22,6 +22,7 @@ public:
 	//void GameLoop();
 	void initializeMoveFunctions();
 	void updateScore(int numClearedLines);
+	void displayScore();
 
 	Player(gameConfig::PlayerType); 
 };
