@@ -50,6 +50,53 @@ void Game::keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gam
         }
     } 
 }
+void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
+{
+    switch(key)
+    {
+    case gameConfig::LeftKeys::RIGHT:
+            shape.move_Right(board);
+            break;
+        case gameConfig::LeftKeys::LEFT:
+            shape.move_Left(board);
+            break;
+        case gameConfig::LeftKeys::ROTATE_CLOCK_WISE:
+            shape.rotate_Clock_wise2(board);
+            break;
+        case gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE:
+            shape.rotate_CounterClock_wise2(board);
+            break;
+        case gameConfig::LeftKeys::DROP:
+            shape.drop(board);
+            break;
+        default:
+            break; 
+    }
+}
+
+void keyChoice(gameConfig::RightKeys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
+{
+    switch (key)
+    {
+    case gameConfig::RightKeys::RIGHT:
+        shape.move_Right(board);
+        break;
+    case gameConfig::RightKeys::LEFT:
+        shape.move_Left(board);
+        break;
+    case gameConfig::RightKeys::ROTATE_CLOCK_WISE:
+        shape.rotate_Clock_wise2(board);
+        break;
+    case gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE:
+        shape.rotate_CounterClock_wise2(board);
+        break;
+    case gameConfig::RightKeys::DROP:
+        shape.drop(board);
+        break;
+    default:
+        break;
+    }
+}
 
 
 void Game::GameLoop()

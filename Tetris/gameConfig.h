@@ -7,8 +7,8 @@ public:
 
 
 	//
-	enum class LeftKeys { LP_LEFT = 'A', LP_RIGHT = 'D', LP_ROTATE_CLOCK_WISE = 'S', LP_ROTATE_COUNTER_CLOCK_WISE = 'W', LP_DROP = 'X' };
-	enum class RightKeys {RP_LEFT = 'J', RP_RIGHT = 'L', RP_ROTATE_CLOCK_WISE = 'K', RP_ROTATE_COUNTER_CLOCK_WISE = 'I', RP_DROP = 'M', ESC = 27 };
+	enum class LeftKeys { LEFT = 'A', RIGHT = 'D', ROTATE_CLOCK_WISE = 'S', ROTATE_COUNTER_CLOCK_WISE = 'W', DROP = 'X' , ESC= 27};
+	enum class RightKeys {LEFT = 'J', RIGHT = 'L', ROTATE_CLOCK_WISE = 'K', ROTATE_COUNTER_CLOCK_WISE = 'I', DROP = 'M', ESC = 27 };
 	//
 
 

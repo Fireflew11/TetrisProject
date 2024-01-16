@@ -206,21 +206,7 @@ void Shape::rotate_Clock_wise2(const Board& board)
 
 void Shape::move_Left(const Board& board)
 {
-	/*
-	int x = cubes[0].get_X(); 
-	int y = cubes[0].get_Y(); 
-	Shape temp(x, y, 0);
 
-	x = x - 2;
-	for (int i = 0; i < 4; i++)
-	{
-		Cube temp_cube(x, y, true);
-		temp.set_cubes_by_Index(i, temp_cube);
-	}
-
-	if (board.check_valid_move(temp) == true)
-		*this= temp;
-*/
 	drawShape(false);
 	Shape temp = *this;
 
