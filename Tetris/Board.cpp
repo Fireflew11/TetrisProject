@@ -77,7 +77,6 @@ bool Board::check_valid_move(const Shape& shape) const
 
 	}
 	return true;
-
 }
 
 void Board:: updateBoard(const Shape& shape)// לבדוק אם ערכי הY ששמתי טובים פה 
