@@ -8,9 +8,9 @@
 
 void Board::print_Line() 
 {
-	for (int i = 0; i < gameConfig::GAME_WIDTH * 2 + 2; i++)
+	for (int i = 0; i < gameConfig::GAME_WIDTH + 1; i++)
 	{
-		cout << "-";
+		cout << "--";
 	}
 	cout << endl; 
 }
@@ -24,12 +24,13 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 	for (i = 1; i < gameConfig::GAME_HEIGHT + 2; i++)
 	{
 		cout << "|";
-		for (j = 1; j < gameConfig::GAME_WIDTH * 2 + 1; j++)
-			cout << " "; 
+		for (j = 1; j < gameConfig::GAME_WIDTH + 1; j++)
+			cout << "  "; 
 		cout << "|" << endl; 
 		gotoxy(startingX, i);
 	}
 	Board::print_Line(); 
+	drawBoardCubes();
 }
 
 Board::Board(int starting_X, int starting_Y):startingX(starting_X),startingY(starting_Y)
@@ -40,9 +41,9 @@ Board::Board(int starting_X, int starting_Y):startingX(starting_X),startingY(sta
 		{
 			board_game[i][j].set_coord(startingX + 1 + j * 2, startingY + i); 
 			board_game[i][j].setIsActive(false); 
+			board_game[i][j].setColor(gameConfig::COLORS[0]);
 		}
 	}
-	this->display_board(starting_X);
 }
 /*
 void Board::insert_Shape(const Shape& shape)

@@ -12,8 +12,10 @@ int main()
 	p1.initializeMoveFunctions(1);
 	p1.GameLoop();
 	*/
+
 	Game game1; 
-	game1.GameLoop();
+	game1.startGame();
+	
 	
 
 

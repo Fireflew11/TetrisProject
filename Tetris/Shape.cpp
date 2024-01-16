@@ -161,6 +161,7 @@ void Shape::rotate_CounterClock_wise2(const Board& board)
 		// Perform 90-degree clockwise rotation
 		tempShape.cubes[i].set_X( centerX + relativeY*2);
 		tempShape.cubes[i].set_Y(centerY - relativeX/2);
+		tempShape.cubes[i].setColor(color);
 	}
 
 	if (board.check_valid_move(tempShape)) 
@@ -190,7 +191,7 @@ void Shape::rotate_Clock_wise2(const Board& board)
         int newY = centerY + relativeX/2;
 
         // Update the cube in the temporary shape
-        Cube tempCube(newX, newY, true);
+        Cube tempCube(newX, newY,color, true);
         tempShape.set_cubes_by_Index(i, tempCube);
     }
 
@@ -226,7 +227,7 @@ void Shape::move_Left(const Board& board)
 	for (int i = 0; i < 4; ++i)
 	{
 		int x = temp.cubes[i].get_X() - 2;
-		Cube temp_cube(x, temp.cubes[i].get_Y(), true);
+		Cube temp_cube(x, temp.cubes[i].get_Y(),color , true);
 		temp.set_cubes_by_Index(i, temp_cube);
 	}
 
@@ -247,7 +248,7 @@ void Shape::move_Right(const Board& board)
 	for (int i = 0; i < 4; ++i) 
 	{
 		int x = temp.cubes[i].get_X() + 2; 
-		Cube temp_cube(x, temp.cubes[i].get_Y(), true);
+		Cube temp_cube(x, temp.cubes[i].get_Y(),color, true);
 		temp.set_cubes_by_Index(i, temp_cube);
 	}
 
@@ -265,7 +266,7 @@ bool Shape::continueMovingDown(const Board& board)
 	for (int i = 0; i < 4; i++)
 	{
 		int y = temp.cubes[i].get_Y() + 1;
-		Cube tempCube(temp.cubes[i].get_X(), y, true);
+		Cube tempCube(temp.cubes[i].get_X(), y, color, true);
 		temp.set_cubes_by_Index(i, tempCube);
 	}
 
@@ -305,7 +306,7 @@ bool Shape::continueMovingDown(const Board& board)
 
 void Shape::executeMove(char input, const Board& board, MoveFunction moveFunctions[]) {
 	if (moveFunctions[input] != nullptr) {
-		(this->*moveFunctions[toupper(input)])(board);
+		(this->*moveFunctions[toupperG(input)])(board);
 	}
 
 }
@@ -319,7 +320,7 @@ int Shape::getColor() const
 
 void Shape::drop(const Board& board)
 {
-	while (continueMovingDown(board));
+	continueMovingDown(board);
 }
 
 Shape::Shape(gameConfig::PlayerType playerType) 

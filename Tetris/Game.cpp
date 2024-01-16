@@ -3,6 +3,7 @@
 #include "Shape.h" 
 #include "Board.h"
 #include <cctype>
+#include "GlobalFunctions.h"
 
 void Game::keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
 {
@@ -49,48 +50,6 @@ void Game::keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gam
         }
     } 
 }
-/*
-void Game::GameLoop()
-{
-    bool isGameOver = false;
-    int keyPressed = 0;
-    while (!isGameOver) 
-    {
-        Shape curShape(gameConfig::PlayerType(1));
-        //Shape curShape(gameConfig::GAME_WIDTH + 1, 1);
-        while (true) 
-        {
-            if (_kbhit()) 
-            {
-                keyPressed = _getch();
-                if (keyPressed == (int)gameConfig::keys::ESC) 
-                {
-                    isGameOver = true;
-                    break;
-                }
-                else 
-                {
-                    keyPressed = toupper(keyPressed);
-                    keyChoice(gameConfig::keys(keyPressed), curShape, players[0].getPlayerBoard(), gameConfig::PlayerType(1));
-                    //curShape.executeMove(keyPressed, playerBoard, moveFunctions);
-                }
-            }
-            else 
-            {
-
-                Sleep(500);
-                if (!curShape.continueMovingDown(players[0].getPlayerBoard()))
-                {
-                    players[0].getPlayerBoard().implementShapeToBoard(curShape);
-                    //playerBoard.implementShapeToBoard(curShape);
-                    break;
-                }
-            }
-        }
-    }
-}
-
-*/
 
 
 void Game::GameLoop()
@@ -98,7 +57,8 @@ void Game::GameLoop()
     bool isGameOver = false;
     int keyPressedPlayer1 = 0;
     int keyPressedPlayer2 = 0;
-
+    players[0].displayScore();
+    players[1].displayScore();
     while (!isGameOver)
     {
         Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER);
@@ -120,8 +80,7 @@ void Game::GameLoop()
                 }
                 else
                 {
-                    keyPressed = toupper(keyPressed);
-
+                    keyPressed = toupperG(keyPressed);
                     if (keyPressed == 'A' || keyPressed == 'D' || keyPressed == 'S' || keyPressed == 'W' || keyPressed == 'X')
                     {
                         keyChoice(gameConfig::keys(keyPressed), curShapePlayer1, players[0].getPlayerBoard(), gameConfig::PlayerType::LEFT_PLAYER);
@@ -162,79 +121,87 @@ void Game::GameLoop()
     }
 }
 
-/*
-void Game::GameLoop()
+bool Game::getIsGamePaused()
 {
-    bool isGameOver = false;
-    int keyPressedPlayer1 = 0;
-    int keyPressedPlayer2 = 0;
+    return isGamePaused;
+}
 
-    while (!isGameOver)
-    {
-        Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER);
-        Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER);
+void Game::setIsGamePaused(bool isGamePaused)
+{
+    this->isGamePaused = isGamePaused;
+}
 
-        while (true)
-        {
-            if (_kbhit())
-            {
-                int keyPressed = _getch();
-                if (keyPressed == (int)gameConfig::keys::ESC)
-                {
-                    isGameOver = true;
-                    break;
-                }
-                else
-                {
-                    keyPressed = toupper(keyPressed);
-
-                    if (keyPressed == 'A' || keyPressed == 'D' || keyPressed == 'S' || keyPressed == 'W' || keyPressed == 'X')
-                    {
-                        keyChoice(gameConfig::keys(keyPressed), curShapePlayer1, players[0].getPlayerBoard(), gameConfig::PlayerType::LEFT_PLAYER);
-                    }
-
-                    else if (keyPressed == 'J' || keyPressed == 'L' || keyPressed == 'K' || keyPressed == 'I' || keyPressed == 'M')
-                    {
-                        keyChoice(gameConfig::keys(keyPressed), curShapePlayer2, players[1].getPlayerBoard(), gameConfig::PlayerType::RIGHT_PLAYER); //אשנה להעמסת פונקציות 
-                    }
-                }
-            }
-            else
-            {
-                Sleep(500);
-                if (!curShapePlayer1.continueMovingDown(players[0].getPlayerBoard()))
-                {
-                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
-                    break;
-                }
-                if (!curShapePlayer2.continueMovingDown(players[1].getPlayerBoard()))
-                {
-                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
-                    break;
-                }
-            }
+void Game::startGame()
+{
+    players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
+    players[0].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+    GameLoop();
+    /*
+    Print_Menu();
+    bool didGameEnd = false;
+    char keyPressed = 0;
+    while (!didGameEnd) {
+        while (!_kbhit()) {
+            keyPressed = _getch();
         }
+        system("cls");
+        if (keyPressed == '1') {
+            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
+            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+            GameLoop();
+        }
+        else if (keyPressed == '2' && isGamePaused)
+        {
+            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
+            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+            return;
+        }
+        else if (keyPressed == '8')
+            Present_instructionsand_keys();
+
+        else if (keyPressed == '9')
+            didGameEnd = true;
     }
+    */
+}
 
 
-*/
-
-
-
-
-
-Game::Game():players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)} 
+Game::Game():players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)}, isGamePaused(false)
 {
-    players[0].displayScore();
-    players[1].displayScore();
+
 }
 
 void Game:: Print_Menu()
 {
     cout << "(1) Start a new game" << endl; 
-    cout << "(2) Continue a paused game" << endl; 
+    if(isGamePaused)
+        cout << "(2) Continue a paused game" << endl; 
     cout << "(8) Present instructionsand keys" << endl; 
     cout << "(9) EXIT" << endl; 
+}
+
+void Game::Present_instructionsand_keys()
+{
+    // Print the top border
+    std::cout << "+------------------------+------------------------+------------------------+" << std::endl;
+
+    // Print each row with placeholders for text
+    for (int row = 0; row < 6; ++row)
+    {
+        std::cout << "|";
+        for (int col = 0; col < 3; ++col)
+        {
+            std::cout << std::setw(24) << std::left << " "; // Placeholder for text
+            std::cout << "|";
+        }
+        std::cout << std::endl;
+
+        // Print the horizontal line between rows
+        if (row < 5)
+        {
+            std::cout << "+------------------------+------------------------+------------------------+" << std::endl;
+        }
+    }
 }
 
 /*

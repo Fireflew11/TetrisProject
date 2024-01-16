@@ -44,18 +44,27 @@ void Cube::drawCube(const bool isActive) const
 
     if (isActive)
     {
-        cout << "\033[41m";
-        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+        // Set background color based on the cube's color
+        cout << "\033[48;5;" << color << "m";
+        
+
+        // Use a different text color for active cubes (e.g., white)
+        cout << "\033[38;5;15m";
     }
     else
     {
-        cout << "\033[40m"; // black background color
-        //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), gameConfig::COLORS[0]);
-    }
-    cout << "  "; // The actual cube in color
+        // Set background color to black
+        cout << "\033[40m";
 
+        // Use black text color for inactive cubes
+        cout << "\033[38;5;0m";
+    }
+
+    // The actual cube in color or black
+    cout << "  ";
+
+    // Reset colors
     cout << "\033[0m";
-    //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), gameConfig::COLORS[0]);  
 }
 
 
