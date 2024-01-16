@@ -420,3 +420,8 @@ Shape::Shape(gameConfig::PlayerType playerType)
 	}
 
 }
+
+bool Shape::isOShape() const
+{
+	
+}

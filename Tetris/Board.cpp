@@ -154,12 +154,6 @@ void Board::drawBoardCubes() {
 	}
 }
 
-/*
-bool Board::isGameOver()
-{
-
-}
-*/
 
 
 

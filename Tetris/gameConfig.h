@@ -9,6 +9,7 @@ public:
 	//
 	enum class LeftKeys { LEFT = 'A', RIGHT = 'D', ROTATE_CLOCK_WISE = 'S', ROTATE_COUNTER_CLOCK_WISE = 'W', DROP = 'X' , ESC= 27};
 	enum class RightKeys {LEFT = 'J', RIGHT = 'L', ROTATE_CLOCK_WISE = 'K', ROTATE_COUNTER_CLOCK_WISE = 'I', DROP = 'M', ESC = 27 };
+	static constexpr int ESC = 27; 
 	//
 
 

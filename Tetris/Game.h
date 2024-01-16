@@ -16,9 +16,10 @@ class Game
 	GameStatus status;
 public: 
 
-	void keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player);
-	void keyChoice(gameConfig::LeftKeys key, Shape& shape, const Board& board, gameConfig::PlayerType player);
-	void keyChoice(gameConfig::RightKeys key , Shape& shape, const Board& board, gameConfig::PlayerType player);
+	//void keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player);
+	void keyChoice(gameConfig::LeftKeys key, Shape& shape);
+	void keyChoice(gameConfig::RightKeys key , Shape& shape);
+	void checkKeyChoice(int keyPressed, Shape& Leftshape, Shape& RightShape);
 
 	Game(); 
 	void Print_Menu(); 

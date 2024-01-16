@@ -41,6 +41,7 @@ public:
 	Shape(gameConfig::PlayerType playerType);
 
 
+	bool isOShape() const;
 
 
    

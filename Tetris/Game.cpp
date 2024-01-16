@@ -4,7 +4,7 @@
 #include "Board.h"
 #include <cctype>
 #include "GlobalFunctions.h"
-
+/*
 void Game::keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
 {
     if (player == gameConfig::PlayerType::LEFT_PLAYER)
@@ -50,48 +50,51 @@ void Game::keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gam
         }
     } 
 }
-void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
+*/
+
+
+void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape)
 {
     switch(key)
     {
     case gameConfig::LeftKeys::RIGHT:
-            shape.move_Right(board);
+            shape.move_Right(players[0].getPlayerBoard());
             break;
         case gameConfig::LeftKeys::LEFT:
-            shape.move_Left(board);
+            shape.move_Left(players[0].getPlayerBoard());
             break;
         case gameConfig::LeftKeys::ROTATE_CLOCK_WISE:
-            shape.rotate_Clock_wise2(board);
+            shape.rotate_Clock_wise2(players[0].getPlayerBoard());
             break;
         case gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE:
-            shape.rotate_CounterClock_wise2(board);
+            shape.rotate_CounterClock_wise2(players[0].getPlayerBoard());
             break;
         case gameConfig::LeftKeys::DROP:
-            shape.drop(board);
+            shape.drop(players[0].getPlayerBoard());
             break;
         default:
             break; 
     }
 }
 
-void keyChoice(gameConfig::RightKeys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
+void Game:: keyChoice(gameConfig::RightKeys key, Shape& shape)
 {
     switch (key)
     {
     case gameConfig::RightKeys::RIGHT:
-        shape.move_Right(board);
+        shape.move_Right(players[1].getPlayerBoard());
         break;
     case gameConfig::RightKeys::LEFT:
-        shape.move_Left(board);
+        shape.move_Left(players[1].getPlayerBoard());
         break;
     case gameConfig::RightKeys::ROTATE_CLOCK_WISE:
-        shape.rotate_Clock_wise2(board);
+        shape.rotate_Clock_wise2(players[1].getPlayerBoard());
         break;
     case gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE:
-        shape.rotate_CounterClock_wise2(board);
+        shape.rotate_CounterClock_wise2(players[1].getPlayerBoard());
         break;
     case gameConfig::RightKeys::DROP:
-        shape.drop(board);
+        shape.drop(players[1].getPlayerBoard());
         break;
     default:
         break;
@@ -99,6 +102,89 @@ void keyChoice(gameConfig::RightKeys key, Shape& shape, const Board& board, game
 }
 
 
+void Game::GameLoop()
+{
+    bool isGameOver = false;
+    players[0].displayScore();
+    players[1].displayScore();
+    while (!isGameOver)
+    {
+        Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER);
+        Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER);
+
+        while (true)
+        {
+
+            players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
+            players[1].updateScore(players[1].getPlayerBoard().clearFullLines());
+
+            if (_kbhit())
+            {
+                int keyPressed = _getch();
+                if (keyPressed == (int)gameConfig::ESC)
+                {
+                    status = GameStatus::Paused;
+                    startGame();
+                    if (status == GameStatus::Ended || status == GameStatus::NewGame)
+                        return;
+                }
+                else
+                {
+                    checkKeyChoice(keyPressed, curShapePlayer1, curShapePlayer2);
+                }
+            }
+            else
+            {
+                Sleep(500);
+
+                bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
+                bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
+
+                if (!movedDownPlayer1 && !movedDownPlayer2)
+                {
+                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                    break;
+                }
+                if (!movedDownPlayer1)
+                {
+                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                    curShapePlayer1 = Shape(gameConfig::PlayerType::LEFT_PLAYER);
+                }
+
+                if (!movedDownPlayer2)
+                {
+                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                    curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER);
+                }
+
+            }
+        }
+    }
+}
+
+void Game:: checkKeyChoice(int keyPressed, Shape& Leftshape,Shape& RightShape)
+{
+    keyPressed = toupperG(keyPressed);
+
+    if (keyPressed == (int)gameConfig::LeftKeys::LEFT|| keyPressed == (int)gameConfig::LeftKeys::RIGHT ||
+        keyPressed == (int)gameConfig::LeftKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE || 
+        keyPressed == (int)gameConfig::LeftKeys::DROP)
+    {
+        keyChoice((gameConfig::LeftKeys)keyPressed, Leftshape); 
+    }
+    else if (keyPressed == (int)gameConfig::RightKeys::LEFT || keyPressed == (int)gameConfig::RightKeys::RIGHT ||
+        keyPressed == (int)gameConfig::RightKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE ||
+        keyPressed == (int)gameConfig::RightKeys::DROP)
+    {
+        keyChoice((gameConfig::RightKeys)keyPressed, RightShape);
+    }
+}
+
+
+
+
+/*
 void Game::GameLoop()
 {
     bool isGameOver = false;
@@ -169,7 +255,7 @@ void Game::GameLoop()
         }
     }
 }
-
+*/
 bool Game::getIsGamePaused()
 {
     return isGamePaused;
@@ -274,11 +360,5 @@ void Game::Present_instructionsand_keys()
     return;
 }
 
-/*
-void Game::Present_instructionsand_keys()
-{
-   
-}
-*/
 
 
