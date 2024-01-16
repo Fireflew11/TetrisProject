@@ -122,8 +122,10 @@ void Game::GameLoop()
                 int keyPressed = _getch();
                 if (keyPressed == (int)gameConfig::keys::ESC)
                 {
-                    isGameOver = true;
-                    break;
+                    status = GameStatus::Paused;
+                    startGame();
+                    if (status == GameStatus::Ended || status == GameStatus::NewGame)
+                        return;
                 }
                 else
                 {
@@ -180,48 +182,71 @@ void Game::setIsGamePaused(bool isGamePaused)
 
 void Game::startGame()
 {
-    players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-    players[0].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
-    GameLoop();
-    /*
-    Print_Menu();
-    bool didGameEnd = false;
     char keyPressed = 0;
-    while (!didGameEnd) {
-        while (!_kbhit()) {
-            keyPressed = _getch();
-        }
+    while (status != GameStatus::Ended) {
         system("cls");
+        Print_Menu();
+        keyPressed = _getch();
         if (keyPressed == '1') {
-            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
-            GameLoop();
+            system("cls");
+            if (status == GameStatus::Paused)
+            {
+                players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
+                players[1] = Player(gameConfig::PlayerType::RIGHT_PLAYER);
+                status = GameStatus::NewGame;
+                return;
+            }
+
+            while (status == GameStatus::NewGame || status == GameStatus::Running) {
+                players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
+                players[1].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+                GameLoop();
+            }
+            
         }
-        else if (keyPressed == '2' && isGamePaused)
+        else if (keyPressed == '2' && status == GameStatus::Paused)
         {
+            system("cls");
             players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+            players[1].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+            players[0].displayScore();
+            players[1].displayScore();
             return;
         }
-        else if (keyPressed == '8')
+        else if (keyPressed == '8') {
+            system("cls");
             Present_instructionsand_keys();
+            Print_Menu();
+        }
 
-        else if (keyPressed == '9')
-            didGameEnd = true;
+        else if (keyPressed == '9') {
+            system("cls");
+            status = GameStatus::Ended;
+            return;
+        }
     }
-    */
+}
+
+void Game::printRow(const string& firstColumn, const string& secondColumn, const string& thirdColumn)
+{
+    cout << "|" << setw(24) << left << firstColumn << "|" << setw(24) << left << secondColumn << "|" << setw(24) << left << thirdColumn << "|" << std::endl;
+}
+void Game::printSeparator()
+{
+    cout << "+------------------------+------------------------+------------------------+" << std::endl;
 }
 
 
-Game::Game():players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)}, isGamePaused(false)
+Game::Game():players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)}, status(GameStatus::Running)
 {
 
 }
 
 void Game:: Print_Menu()
 {
+    system("cls");
     cout << "(1) Start a new game" << endl; 
-    if(isGamePaused)
+    if(status == GameStatus::Paused)
         cout << "(2) Continue a paused game" << endl; 
     cout << "(8) Present instructionsand keys" << endl; 
     cout << "(9) EXIT" << endl; 
@@ -230,25 +255,23 @@ void Game:: Print_Menu()
 void Game::Present_instructionsand_keys()
 {
     // Print the top border
-    std::cout << "+------------------------+------------------------+------------------------+" << std::endl;
-
-    // Print each row with placeholders for text
-    for (int row = 0; row < 6; ++row)
-    {
-        std::cout << "|";
-        for (int col = 0; col < 3; ++col)
-        {
-            std::cout << std::setw(24) << std::left << " "; // Placeholder for text
-            std::cout << "|";
-        }
-        std::cout << std::endl;
-
-        // Print the horizontal line between rows
-        if (row < 5)
-        {
-            std::cout << "+------------------------+------------------------+------------------------+" << std::endl;
-        }
-    }
+    cout << "Keys: " << endl;
+    printSeparator();
+    printRow("", "Left Player", "Right Player");
+    printSeparator();
+    printRow("LEFT", "a or A", "j or J");
+    printSeparator();
+    printRow("RIGHT", "d or D", "l (small L) or L");
+    printSeparator();
+    printRow("ROTATE clockwise", "s or S", "k or K");
+    printSeparator();
+    printRow("ROTATE counterclockwise", "w or W", "i or I (uppercase i)");
+    printSeparator();
+    printRow("DROP", "x or X", "m or M");
+    printSeparator();
+    cout << "Press ESC to return to menu...";
+    while (_getch() != (char)gameConfig::keys::ESC);
+    return;
 }
 
 /*
