@@ -13,7 +13,6 @@ class Shape
 {
 	//Cube starting_cube; //אנסה למצוא פתרון טוב יותר - הקוביה תשמור את אמצע הלוח למעלה של כל שחקן, כלומר נקודת ההתחלה שממנה יפלו הקוביות  
 	Cube cubes[4];
-	int id;
 	int startingX, startingY;
 	int color; 
 	using MoveFunction = void (Shape::*)(const Board&);  // Directly define the type of moveFunctions
@@ -27,7 +26,6 @@ public:
 	void deleteCubesBlock();
 	void drawShape(bool isActive = true) const;
 	int getRowsAmount() const;
-	int getId();
 	~Shape();
 
 
@@ -38,6 +36,7 @@ public:
 	bool continueMovingDown(const Board& board);
 	void drop(const Board& board);
 	void executeMove(char input, const Board& board, MoveFunction moveFunctions[]);
+	int getColor() const;
 
 	Shape(gameConfig::PlayerType playerType);
 

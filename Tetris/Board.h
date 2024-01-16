@@ -33,6 +33,7 @@ public:
 	bool IsLineFull(int index_line);
 	int clearFullLines();
 	void implementShapeToBoard(const Shape& shape);
+	void drawBoardCubes();
 
 private: 
 	void print_Line(); 

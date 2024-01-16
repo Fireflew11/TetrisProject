@@ -14,7 +14,6 @@ Shape::Shape(int x, int y, int cheatShape) //added cheat for checks, will be rem
 		random_shape = cheatShape;
 	startingX = x;
 	startingY = y;
-	id = random_shape;
 		
 	switch ((gameConfig::ShapeType)random_shape)
 	{
@@ -119,12 +118,6 @@ void Shape::set_cubes_by_Index(int i,  Cube cube)
 }
 
 
-int Shape::getRowsAmount() const {
-	if (id == 1)
-		return 4;
-	else
-		return 3;
-}
 
 void Shape::deleteCubesBlock() {
 	for (int i = 0; i < 3; ++i) {
@@ -140,15 +133,12 @@ void Shape::drawShape(bool isActive) const
 {
 	for (int i = 0; i < 4; i++)
 	{
-		cubes[i].drawCube(isActive,color);
+		cubes[i].drawCube(isActive);
 	}
 	
 }
 
 
-int Shape::getId() {
-	return id;
-}
 
 Shape::~Shape() {
 	int i = 1;
@@ -268,7 +258,7 @@ void Shape::move_Right(const Board& board)
 	drawShape(true);
 }
 
-/*
+
 bool Shape::continueMovingDown(const Board& board)
 {
 	Shape temp = *this;
@@ -289,8 +279,8 @@ bool Shape::continueMovingDown(const Board& board)
 
 	return false;
 }
-*/
 
+/*
 bool Shape::continueMovingDown(const Board& board)
 {
 	bool didSucceed = false;
@@ -310,6 +300,7 @@ bool Shape::continueMovingDown(const Board& board)
 	drawShape(true);
 	return didSucceed;
 }
+*/
 
 
 void Shape::executeMove(char input, const Board& board, MoveFunction moveFunctions[]) {
@@ -319,11 +310,16 @@ void Shape::executeMove(char input, const Board& board, MoveFunction moveFunctio
 
 }
 
+int Shape::getColor() const
+{
+	return color;
+}
+
 
 
 void Shape::drop(const Board& board)
 {
-
+	while (continueMovingDown(board));
 }
 
 Shape::Shape(gameConfig::PlayerType playerType) 
@@ -331,19 +327,19 @@ Shape::Shape(gameConfig::PlayerType playerType)
 	srand(time(0));
 	int x = 0, y = 0; 
 	int randomShape= rand() % 7 + 1;
-	color = randomShape;
+	color = gameConfig::COLORS[randomShape];
 	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
 	{
-		startingX = gameConfig::MIN_X_LEFT_BOARD;
+		startingX = gameConfig::MIN_X_LEFT_BOARD + 1;
 		startingY = gameConfig::MIN_Y_LEFT_BOARD;
-		x = gameConfig::GAME_WIDTH +gameConfig::MIN_X_LEFT_BOARD; 
+		x = gameConfig::GAME_WIDTH +gameConfig::MIN_X_LEFT_BOARD + 1; 
 		y = gameConfig::MIN_Y_LEFT_BOARD; 
 	}
 	else
 	{
-		startingX = gameConfig::MIN_X_RIGHT_BOARD; 
+		startingX = gameConfig::MIN_X_RIGHT_BOARD + 1; 
 		startingY = gameConfig::MIN_Y_RIGHT_BOARD; 
-		x = gameConfig::GAME_WIDTH+ gameConfig::MIN_X_RIGHT_BOARD;
+		x = gameConfig::GAME_WIDTH+ gameConfig::MIN_X_RIGHT_BOARD + 1;
 		y = gameConfig::MIN_Y_RIGHT_BOARD;
 	}
 
@@ -357,10 +353,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			*
 			*
 		*/
-		cubes[0] = Cube(x, y + 1,1);
-		cubes[1] = Cube(x, y,1);
-		cubes[2] = Cube(x, y + 2,1);
-		cubes[3] = Cube(x, y + 3,1);
+		cubes[0] = Cube(x, y + 1,color);
+		cubes[1] = Cube(x, y, color);
+		cubes[2] = Cube(x, y + 2, color);
+		cubes[3] = Cube(x, y + 3, color);
 		break;
 	}
 	case  gameConfig::ShapeType::O:
@@ -368,10 +364,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			* *
 			* *
 		*/
-		cubes[0] = Cube(x, y,2);
-		cubes[1] = Cube(x + 2, y,2);
-		cubes[2] = Cube(x, y + 1,2);
-		cubes[3] = Cube(x + 2, y + 1,2);
+		cubes[0] = Cube(x, y, color);
+		cubes[1] = Cube(x + 2, y, color);
+		cubes[2] = Cube(x, y + 1, color);
+		cubes[3] = Cube(x + 2, y + 1, color);
 
 
 
@@ -381,10 +377,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			   * * *
 				 *
 		*/
-		cubes[0] = Cube(x, y,3);
-		cubes[1] = Cube(x - 2, y,3);
-		cubes[2] = Cube(x + 2, y,3);
-		cubes[3] = Cube(x, y + 1,3);
+		cubes[0] = Cube(x, y, color);
+		cubes[1] = Cube(x - 2, y, color);
+		cubes[2] = Cube(x + 2, y, color);
+		cubes[3] = Cube(x, y + 1, color);
 		break;
 	case  gameConfig::ShapeType::S:
 		/*
@@ -392,10 +388,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			   * *
 			 * *
 		*/
-		cubes[0] = Cube(x, y + 1,4);
-		cubes[1] = Cube(x + 2, y,4);
-		cubes[2] = Cube(x - 2, y + 1,4);
-		cubes[3] = Cube(x, y,4);
+		cubes[0] = Cube(x, y + 1, color);
+		cubes[1] = Cube(x + 2, y, color);
+		cubes[2] = Cube(x - 2, y + 1, color);
+		cubes[3] = Cube(x, y, color);
 
 		break;
 	case  gameConfig::ShapeType::Z:
@@ -404,10 +400,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			   * *
 
 		*/
-		cubes[0] = Cube(x, y + 1,5);
-		cubes[1] = Cube(x - 2, y,5);
-		cubes[2] = Cube(x, y,5);
-		cubes[3] = Cube(x + 2, y + 1,5);
+		cubes[0] = Cube(x, y + 1, color);
+		cubes[1] = Cube(x - 2, y, color);
+		cubes[2] = Cube(x, y, color);
+		cubes[3] = Cube(x + 2, y + 1, color);
 		break;
 	case  gameConfig::ShapeType::J:
 		/*
@@ -416,10 +412,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			* *
 
 		*/
-		cubes[0] = Cube(x, y + 1,6);
-		cubes[1] = Cube(x, y,6);
-		cubes[2] = Cube(x - 2, y + 2,6);
-		cubes[3] = Cube(x, y + 2,6);
+		cubes[0] = Cube(x, y + 1, color);
+		cubes[1] = Cube(x, y, color);
+		cubes[2] = Cube(x - 2, y + 2, color);
+		cubes[3] = Cube(x, y + 2, color);
 		break;
 	case  gameConfig::ShapeType::L:
 		/*
@@ -427,10 +423,10 @@ Shape::Shape(gameConfig::PlayerType playerType)
 			 *
 			 * *
 		*/
-		cubes[0] = Cube(x, y + 1,7);
-		cubes[1] = Cube(x, y,7);
-		cubes[2] = Cube(x, y + 2,7);
-		cubes[3] = Cube(x + 2, y + 2,7);
+		cubes[0] = Cube(x, y + 1, color);
+		cubes[1] = Cube(x, y, color);
+		cubes[2] = Cube(x, y + 2, color);
+		cubes[3] = Cube(x + 2, y + 2, color);
 		break;
 	default:
 		break;
