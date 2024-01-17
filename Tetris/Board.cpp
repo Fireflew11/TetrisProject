@@ -33,7 +33,7 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 	drawBoardCubes();
 }
 
-Board::Board(int starting_X, int starting_Y):startingX(starting_X),startingY(starting_Y)
+Board::Board(int starting_X, int starting_Y, bool useColors):startingX(starting_X),startingY(starting_Y), useColors(useColors)
 {
 	for (int i = 0; i <(int)gameConfig::GAME_HEIGHT; i++)
 	{
@@ -146,12 +146,18 @@ void Board::implementShapeToBoard(const Shape& shape)
 	}
 	
 }
-void Board::drawBoardCubes() {
+void Board::drawBoardCubes()
+{
 	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
 	{
 		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
-			board_game[i][j].drawCube(board_game[i][j].getIsActive());
+			board_game[i][j].drawCube(board_game[i][j].getIsActive(),useColors);
 	}
+}
+
+void  Board::setUseColor(bool useColors)
+{
+	this->useColors = useColors; 
 }
 
 

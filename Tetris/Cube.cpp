@@ -38,30 +38,32 @@ void Cube::drawCube(const bool isActive, const int size) const
 }
 */
 
-void Cube::drawCube(const bool isActive) const
+void Cube::drawCube(const bool isActive, bool useColors) const
 {
     gotoxy(coord.X, coord.Y);
 
-    if (isActive)
+    if (isActive && useColors)
     {
         // Set background color based on the cube's color
         cout << "\033[48;5;" << color << "m";
-        
 
         // Use a different text color for active cubes (e.g., white)
         cout << "\033[38;5;15m";
     }
     else
     {
-        // Set background color to black
-        cout << "\033[40m";
+            // Set background color to black
+            cout << "\033[40m";
 
-        // Use black text color for inactive cubes
-        cout << "\033[38;5;0m";
+            // Use black text color for inactive cubes
+            //cout << "\033[38;5;0m";
     }
 
-    // The actual cube in color or black
-    cout << "  ";
+
+    if (!useColors&& isActive)
+        cout << "**";
+    else
+        cout << "  ";
 
     // Reset colors
     cout << "\033[0m";

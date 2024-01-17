@@ -17,7 +17,7 @@ public:
 	bool getIsActive() const;
 	void setIsActive(const bool isActive);
 
-	void drawCube(const bool isActive) const;
+	void drawCube(const bool isActive, bool useColors) const;
 	//void drawCube(const bool isActive, const int size = 1) const;
 	void set_coord(const int& x, const int& y); 
 

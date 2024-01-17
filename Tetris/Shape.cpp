@@ -133,7 +133,7 @@ void Shape::drawShape(bool isActive) const
 {
 	for (int i = 0; i < 4; i++)
 	{
-		cubes[i].drawCube(isActive);
+		cubes[i].drawCube(isActive,useColors);
 	}
 	
 }
@@ -309,12 +309,18 @@ void Shape::drop(const Board& board)
 	continueMovingDown(board);
 }
 
-Shape::Shape(gameConfig::PlayerType playerType) 
+Shape::Shape(gameConfig::PlayerType playerType, bool useColors) 
 {
 	srand(time(0));
 	int x = 0, y = 0; 
 	int randomShape= rand() % 7 + 1;
-	color = gameConfig::COLORS[randomShape];
+	this->useColors = useColors; 
+	if(useColors==true)
+		color = gameConfig::COLORS[randomShape];
+	else 
+		color= gameConfig::COLORS[0];
+
+
 	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
 	{
 		startingX = gameConfig::MIN_X_LEFT_BOARD + 1;
@@ -420,8 +426,9 @@ Shape::Shape(gameConfig::PlayerType playerType)
 	}
 
 }
-
+/*
 bool Shape::isOShape() const
 {
 	
 }
+*/

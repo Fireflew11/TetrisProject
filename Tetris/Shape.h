@@ -15,6 +15,7 @@ class Shape
 	Cube cubes[4];
 	int startingX, startingY;
 	int color; 
+	bool useColors;
 	using MoveFunction = void (Shape::*)(const Board&);  // Directly define the type of moveFunctions
 
 
@@ -38,7 +39,7 @@ public:
 	void executeMove(char input, const Board& board, MoveFunction moveFunctions[]);
 	int getColor() const;
 
-	Shape(gameConfig::PlayerType playerType);
+	Shape(gameConfig::PlayerType playerType, bool useColors=true);
 
 
 	bool isOShape() const;

@@ -14,6 +14,7 @@ class Game
 	Player players[gameConfig::NUM_OF_PLAYERS];
 	bool isGamePaused;
 	GameStatus status;
+	bool useColors; 
 public: 
 
 	//void keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player);
@@ -21,7 +22,7 @@ public:
 	void keyChoice(gameConfig::RightKeys key , Shape& shape);
 	void checkKeyChoice(int keyPressed, Shape& Leftshape, Shape& RightShape);
 
-	Game(); 
+	Game(bool useColors=true); 
 	void Print_Menu(); 
 	void Present_instructionsand_keys(); 
 	void GameLoop();
