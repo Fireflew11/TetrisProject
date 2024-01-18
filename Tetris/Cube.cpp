@@ -21,23 +21,36 @@ void Cube::setIsActive(const bool isActive)
 	this->isActive = isActive;
 }
 
-/*
-void Cube::drawCube(const bool isActive, const int size) const 
+
+
+void Cube::drawCube(const bool isActive, bool useColors) const
 {
     gotoxy(coord.X, coord.Y);
-    if (isActive)
+
+    if (isActive && useColors)
     {
-        cout << "\033[41m";  // red background color
+       
+        cout << "\033[48;5;" << color << "m";
+
+       
+        cout << "\033[38;5;15m";
     }
     else
-        cout << "\033[40m"; // black background color
+    {
+           
+            cout << "\033[40m";
+    }
 
-    cout << "  ";
 
-    cout << "\033[0m";   // Reset ANSI escape codes
+    if (!useColors&& isActive)
+        cout << "**";
+    else
+        cout << "  ";
+
+   
+    cout << "\033[0m";
 }
-*/
-
+/*
 void Cube::drawCube(const bool isActive, bool useColors) const
 {
     gotoxy(coord.X, coord.Y);
@@ -52,15 +65,12 @@ void Cube::drawCube(const bool isActive, bool useColors) const
     }
     else
     {
-            // Set background color to black
-            cout << "\033[40m";
-
-            // Use black text color for inactive cubes
-            //cout << "\033[38;5;0m";
+        // Set background color to black
+        cout << "\033[40m";
     }
 
 
-    if (!useColors&& isActive)
+    if (!useColors && isActive)
         cout << "**";
     else
         cout << "  ";
@@ -68,6 +78,7 @@ void Cube::drawCube(const bool isActive, bool useColors) const
     // Reset colors
     cout << "\033[0m";
 }
+*/
 
 
 

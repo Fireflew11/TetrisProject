@@ -20,13 +20,7 @@ void Shape::set_cubes_by_Index(int i,  Cube cube)
 
 
 
-void Shape::deleteCubesBlock() {
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 3; ++j) {
-			//delete cubesBlock[i][j]; // Delete each dynamically allocated Cube object
-		}
-	}
-}
+
 
 
 
@@ -39,11 +33,6 @@ void Shape::drawShape(bool isActive) const
 	
 }
 
-
-
-Shape::~Shape() {
-	int i = 1;
-}
 
 
 

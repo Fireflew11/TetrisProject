@@ -60,7 +60,7 @@ bool Board::check_valid_move(const Shape& shape) const
 			return false;
 		if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
 			return false;
-		if (board_game[y - 1][(x - startingX - 1) / 2].getIsActive() == true) //למה פה שמנו Y-1? //לבדוק אם צריך לחלק את איקס ל-2 בגלל גודל הקוביה 
+		if (board_game[y - 1][(x - startingX - 1) / 2].getIsActive() == true) 
 			
 			return false;
 
@@ -69,7 +69,7 @@ bool Board::check_valid_move(const Shape& shape) const
 
 }
 
-void Board::updateBoard(const Shape& shape)// לבדוק אם ערכי הY ששמתי טובים פה 
+void Board::updateBoard(const Shape& shape)
 {
 
 	for (int i = 0; i < 4; ++i)
@@ -82,7 +82,7 @@ void Board::updateBoard(const Shape& shape)// לבדוק אם ערכי הY שש�
 
 void Board::clearLine(int index_line)
 {
-//board_game[index_line][i].drawCube(false); //לשנות את ההצרות במסך עצמו להבין 
+
 	for (int i = index_line; i > 0; i--)
 	{
 		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
