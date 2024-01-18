@@ -22,7 +22,7 @@ public:
 	void keyChoice(gameConfig::RightKeys key , Shape& shape);
 	void checkKeyChoice(int keyPressed, Shape& Leftshape, Shape& RightShape);
 
-	Game(bool useColors=true); 
+	Game(bool useColors=true, gameConfig::GameStatus status= gameConfig::GameStatus::Running);
 	void Print_Menu(); 
 	void Present_instructionsand_keys(); 
 	void GameLoop();

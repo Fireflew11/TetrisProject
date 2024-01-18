@@ -4,59 +4,12 @@
 #include "Board.h"
 #include <cctype>
 #include "GlobalFunctions.h"
-/*
-void Game::keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player)
-{
-    if (player == gameConfig::PlayerType::LEFT_PLAYER)
-    {
-        switch (key)
-        {
-        case gameConfig::keys::LP_RIGHT:
-            shape.move_Right(board);
-            break;
-        case gameConfig::keys::LP_LEFT:
-            shape.move_Left(board);
-            break;
-        case gameConfig::keys::LP_ROTATE_CLOCK_WISE:
-            shape.rotate_Clock_wise2(board);
-            break;
-        case gameConfig::keys::LP_ROTATE_COUNTER_CLOCK_WISE:
-            shape.rotate_CounterClock_wise2(board);
-            break;
-        case gameConfig::keys::LP_DROP:
-            shape.drop(board);
-            break;
-        }
-    }
-    else//player== gameConfig::PlayerType::RIGHT_PLAYER
-    {
-        switch (key)
-        {
-        case gameConfig::keys::RP_RIGHT:
-            shape.move_Right(board);
-            break;
-        case gameConfig::keys::RP_LEFT:
-            shape.move_Left(board);
-            break;
-        case gameConfig::keys::RP_ROTATE_CLOCK_WISE:
-            shape.rotate_Clock_wise2(board);
-            break;
-        case gameConfig::keys::RP_ROTATE_COUNTER_CLOCK_WISE:
-            shape.rotate_CounterClock_wise2(board);
-            break;
-        case gameConfig::keys::RP_DROP:
-            shape.drop(board);
-            break;
-        }
-    } 
-}
-*/
+
 
 
 void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape)
 {
-    if (shape.getShapeType() == gameConfig::ShapeType::O)
-        return; 
+    
     switch(key)
     {
     case gameConfig::LeftKeys::RIGHT:
@@ -66,11 +19,19 @@ void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape)
             shape.move_Left(players[0].getPlayerBoard());
             break;
         case gameConfig::LeftKeys::ROTATE_CLOCK_WISE:
-            shape.rotate_Clock_wise(players[0].getPlayerBoard());
+        {
+            if (shape.getShapeType()!= gameConfig::ShapeType::O)
+               shape.rotate_Clock_wise(players[0].getPlayerBoard());
             break;
+        }
+            
         case gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE:
-            shape.rotate_CounterClock_wise(players[0].getPlayerBoard());
+        {
+            if (shape.getShapeType() != gameConfig::ShapeType::O)
+                shape.rotate_CounterClock_wise(players[0].getPlayerBoard());
             break;
+                
+        }
         case gameConfig::LeftKeys::DROP:
             shape.drop(players[0].getPlayerBoard());
             break;
@@ -92,11 +53,17 @@ void Game:: keyChoice(gameConfig::RightKeys key, Shape& shape)
         shape.move_Left(players[1].getPlayerBoard());
         break;
     case gameConfig::RightKeys::ROTATE_CLOCK_WISE:
-        shape.rotate_Clock_wise(players[1].getPlayerBoard());
+    {
+        if (shape.getShapeType()!= gameConfig::ShapeType::O)
+            shape.rotate_Clock_wise(players[1].getPlayerBoard());
         break;
+    } 
     case gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE:
-        shape.rotate_CounterClock_wise(players[1].getPlayerBoard());
+    {
+        if(shape.getShapeType() != gameConfig::ShapeType::O)
+            shape.rotate_CounterClock_wise(players[1].getPlayerBoard());
         break;
+    }
     case gameConfig::RightKeys::DROP:
         shape.drop(players[1].getPlayerBoard());
         break;
@@ -128,7 +95,7 @@ void Game::GameLoop()
                 players[0].setIsWinner(true);
             }
             isGameOver=true; 
-            status = gameConfig::GameStatus::Ended; 
+            status = gameConfig::GameStatus::Finish; 
             break; 
         }
 
@@ -180,8 +147,9 @@ void Game::GameLoop()
                     curShapePlayer1 = Shape(gameConfig::PlayerType::LEFT_PLAYER,useColors); 
                     if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
                     {
+                        players[1].setIsWinner(true);
                         isGameOver = true;
-                        status = gameConfig::GameStatus::Ended;
+                        status = gameConfig::GameStatus::Finish;
                         break;
                     } 
                 }
@@ -196,8 +164,9 @@ void Game::GameLoop()
                     curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER,useColors);
                     if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
                     {
+                        players[0].setIsWinner(true); 
                         isGameOver = true;
-                        status = gameConfig::GameStatus::Ended;
+                        status = gameConfig::GameStatus::Finish;
                         break;
                     }
                 }
@@ -243,7 +212,7 @@ bool Game::isGameOver()
         }
     }
     if ((players[0].getIsWinner() || players[1].getIsWinner()))
-        status = gameConfig::GameStatus::Ended;
+        status = gameConfig::GameStatus::Finish;
     return (players[0].getIsWinner() || players[1].getIsWinner()); 
     
 }
@@ -251,30 +220,20 @@ bool Game::isGameOver()
 
 
 
-
-/*
-bool Game::getIsGamePaused()
-{
-    return isGamePaused;
-}
-*/
-/*
-void Game::setIsGamePaused(bool isGamePaused)
-{
-    this->isGamePaused = isGamePaused;
-}
-*/
 void Game::startGame()
 {
     char keyPressed = 0;
     while (status != gameConfig::GameStatus::Ended)
     {
+        if (status == gameConfig::GameStatus::Finish)
+        {
+            announceWinner();
+        }
         system("cls");
         Print_Menu();
         keyPressed = _getch();
         if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME || keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS)
         {
-          
             if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS)
             {
                 useColors = !useColors;
@@ -291,9 +250,17 @@ void Game::startGame()
                 players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
                 players[1] = Player(gameConfig::PlayerType::RIGHT_PLAYER);
                 status = gameConfig::GameStatus::NewGame;
-                return;
-            }
+                return; 
 
+            }
+           
+            if (status == gameConfig::GameStatus::Finish)
+            {
+                players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
+                players[1] = Player(gameConfig::PlayerType::RIGHT_PLAYER);
+                status = gameConfig::GameStatus::NewGame;
+            }
+            
             while (status == gameConfig::GameStatus::NewGame || status == gameConfig::GameStatus::Running)
             {
                 players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
@@ -324,61 +291,6 @@ void Game::startGame()
             status = gameConfig::GameStatus::Ended;
             return;
         }
-        if (status == gameConfig::GameStatus::Ended)
-        {
-            announceWinner();
-        }
-
-        /*
-        else if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS)
-        {
-            useColors = !useColors;
-            players[0].getPlayerBoard().setUseColor(useColors);
-            players[1].getPlayerBoard().setUseColor(useColors);
-            system("cls");
-            if (status == GameStatus::Paused)
-            {
-                players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
-                players[1] = Player(gameConfig::PlayerType::RIGHT_PLAYER);
-                status = GameStatus::NewGame;
-                return;
-            }
-
-            while (status == GameStatus::NewGame || status == GameStatus::Running)
-            {
-                players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-                players[1].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
-                GameLoop();
-            }
-
-            
-            system("cls");
-            if ((keyPressed=='4'&& useColors == true)|| (keyPressed == '3' && useColors == true))
-            {
-                useColors = !useColors;
-                players[0].getPlayerBoard().setUseColor(useColors);
-                players[1].getPlayerBoard().setUseColor(useColors);
-            }
-          
-            if (status == GameStatus::Paused)
-            {
-                players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-                players[1].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
-                players[0].displayScore();
-                players[1].displayScore();
-            }
-            while (status == GameStatus::NewGame || status == GameStatus::Running)
-            {
-                players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-                players[1].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
-                GameLoop();
-            }
-            
-            
-
-        }
-        
-        */
     }
 }
 
@@ -392,7 +304,7 @@ void Game::printSeparator()
 }
 
 
-Game::Game(bool useColors):players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)},status(gameConfig::GameStatus::Running),useColors(useColors)
+Game::Game(bool useColors, gameConfig::GameStatus status):players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)},status(status),useColors(useColors)
 {
 
 }
@@ -428,24 +340,23 @@ void Game::Present_instructionsand_keys()
     printRow("DROP", "x or X", "m or M");
     printSeparator();
     cout << "Press ESC to return to menu...";
-    while (_getch() != (char)gameConfig::keys::ESC);
+    while (_getch() != gameConfig::ESC);
     return;
 }
 
 void Game::announceWinner()
 {
-    char ch; 
     system("cls"); 
-    gotoxy(40, 12); 
+    gotoxy(gameConfig::MIDDLE_SCREEN_HEIGHT, gameConfig::MIDDLE_SCREEN_WIDTH); 
     if (players[0].getIsWinner() && players[1].getIsWinner())
     {
         if (players[0].getScore() > players[1].getScore())
         {
-            cout << "The winner is: Left Player with " << players[0].getScore()<< " points."<< endl;
+            cout << "The winner is: Player1 with " << players[0].getScore()<< " points."<< endl;
         }
         else if (players[1].getScore() > players[0].getScore())
         {
-            cout << "The winner is: Right Player with " << players[1].getScore()<< " points."<<endl;
+            cout << "The winner is: Player2 with " << players[1].getScore()<< " points."<<endl;
 
         }
         else
@@ -455,14 +366,13 @@ void Game::announceWinner()
     }
     else if (players[0].getIsWinner())
     {
-        cout << "The winner is: Left Player with "<< players[0].getScore() <<" points." << endl;
+        cout << "The winner is: Player1 with "<< players[0].getScore() <<" points." << endl;
     }
     else 
     {
-        cout << "The winner is: Right Player with " <<players[1].getScore() << " points." << endl;
+        cout << "The winner is: Player2 with " <<players[1].getScore() << " points." << endl;
     }
-    ch= _getch();
-    status = gameConfig::GameStatus::Running;
-    startGame();
+     char ch= _getch();
+    
 }
 

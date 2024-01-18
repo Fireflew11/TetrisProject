@@ -14,7 +14,9 @@ public:
 
 	enum class MenuOption { START_NEW_GAME = '1', START_NEW_GAME_WITHOUT_COLORS = '3', CONTINUE_PAUSED_GAME = '2', PRESENT_INSTRUCTIONS = '8', EXIT = '9' };
 
-	enum class GameStatus { Running, Paused, NewGame, Ended };
+	enum class GameStatus { Running, Paused, NewGame, Ended,Finish };
+
+
 
 
 	static constexpr int ESC = 27;
@@ -36,7 +38,9 @@ public:
 	static constexpr int MAX_Y_LEFT_BOARD = 1;
 	static constexpr int MAX_X_RIGHT_BOARD = 50 + GAME_WIDTH * 2 + 2;
 	static constexpr int MAX_Y_RIGHT_BOARD = 1;
-
+	
+	static constexpr int MIDDLE_SCREEN_HEIGHT = 40; 
+	static constexpr int MIDDLE_SCREEN_WIDTH = 12;
 	
 };
 
