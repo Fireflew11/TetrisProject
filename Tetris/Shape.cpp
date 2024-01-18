@@ -315,11 +315,13 @@ Shape::Shape(gameConfig::PlayerType playerType, bool useColors)
 	int x = 0, y = 0; 
 	int randomShape= rand() % 7 + 1;
 	this->useColors = useColors; 
+	color = gameConfig::COLORS[randomShape];
+	/*
 	if(useColors==true)
 		color = gameConfig::COLORS[randomShape];
 	else 
 		color= gameConfig::COLORS[0];
-
+*/
 
 	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
 	{

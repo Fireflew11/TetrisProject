@@ -57,7 +57,7 @@ void Player::initializeMoveFunctions()
 
 
 
- Player:: Player(gameConfig:: PlayerType playerType) : score(0), playerType(playerType), playerBoard(
+ Player:: Player(gameConfig:: PlayerType playerType, int score, bool isWinner) :isWinner(false), score(0), playerType(playerType), playerBoard(
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
     (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD) 
  {
@@ -97,5 +97,15 @@ void Player::initializeMoveFunctions()
      else
          gotoxy(gameConfig::MAX_X_RIGHT_BOARD + 2, 2);
      cout << "Player " << (int)playerType << " score: " << score;
+ }
+
+
+ void Player:: setIsWinner(bool isWinner)
+ {
+     this->isWinner = isWinner; 
+ }
+ bool Player::getIsWinner()
+ {
+     return isWinner; 
  }
 

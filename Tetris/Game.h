@@ -31,5 +31,7 @@ public:
 	void startGame();
 	void printRow(const string& firstColumn, const string& secondColumn, const string& thirdColumn);
 	void printSeparator();
+	bool isGameOver();
+
 };
 

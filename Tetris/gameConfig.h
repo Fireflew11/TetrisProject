@@ -19,6 +19,8 @@ public:
 
 	enum class Score{ SINGLE_LINE_CLEAR= 100, DOUBLE_LINE_CLEAR=300, TRIPLE_LINE_CLEAR=500, TETRIS_LINE_CLEAR=800}; // יש עוד דברים שאפשקר לקבל עליהם ניקוד נוסיף בהמשך 
 
+	enum class MenuOption { START_NEW_GAME = '1', START_NEW_GAME_WITHOUT_COLORS = '3', CONTINUE_PAUSED_GAME = '2', PRESENT_INSTRUCTIONS = '8', EXIT = '9' };
+
 	static constexpr int GAME_WIDTH = 12; 
 	static constexpr int GAME_HEIGHT = 18; 
 
