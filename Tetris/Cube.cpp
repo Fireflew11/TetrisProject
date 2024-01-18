@@ -79,22 +79,7 @@ void Cube::set_coord(const int& x, const int& y)
 }
 
 
-/*
-Cube::Cube(int x, int y, bool active)
-{
-    coord.X = x;
-    coord.Y = y;
-    isActive = active;
-}
 
-
-Cube::Cube(int x, int y, bool active)
-{
-    coord.X = x;
-    coord.Y = y;
-    isActive = active;
-}
-*/
 Cube::Cube(int x , int y , int colorIndex, bool active )
 {
     coord.X = x;
@@ -127,69 +112,3 @@ void Cube::setColor(const int& color)
 
 
 
-
-//******////
-/*
-void Cube::move(gameConfig::Rkeys key)
-{
-    switch (key)
-    {
-    case gameConfig:: Rkeys:: LEFT: 
-        coord.X += -2; 
-        break; 
-    case gameConfig::Rkeys::RIGHT:
-        coord.X += 2;
-        break;
-    case gameConfig::Rkeys::ROTATE_CLOCK_WISE:
-        //
-        break;
-    case gameConfig::Rkeys::ROTATE_COUNTER_CLOCK_WISE:
-       //
-        break;
-    case gameConfig::Rkeys::DROP: 
-        // 
-        break;
-    default:
-        break;
-    }
-
-    //if(coord.X> gameConfig:: GAME_WIDTH)
-    //if(x==0)
-
-
-}
-
-
-void Cube:: draw(char ch, int backcolor)
-{
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE, backcolor); 
-    gotoxy(coord.X + gameConfig::MIN_X, coord.Y + gameConfig::MIN_Y); 
-    cout << ch; 
-}
-
-void check()
-{
-    while (true)
-    {
-        Cube cube(1, 1, true); 
-        int keyPressed = 0; 
-        if (_kbhit())
-        {
-            keyPressed == _getch(); 
-            if (keyPressed == (int)gameConfig:: Rkeys::ESC)
-                break;
-        }
-
-        cube.draw('*', 120); 
-        Sleep(500);
-        cube.move((gameConfig::Rkeys)keyPressed); 
-        cube.draw(' '); 
-        
-        
-    }
-
-
-}
-
-
-*/

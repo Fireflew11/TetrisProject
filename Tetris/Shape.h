@@ -13,10 +13,13 @@ class Shape
 {
 	//Cube starting_cube; //אנסה למצוא פתרון טוב יותר - הקוביה תשמור את אמצע הלוח למעלה של כל שחקן, כלומר נקודת ההתחלה שממנה יפלו הקוביות  
 	Cube cubes[4];
-	int startingX, startingY;
+	//int startingX, startingY; //למה אנחנו צריכים את זה עכשיו? לשקול להוריד את זה 
 	int color; 
+	gameConfig::ShapeType type; 
 	bool useColors;
-	using MoveFunction = void (Shape::*)(const Board&);  // Directly define the type of moveFunctions
+
+
+
 
 
 public: 
@@ -30,14 +33,15 @@ public:
 	~Shape();
 
 
-	void rotate_CounterClock_wise2(const Board& board);
-	void rotate_Clock_wise2(const Board& board);
+	void rotate_CounterClock_wise(const Board& board);
+	void rotate_Clock_wise(const Board& board);
 	void move_Left(const Board& board);
 	void move_Right(const Board& board); 
 	bool continueMovingDown(const Board& board);
 	void drop(const Board& board);
-	void executeMove(char input, const Board& board, MoveFunction moveFunctions[]);
+
 	int getColor() const;
+	const gameConfig::ShapeType getShapeType(); 
 
 	Shape(gameConfig::PlayerType playerType, bool useColors=true);
 

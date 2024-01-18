@@ -15,9 +15,6 @@ private:
 	Board playerBoard;
 
 
-	using MoveFunction = void (Shape::*)(const Board&);  // Directly define the type of moveFunctions
-	MoveFunction moveFunctions[128];  // Use the MoveFunction type directly
-
 
 	int score; 
 	bool isWinner; 
@@ -33,5 +30,6 @@ public:
 	void setIsWinner(bool isWinner); 
 	bool getIsWinner(); 
 	Player(gameConfig::PlayerType,int score=0, bool isWinner=false); 
+	const int getScore();
 };
 

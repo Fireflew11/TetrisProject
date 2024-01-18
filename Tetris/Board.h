@@ -23,7 +23,7 @@ public:
 	void setStartingY(const int y);
 
 	
-	//const Cube(&getBoardGame() const)[12][18];
+	
 	const Cube(&getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
 
 

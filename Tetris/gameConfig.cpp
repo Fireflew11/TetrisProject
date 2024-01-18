@@ -2,6 +2,9 @@
 #include <Windows.h>
 
 //const int gameConfig::COLORS[] = { FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED,3,14,5,2,12,9,6 };
+
+
+
 const int gameConfig::COLORS[] = {
     FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED,   // White
     FOREGROUND_BLUE | FOREGROUND_INTENSITY,                // Blue (intense)

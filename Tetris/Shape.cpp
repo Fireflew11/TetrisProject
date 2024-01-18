@@ -4,107 +4,8 @@
 #include "Board.h"
 #include <cctype>
 
-Shape::Shape(int x, int y, int cheatShape) //added cheat for checks, will be removed in final version (default value 0 means no cheat
-{	
-	srand(time(0));
-	int random_shape;
-	if (cheatShape == 0)
-		random_shape = rand() % 7 + 1;
-	else
-		random_shape = cheatShape;
-	startingX = x;
-	startingY = y;
-		
-	switch ((gameConfig::ShapeType)random_shape)
-	{
-	case gameConfig::ShapeType::I:
-	{
-		/*
-			*
-			* 
-			* 
-			* 
-		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x, y); 
-		cubes[2] = Cube(x, y + 2); 
-		cubes[3] = Cube(x, y + 3);
-		break; 
-	}
-	case  gameConfig::ShapeType::O:
-		/* 
-			* * 
-			* *
-		*/
-		cubes[0] = Cube(x, y);
-		cubes[1] = Cube(x+2,y );
-		cubes[2] = Cube(x, y + 1);
-		cubes[3] = Cube(x+2, y +1);
 
 
-
-		break; 
-	case  gameConfig::ShapeType::T:
-		/*
-			   * * *
-			     *
-		*/
-		cubes[0] = Cube(x, y);
-		cubes[1] = Cube(x - 2, y);
-		cubes[2] = Cube(x+2, y);
-		cubes[3] = Cube(x, y +1);
-		break; 
-	case  gameConfig::ShapeType::S:
-		/*
-			   
-			   * *
-			 * *
-		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x+2 , y);
-		cubes[2] = Cube(x - 2, y + 1);
-		cubes[3] = Cube(x, y);
-			
-		break; 
-	case  gameConfig::ShapeType::Z:
-		/*
-			 * *
-			   * * 
-			   
-		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x - 2, y);
-		cubes[2] = Cube(x, y);
-		cubes[3] = Cube(x+2 , y+1);
-		break; 
-	case  gameConfig::ShapeType::J:
-		/*
-			  *
-			  * 
-			* * 
-			 
-		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x, y);
-		cubes[2] = Cube(x - 2, y + 2);
-		cubes[3] = Cube(x, y + 2);
-		break; 
-	case  gameConfig::ShapeType::L:
-		/*
-			 *
-			 *
-			 * *	 
-		*/
-		cubes[0] = Cube(x, y + 1);
-		cubes[1] = Cube(x, y);
-		cubes[2] = Cube(x, y+2);
-		cubes[3] = Cube(x+2, y+2);
-		break; 
-	default:
-		break;
-	}
-	
-}
 
 
 const Cube* const Shape::get_cubes() const
@@ -146,7 +47,7 @@ Shape::~Shape() {
 
 
 
-void Shape::rotate_CounterClock_wise2(const Board& board)
+void Shape::rotate_CounterClock_wise(const Board& board)
 {
 	drawShape(false);
 	Shape tempShape = *this; 
@@ -172,7 +73,7 @@ void Shape::rotate_CounterClock_wise2(const Board& board)
 }
 
 
-void Shape::rotate_Clock_wise2(const Board& board)
+void Shape::rotate_Clock_wise(const Board& board)
 {
 	drawShape(false);
 	Shape tempShape = *this;
@@ -267,35 +168,10 @@ bool Shape::continueMovingDown(const Board& board)
 	return false;
 }
 
-/*
-bool Shape::continueMovingDown(const Board& board)
-{
-	bool didSucceed = false;
-	drawShape(false);
-	Shape temp = *this;
-	for (int i = 0; i < 4; i++)
-	{
-		int y = temp.cubes[i].get_Y() + 1;
-		Cube tempCube(temp.cubes[i].get_X(), y, true);
-		temp.set_cubes_by_Index(i, tempCube);
-	}
-	if (board.check_valid_move(temp))
-	{
-		*this = temp;
-		didSucceed = true;
-	}
-	drawShape(true);
-	return didSucceed;
-}
-*/
 
 
-void Shape::executeMove(char input, const Board& board, MoveFunction moveFunctions[]) {
-	if (moveFunctions[input] != nullptr) {
-		(this->*moveFunctions[toupperG(input)])(board);
-	}
 
-}
+
 
 int Shape::getColor() const
 {
@@ -313,9 +189,10 @@ Shape::Shape(gameConfig::PlayerType playerType, bool useColors)
 {
 	srand(time(0));
 	int x = 0, y = 0; 
-	int randomShape= rand() % 7 + 1;
+	int randomShape= rand() % (int)gameConfig::NUM_OF_SHAPES + 1;
 	this->useColors = useColors; 
 	color = gameConfig::COLORS[randomShape];
+	type = (gameConfig::ShapeType)randomShape; 
 	/*
 	if(useColors==true)
 		color = gameConfig::COLORS[randomShape];
@@ -325,15 +202,15 @@ Shape::Shape(gameConfig::PlayerType playerType, bool useColors)
 
 	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
 	{
-		startingX = gameConfig::MIN_X_LEFT_BOARD + 1;
-		startingY = gameConfig::MIN_Y_LEFT_BOARD;
+		//startingX = gameConfig::MIN_X_LEFT_BOARD + 1;
+		//startingY = gameConfig::MIN_Y_LEFT_BOARD;
 		x = gameConfig::GAME_WIDTH +gameConfig::MIN_X_LEFT_BOARD + 1; 
 		y = gameConfig::MIN_Y_LEFT_BOARD; 
 	}
 	else
 	{
-		startingX = gameConfig::MIN_X_RIGHT_BOARD + 1; 
-		startingY = gameConfig::MIN_Y_RIGHT_BOARD; 
+		//startingX = gameConfig::MIN_X_RIGHT_BOARD + 1; 
+		//startingY = gameConfig::MIN_Y_RIGHT_BOARD; 
 		x = gameConfig::GAME_WIDTH+ gameConfig::MIN_X_RIGHT_BOARD + 1;
 		y = gameConfig::MIN_Y_RIGHT_BOARD;
 	}
@@ -428,9 +305,7 @@ Shape::Shape(gameConfig::PlayerType playerType, bool useColors)
 	}
 
 }
-/*
-bool Shape::isOShape() const
+const gameConfig::ShapeType Shape:: getShapeType()
 {
-	
+	return type;
 }
-*/

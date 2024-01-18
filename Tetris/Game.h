@@ -8,12 +8,12 @@
 using namespace std;
 
 class player; 
-enum class GameStatus{Running, Paused, NewGame, Ended};
+
 class Game
 {
 	Player players[gameConfig::NUM_OF_PLAYERS];
-	bool isGamePaused;
-	GameStatus status;
+	//bool isGamePaused;
+	gameConfig::GameStatus status;
 	bool useColors; 
 public: 
 
@@ -32,6 +32,7 @@ public:
 	void printRow(const string& firstColumn, const string& secondColumn, const string& thirdColumn);
 	void printSeparator();
 	bool isGameOver();
+	void announceWinner();
 
 };
 

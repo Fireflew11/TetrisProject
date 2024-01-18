@@ -2,10 +2,6 @@
 #include "gameConfig.h"
 
 
-
-
-
-
 void Board::print_Line() 
 {
 	for (int i = 0; i < gameConfig::GAME_WIDTH + 1; i++)
@@ -45,23 +41,14 @@ Board::Board(int starting_X, int starting_Y, bool useColors):startingX(starting_
 		}
 	}
 }
-/*
-void Board::insert_Shape(const Shape& shape)
-{
 
-}
-*/
 
 const Cube(&Board::getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
 {
 	return board_game;
 }
 
-/*
-const Cube(&Board::getBoardGame() const)[18][12]{
-	return board_game;
-}
-*/
+
 
 bool Board::check_valid_move(const Shape& shape) const
 {
