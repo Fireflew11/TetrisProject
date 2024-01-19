@@ -6,7 +6,6 @@
 using namespace std;
 class Cube
 {
-	//cube size 1x2 (1 height pixel = 2 width pixel
 private:
 	COORD coord;
 	bool isActive;

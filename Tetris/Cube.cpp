@@ -4,18 +4,46 @@
 #include <iostream>
 #include <Windows.h>
 
+
+/**********************************************************************
+Function name: get_X
+Input: --
+Output: int
+Function: Returns the X-coordinate of the cube.
+*********************************************************************/
 int Cube::get_X() const
 {
 	return coord.X; 
 }
+
+/**********************************************************************
+Function name: get_Y
+Input: --
+Output: int
+Function: Returns the Y-coordinate of the cube.
+**********************************************************************/
 int Cube::get_Y() const
 {
 	return coord.Y;
 }
+
+/**********************************************************************
+   Function name: getIsActive
+   Input: --
+   Output: bool 
+   Function: Returns the activation status of the cube.
+   **********************************************************************/
 bool Cube::getIsActive()const 
 {
 	return isActive;
 }
+
+/**********************************************************************
+Function name: setIsActive
+Input: bool isActive 
+Output: None
+Function: Sets the activation status of the cube.
+    **********************************************************************/
 void Cube::setIsActive(const bool isActive) 
 {
 	this->isActive = isActive;

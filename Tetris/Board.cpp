@@ -3,10 +3,11 @@
 
 /**********************************************************************
 Function name: display_board
-Input: int startingX
+Input: --
+Output:--
 Function:Displays the game board on the console.The function prints the board structure, including inactive and active cubes, to the console.
 **********************************************************************/
-void Board::display_board(int startingX) 
+void Board::display_board() 
 {
 	int i, j;
 	gotoxy(startingX, 0);
@@ -16,11 +17,11 @@ void Board::display_board(int startingX)
 	{
 		cout << "|";
 		for (j = 1; j < gameConfig::GAME_WIDTH + 1; j++)
-			cout << " "; 
-		cout << "|" << endl; 
+			cout << " ";
+		cout << "|" << endl;
 		gotoxy(startingX, i);
 	}
-	Board::print_Line(); 
+	Board::print_Line();
 	drawBoardCubes();
 }
 
@@ -206,7 +207,7 @@ void Board::print_Line()
 {
 	for (int i = 0; i < gameConfig::GAME_WIDTH + 1; i++)
 	{
-		cout << "--";
+		cout << "-";
 	}
 	cout << endl;
 }

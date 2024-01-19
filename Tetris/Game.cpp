@@ -81,24 +81,7 @@ void Game::GameLoop()
         Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors);
         Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
         if (!checkGameValidity(curShapePlayer1, curShapePlayer2, isGameOver))
-            break;  
-        /*
-        if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)) || !(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
-        {
-            if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
-            {
-                players[1].setIsWinner(true);
-            }
-            if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer1)))
-            {
-                players[0].setIsWinner(true);
-            }
-            isGameOver=true; 
-            status = gameConfig::GameStatus::Finish; 
-            break; 
-        }
-        //
-        */
+            break;       
         while (true)
         {    
             players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
@@ -116,13 +99,10 @@ void Game::GameLoop()
                             return;
                     }
                     else
-                    {
                         checkKeyChoice(keyPressed, curShapePlayer1, curShapePlayer2);
-                    }
                 }
             }
             Sleep(300);
-
             bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
             bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
             if (!movedDownPlayer1 && !movedDownPlayer2)
@@ -309,8 +289,6 @@ void Game:: Print_Menu()
     if(status == gameConfig::GameStatus::Paused)
         cout << "(2) Continue a paused game" << endl; 
     cout << "(3) Start a new game without colors" << endl; 
-    //cout << "(3) Run with colors" << endl;
-    //cout << "(4) Run without colors" << endl;
     cout << "(8) Present instructionsand keys" << endl; 
     cout << "(9) EXIT" << endl; 
 }
@@ -388,21 +366,23 @@ bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer
     }
     return true; 
 }
+
+
+
 /*
-bool Game::checkGameValidity(gameConfig::PlayerType playerType,const Shape& Shape, bool& isGameOver)
-{
-    if ((this->isGameOver()))
-    {
-        isGameOver = true;
-        break;
-    }
-    curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
-    if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
-    {
-        players[0].setIsWinner(true);
-        isGameOver = true;
-        status = gameConfig::GameStatus::Finish;
-        break;
-    }
-}
+        if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)) || !(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
+        {
+            if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
+            {
+                players[1].setIsWinner(true);
+            }
+            if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer1)))
+            {
+                players[0].setIsWinner(true);
+            }
+            isGameOver=true;
+            status = gameConfig::GameStatus::Finish;
+            break;
+        }
+        //
 */
