@@ -174,8 +174,8 @@ void Game::GameLoop()
 
 void Game:: checkKeyChoice(int keyPressed, Shape& Leftshape,Shape& RightShape)
 {
-    keyPressed = toupperG(keyPressed);
-
+    //keyPressed = toupperG(keyPressed);
+    keyPressed = toupper(keyPressed); 
     if (keyPressed == (int)gameConfig::LeftKeys::LEFT|| keyPressed == (int)gameConfig::LeftKeys::RIGHT ||
         keyPressed == (int)gameConfig::LeftKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE || 
         keyPressed == (int)gameConfig::LeftKeys::DROP)
@@ -298,9 +298,7 @@ void Game::printSeparator()
 
 
 Game::Game(bool useColors, gameConfig::GameStatus status):players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)},status(status),useColors(useColors)
-{
-
-}
+{}
 
 void Game:: Print_Menu()
 {
@@ -333,7 +331,7 @@ void Game::Present_instructionsand_keys()
     printRow("DROP", "x or X", "m or M");
     printSeparator();
     cout << "Press ANY key to return to menu...";
-    _getch();
+    char ch=_getch();
 }
 
 void Game::announceWinner()
@@ -365,7 +363,7 @@ void Game::announceWinner()
         cout << "The winner is: Player2 with " <<players[1].getScore() << " points." << endl;
     }
     cout << "Press ANY key to return to menu...";
-    _getch();
+    char ch=_getch();
 
     
 }
