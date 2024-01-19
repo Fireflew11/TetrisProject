@@ -40,7 +40,7 @@ void Shape::rotate_CounterClock_wise(const Board& board)
 {
 	drawShape(false);
 	Shape tempShape = *this; 
-	int centerX = tempShape.cubes[0].get_X();  // Assuming the first cube is the center of the shape
+	int centerX = tempShape.cubes[0].get_X();  
 	int centerY = tempShape.cubes[0].get_Y();
 
 	for (int i = 0; i < 4; ++i) 
@@ -66,7 +66,7 @@ void Shape::rotate_Clock_wise(const Board& board)
 {
 	drawShape(false);
 	Shape tempShape = *this;
-    int centerX = tempShape.get_cubes()[0].get_X();  // Assuming the first cube is the center of the shape
+    int centerX = tempShape.get_cubes()[0].get_X();  
     int centerY = tempShape.get_cubes()[0].get_Y();
 
     for (int i = 1; i < 4; ++i) {
@@ -191,15 +191,11 @@ Shape::Shape(gameConfig::PlayerType playerType, bool useColors)
 
 	if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
 	{
-		//startingX = gameConfig::MIN_X_LEFT_BOARD + 1;
-		//startingY = gameConfig::MIN_Y_LEFT_BOARD;
 		x = gameConfig::GAME_WIDTH +gameConfig::MIN_X_LEFT_BOARD + 1; 
 		y = gameConfig::MIN_Y_LEFT_BOARD; 
 	}
 	else
 	{
-		//startingX = gameConfig::MIN_X_RIGHT_BOARD + 1; 
-		//startingY = gameConfig::MIN_Y_RIGHT_BOARD; 
 		x = gameConfig::GAME_WIDTH+ gameConfig::MIN_X_RIGHT_BOARD + 1;
 		y = gameConfig::MIN_Y_RIGHT_BOARD;
 	}

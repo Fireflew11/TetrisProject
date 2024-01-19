@@ -12,16 +12,14 @@ class player;
 class Game
 {
 	Player players[gameConfig::NUM_OF_PLAYERS];
-	//bool isGamePaused;
 	gameConfig::GameStatus status;
 	bool useColors; 
+
 public: 
 
-	//void keyChoice(gameConfig::keys key, Shape& shape, const Board& board, gameConfig::PlayerType player);
 	void keyChoice(gameConfig::LeftKeys key, Shape& shape);
 	void keyChoice(gameConfig::RightKeys key , Shape& shape);
 	void checkKeyChoice(int keyPressed, Shape& Leftshape, Shape& RightShape);
-
 	Game(bool useColors=true, gameConfig::GameStatus status= gameConfig::GameStatus::Running);
 	void Print_Menu(); 
 	void Present_instructionsand_keys(); 
@@ -33,6 +31,6 @@ public:
 	void printSeparator();
 	bool isGameOver();
 	void announceWinner();
-
+	bool checkGameValidity(const Shape& ShapePlayer1, const Shape& cShapePlayer2, bool& isGameOver);
 };
 

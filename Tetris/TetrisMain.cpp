@@ -16,9 +16,6 @@ int main()
 	Game game1; 
 	game1.startGame();
 	
-	
-
-
 	gotoxy(0, gameConfig::GAME_HEIGHT + 1);
 }
 

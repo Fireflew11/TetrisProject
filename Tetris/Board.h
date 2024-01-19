@@ -3,11 +3,12 @@
 #include <iostream>
 #include"Shape.h" 
 #include "gameConfig.h"
-
-
 class Shape; 
-
 using namespace std;
+
+/**********************
+* The Board class represents the game board where shapes are placed.
+***********************/
 
 class Board
 {
@@ -19,14 +20,7 @@ class Board
 public:
 	void display_board(const int startingX);
 	Board(int starting_X=0, int starting_Y=0,  bool useColors= true);
-	void setStartingX(const int x);
-	void setStartingY(const int y);
-
-	
-	
 	const Cube(&getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
-
-
 	bool check_valid_move(const Shape& shape) const;
 	void updateBoard(const Shape& shape);
 

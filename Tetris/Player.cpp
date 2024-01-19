@@ -9,10 +9,7 @@ Board& Player::getPlayerBoard()
 
  Player:: Player(gameConfig:: PlayerType playerType, int score, bool isWinner) :isWinner(false), score(0), playerType(playerType), playerBoard(
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
-    (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD) 
- {
-
- }
+    (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD) {}
 
 
  void Player::updateScore(int numClearedLines)

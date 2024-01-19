@@ -21,9 +21,8 @@ private:
 
 
 public: 
-	//Player(int startingX, int startingY);
+
 	Board& getPlayerBoard();
-	//void GameLoop();
 	void initializeMoveFunctions();
 	void updateScore(int numClearedLines);
 	void displayScore();

@@ -1,17 +1,12 @@
 ﻿#include "Board.h"
 #include "gameConfig.h"
 
-
-void Board::print_Line() 
-{
-	for (int i = 0; i < gameConfig::GAME_WIDTH + 1; i++)
-	{
-		cout << "--";
-	}
-	cout << endl; 
-}
-
-void Board::display_board(int startingX) //board draws at (startingX, 0) at the moment
+/**********************************************************************
+Function name: display_board
+Input: int startingX
+Function:Displays the game board on the console.The function prints the board structure, including inactive and active cubes, to the console.
+**********************************************************************/
+void Board::display_board(int startingX) 
 {
 	int i, j;
 	gotoxy(startingX, 0);
@@ -29,6 +24,11 @@ void Board::display_board(int startingX) //board draws at (startingX, 0) at the 
 	drawBoardCubes();
 }
 
+/**********************************************************************
+Function name:Constructor Board
+Input:int starting_X, int starting_Y, bool useColors
+Function:Constructor for the Board class.
+**********************************************************************/
 Board::Board(int starting_X, int starting_Y, bool useColors):startingX(starting_X),startingY(starting_Y), useColors(useColors)
 {
 	for (int i = 0; i <(int)gameConfig::GAME_HEIGHT; i++)
@@ -42,14 +42,25 @@ Board::Board(int starting_X, int starting_Y, bool useColors):startingX(starting_
 	}
 }
 
-
+/**********************************************************************
+Function name::getBoardGame
+Input: --
+Output: const Cube(&)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH] 
+Function:Gets a reference to the 2D array representing the board.
+**********************************************************************/
 const Cube(&Board::getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
 {
 	return board_game;
 }
 
 
-
+/**********************************************************************
+Function name:check_valid_move
+Input: const Shape& shape
+Output: bool
+Function:Checks if a given shape can make a valid move on the board. 
+The function verifies if the shape's position and orientation are within the bounds of the board and if it collides with any active cubes.
+**********************************************************************/
 bool Board::check_valid_move(const Shape& shape) const
 {
 	for (int i = 0; i < 4; i++)
@@ -69,6 +80,12 @@ bool Board::check_valid_move(const Shape& shape) const
 
 }
 
+/**********************************************************************
+Function name:updateBoard
+Input: const Shape& shape
+Output: --
+Function: Updates the board based on the given shape. Marks the cubes occupied by the shape as active on the board.
+**********************************************************************/
 void Board::updateBoard(const Shape& shape)
 {
 
@@ -80,6 +97,12 @@ void Board::updateBoard(const Shape& shape)
 	}
 }
 
+/**********************************************************************
+Function name:clearLine
+Input: int index_line
+Output: --
+Function:Clears a specific line on the board.
+**********************************************************************/
 void Board::clearLine(int index_line)
 {
 
@@ -95,6 +118,13 @@ void Board::clearLine(int index_line)
 		board_game[0][i].setIsActive(false); 
 	}
 }
+
+/**********************************************************************
+Function name:IsLineFull
+Input: int index_line
+Output: bool
+Function:Checks if a specific line on the board is full.
+**********************************************************************/
 bool Board::IsLineFull(int index_line)
 {
 	for (int i = 0; i < gameConfig::GAME_WIDTH; i++)
@@ -105,6 +135,13 @@ bool Board::IsLineFull(int index_line)
 	return true; 
 }
 
+/**********************************************************************
+Function name:clearFullLines
+Input: --
+Output: int 
+Function:Clears any full lines on the board and updates the board accordinglyd.
+The function returns the total number of lines cleared during this process.
+**********************************************************************/
 int  Board::clearFullLines()
 {
 	int numClearedLines = 0;
@@ -122,8 +159,13 @@ int  Board::clearFullLines()
 	return numClearedLines; 
 }
 
-
-
+/**********************************************************************
+Function name:implementShapeToBoard
+Input:const Shape& shape
+Output:--
+Function:The function implements the given shape on the game board 
+by updating the state of the board_game array based on the shape's cubes' positions and color.
+**********************************************************************/
 void Board::implementShapeToBoard(const Shape& shape) 
 {
 	for (int i = 0; i < 4; i++)
@@ -133,6 +175,13 @@ void Board::implementShapeToBoard(const Shape& shape)
 	}
 	
 }
+
+/**********************************************************************
+Function name:drawBoardCubes
+Input: --
+Output: --
+Function::The function Draws the cubes of the game board based on the current state of the board_game array.
+**********************************************************************/
 void Board::drawBoardCubes()
 {
 	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
@@ -142,12 +191,25 @@ void Board::drawBoardCubes()
 	}
 }
 
+/**********************************************************************
+Function name:setUseColor
+Input: bool useColors
+Output: --
+Function: Sets the useColors property of the board to the provided boolean value.
+**********************************************************************/
 void  Board::setUseColor(bool useColors)
 {
 	this->useColors = useColors; 
 }
 
-
+void Board::print_Line()
+{
+	for (int i = 0; i < gameConfig::GAME_WIDTH + 1; i++)
+	{
+		cout << "--";
+	}
+	cout << endl;
+}
 
 
 

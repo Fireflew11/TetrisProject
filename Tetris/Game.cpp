@@ -82,8 +82,9 @@ void Game::GameLoop()
     {
         Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors);
         Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
-
-        //להכניס לפונקציה 
+        if (!checkGameValidity(curShapePlayer1, curShapePlayer2, isGameOver))
+            break;  
+        /*
         if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)) || !(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
         {
             if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
@@ -98,7 +99,8 @@ void Game::GameLoop()
             status = gameConfig::GameStatus::Finish; 
             break; 
         }
-
+        //
+        */
         while (true)
         {    
             players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
@@ -125,6 +127,8 @@ void Game::GameLoop()
 
                 bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
                 bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
+
+
                 if (!movedDownPlayer1 && !movedDownPlayer2)
                 {
                     players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
@@ -136,7 +140,7 @@ void Game::GameLoop()
                     }
                     break;
                 }
-                if (!movedDownPlayer1)
+                if (!movedDownPlayer1) //לפונקציה 
                 {
                     players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
                     if ((this->isGameOver()))
@@ -153,7 +157,7 @@ void Game::GameLoop()
                         break;
                     } 
                 }
-                if (!movedDownPlayer2)
+                if (!movedDownPlayer2) //גם את זה אני רוצה להכניס לפונקציה
                 {
                     players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
                     if ((this->isGameOver()))
@@ -376,3 +380,39 @@ void Game::announceWinner()
     
 }
 
+bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver)
+{
+    if (!(players[0].getPlayerBoard().check_valid_move(ShapePlayer1)) || !(players[1].getPlayerBoard().check_valid_move(ShapePlayer2)))
+    {
+        if (!(players[0].getPlayerBoard().check_valid_move(ShapePlayer1)))
+        {
+            players[1].setIsWinner(true);
+        }
+        if (!(players[1].getPlayerBoard().check_valid_move(ShapePlayer2)))
+        {
+            players[0].setIsWinner(true);
+        }
+        isGameOver = true;
+        status = gameConfig::GameStatus::Finish;
+        return false; 
+    }
+    return true; 
+}
+/*
+bool Game::checkGameValidity(gameConfig::PlayerType playerType,const Shape& Shape, bool& isGameOver)
+{
+    if ((this->isGameOver()))
+    {
+        isGameOver = true;
+        break;
+    }
+    curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
+    if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
+    {
+        players[0].setIsWinner(true);
+        isGameOver = true;
+        status = gameConfig::GameStatus::Finish;
+        break;
+    }
+}
+*/
