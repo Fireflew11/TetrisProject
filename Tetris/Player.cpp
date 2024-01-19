@@ -9,7 +9,11 @@ Board& Player::getPlayerBoard()
 
  Player:: Player(gameConfig:: PlayerType playerType, int score, bool isWinner) :isWinner(false), score(0), playerType(playerType), playerBoard(
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
-    (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD) {}
+    (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD),
+     startingX((playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD)
+ {
+
+ }
 
 
  void Player::updateScore(int numClearedLines)
@@ -39,10 +43,7 @@ Board& Player::getPlayerBoard()
 
  void Player::displayScore()
  {
-     if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
-         gotoxy(gameConfig::MAX_X_LEFT_BOARD + 2, 2);
-     else
-         gotoxy(gameConfig::MAX_X_RIGHT_BOARD + 2, 2);
+         gotoxy(startingX, gameConfig::MAX_Y_RIGHT_BOARD + 1);
      cout << "Player " << (int)playerType << " score: " << score;
  }
 

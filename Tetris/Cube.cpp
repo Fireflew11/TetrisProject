@@ -25,60 +25,26 @@ void Cube::setIsActive(const bool isActive)
 
 void Cube::drawCube(const bool isActive, bool useColors) const
 {
+    // Get the console handle
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Set the cursor position
     gotoxy(coord.X, coord.Y);
 
-    if (isActive && useColors)
-    {
-       
-        cout << "\033[48;5;" << color << "m";
-
-       
-        cout << "\033[38;5;15m";
-    }
+    // Set the text and background colors based on conditions
+    if (useColors && isActive)
+        SetConsoleTextAttribute(hConsole, color);
     else
-    {
-           
-            cout << "\033[40m";
-    }
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
-
-    if (!useColors&& isActive)
-        cout << "**";
+    if (isActive)
+        cout << "*";
     else
-        cout << "  ";
+        cout << " ";
 
-   
-    cout << "\033[0m";
+    // Reset text and background colors to default
+    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
-/*
-void Cube::drawCube(const bool isActive, bool useColors) const
-{
-    gotoxy(coord.X, coord.Y);
-
-    if (isActive && useColors)
-    {
-        // Set background color based on the cube's color
-        cout << "\033[48;5;" << color << "m";
-
-        // Use a different text color for active cubes (e.g., white)
-        cout << "\033[38;5;15m";
-    }
-    else
-    {
-        // Set background color to black
-        cout << "\033[40m";
-    }
-
-
-    if (!useColors && isActive)
-        cout << "**";
-    else
-        cout << "  ";
-
-    // Reset colors
-    cout << "\033[0m";
-}
-*/
 
 
 

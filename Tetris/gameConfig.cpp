@@ -5,7 +5,7 @@
 
 
 
-const int gameConfig::COLORS[] = {
+const unsigned short gameConfig::COLORS[] = {
     FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED,   // White
     FOREGROUND_BLUE | FOREGROUND_INTENSITY,                // Blue (intense)
     FOREGROUND_GREEN | FOREGROUND_INTENSITY,               // Green (intense)
