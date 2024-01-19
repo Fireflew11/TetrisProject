@@ -50,7 +50,13 @@ void Cube::setIsActive(const bool isActive)
 }
 
 
-
+/**********************************************************************
+Function name:drawCube
+Input: bool isActive - Whether the cube is currently active
+bool useColors - Whether to use colors in the console output
+Output: --
+Function: Draws the cube on the console screen with optional colors.
+**********************************************************************/
 void Cube::drawCube(const bool isActive, bool useColors) const
 {
     // Get the console handle
@@ -76,7 +82,12 @@ void Cube::drawCube(const bool isActive, bool useColors) const
 
 
 
-
+/**********************************************************************
+Function name: set_coord
+Input: const int& x, const int& y
+Output: --
+Function:Sets the X and Y coordinates of the cube.
+**********************************************************************/
 void Cube::set_coord(const int& x, const int& y)
 {
     coord.X = x; 
@@ -84,7 +95,12 @@ void Cube::set_coord(const int& x, const int& y)
 }
 
 
-
+/**********************************************************************
+Function name: Cube (constructor)
+Input:int x , int y , int colorIndex, bool active
+Output: --
+Function: Constructor for the Cube class, initializes cube properties.
+**********************************************************************/
 Cube::Cube(int x , int y , int colorIndex, bool active )
 {
     coord.X = x;
@@ -93,16 +109,34 @@ Cube::Cube(int x , int y , int colorIndex, bool active )
     isActive = active;
 }
 
-
+/**********************************************************************
+Function name: set_X
+Input: const int& x 
+Output: --
+Function: Sets the X-coordinate of the cube.
+**********************************************************************/
 void  Cube::set_X(const int& x)
 {
 	coord.X = x; 
 }
+
+/**********************************************************************
+Function name: set_Y
+Input: const int& y 
+Output: --
+Function: Sets the Y-coordinate of the cube.
+**********************************************************************/
 void Cube::set_Y(const int& y)
 {
 	coord.Y = y; 
 }
 
+/**********************************************************************
+Function name:setColor
+Input: const int& color 
+ Output: --
+Function:Sets the color of the cube.
+**********************************************************************/
 void Cube::setColor(const int& color)
 {
     this->color = color;

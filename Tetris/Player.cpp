@@ -1,21 +1,38 @@
 #include "Player.h"
 
-
-Board& Player::getPlayerBoard()
+/**********************************************************************
+Function name:getPlayerBoard
+Input:--
+Output:Board&
+Function: Returns a reference to the player's game board.
+**********************************************************************/
+Board& Player::getPlayerBoard() 
 {
     return playerBoard;
 }
 
-
- Player:: Player(gameConfig:: PlayerType playerType, int score, bool isWinner) :isWinner(false), score(0), playerType(playerType), playerBoard(
+/**********************************************************************
+Function name: Player (Constructor)
+Input:
+    - playerType: Type of the player (gameConfig::PlayerType)
+    - score: Initial score for the player (int)
+    - isWinner: Initial winner status for the player (bool)
+Output: --
+Function:Initializes a Player object with the specified player type, initial score, and winner status.
+The constructor sets the initial values for the player's score, winner status, and retrieves the appropriate starting coordinates and board for the player based on their type.
+**********************************************************************/
+ Player:: Player(gameConfig:: PlayerType playerType, int score, bool isWinner) :isWinner(false), score(0), playerType(playerType),playerBoard(
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
     (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD),
      startingX((playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD)
- {
+ {}
 
- }
-
-
+/**********************************************************************
+Function name:updateScore
+Input: Number of cleared lines (int)
+Output: --
+Function:Updates the player's score based on the number of lines cleared during gameplay.
+**********************************************************************/
  void Player::updateScore(int numClearedLines)
  {
      switch (numClearedLines)
@@ -41,22 +58,46 @@ Board& Player::getPlayerBoard()
      }
  }
 
+/**********************************************************************
+Function name:displayScore
+Input: --
+Output:--
+Function:Displays the player's current score on the game screen.
+**********************************************************************/
  void Player::displayScore()
  {
          gotoxy(startingX, gameConfig::MAX_Y_RIGHT_BOARD + 1);
      cout << "Player " << (int)playerType << " score: " << score;
  }
 
-
+/**********************************************************************
+Function name: setIsWinner
+Input:bool
+Output:--
+Function:Sets the winner status for the player.
+**********************************************************************/
  void Player:: setIsWinner(bool isWinner)
  {
      this->isWinner = isWinner; 
  }
- bool Player::getIsWinner()
+
+/**********************************************************************
+Function name:getIsWinner
+Input: --
+Output: Winner status (bool)
+Function:The function retrieves the current winner status for the player.
+**********************************************************************/
+ const bool Player::getIsWinner() const
  {
      return isWinner; 
  }
 
+/**********************************************************************
+Function name: getScore
+Input:--
+Output: Current player's score (int)
+Function:The function retrieves the current score of the player.
+**********************************************************************/
  const int Player::getScore()
  {
      return score; 
