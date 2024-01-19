@@ -14,10 +14,10 @@ class Board
 	Cube board_game[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
 	int startingX;
 	int startingY; 
-	bool useColors= true;
+	bool useColors;
 
 public:
-	void display_board(const int startingX);
+	void display_board();
 	Board(int starting_X=0, int starting_Y=0,  bool useColors= true);
 	void setStartingX(const int x);
 	void setStartingY(const int y);

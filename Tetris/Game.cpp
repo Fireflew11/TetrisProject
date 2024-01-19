@@ -40,10 +40,8 @@ void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape)
     }
 }
 
-void Game:: keyChoice(gameConfig::RightKeys key, Shape& shape)
+void Game::keyChoice(gameConfig::RightKeys key, Shape& shape)
 {
-    if (shape.getShapeType() == gameConfig::ShapeType::O)
-        return;
     switch (key)
     {
     case gameConfig::RightKeys::RIGHT:
@@ -103,72 +101,71 @@ void Game::GameLoop()
         {    
             players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
             players[1].updateScore(players[1].getPlayerBoard().clearFullLines());
-            
-            if (_kbhit())
+            for (int i = 0; i < 5; i++)
             {
-                int keyPressed = _getch();
-                if (keyPressed == (int)gameConfig::ESC)
+                if (_kbhit())
                 {
-                    status = gameConfig::GameStatus::Paused;
-                    startGame();
-                    if (status == gameConfig::GameStatus::Ended || status == gameConfig::GameStatus::NewGame)
-                        return;
-                }
-                else
-                {
-                    checkKeyChoice(keyPressed, curShapePlayer1, curShapePlayer2);
+                    int keyPressed = _getch();
+                    if (keyPressed == (int)gameConfig::ESC)
+                    {
+                        status = gameConfig::GameStatus::Paused;
+                        startGame();
+                        if (status == gameConfig::GameStatus::Ended || status == gameConfig::GameStatus::NewGame)
+                            return;
+                    }
+                    else
+                    {
+                        checkKeyChoice(keyPressed, curShapePlayer1, curShapePlayer2);
+                    }
                 }
             }
-            else
-            {
-                Sleep(500);
+            Sleep(300);
 
-                bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
-                bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
-                if (!movedDownPlayer1 && !movedDownPlayer2)
+            bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
+            bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
+            if (!movedDownPlayer1 && !movedDownPlayer2)
+            {
+                players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                if ((this->isGameOver()))
                 {
-                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
-                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
-                    if ((this->isGameOver()))
-                    {
-                        isGameOver = true;
-                        break;
-                    }
+                    isGameOver = true;
                     break;
                 }
-                if (!movedDownPlayer1)
+                break;
+            }
+            if (!movedDownPlayer1)
+            {
+                players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                if ((this->isGameOver()))
                 {
-                    players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
-                    if ((this->isGameOver()))
-                    {
-                        isGameOver = true;
-                        break;
-                    }
-                    curShapePlayer1 = Shape(gameConfig::PlayerType::LEFT_PLAYER,useColors); 
-                    if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
-                    {
-                        players[1].setIsWinner(true);
-                        isGameOver = true;
-                        status = gameConfig::GameStatus::Finish;
-                        break;
-                    } 
+                    isGameOver = true;
+                    break;
                 }
-                if (!movedDownPlayer2)
+                curShapePlayer1 = Shape(gameConfig::PlayerType::LEFT_PLAYER,useColors); 
+                if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
                 {
-                    players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
-                    if ((this->isGameOver()))
-                    {
-                        isGameOver = true;
-                        break;
-                    }
-                    curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER,useColors);
-                    if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
-                    {
-                        players[0].setIsWinner(true); 
-                        isGameOver = true;
-                        status = gameConfig::GameStatus::Finish;
-                        break;
-                    }
+                    players[1].setIsWinner(true);
+                    isGameOver = true;
+                    status = gameConfig::GameStatus::Finish;
+                    break;
+                } 
+            }
+            if (!movedDownPlayer2)
+            {
+                players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                if ((this->isGameOver()))
+                {
+                    isGameOver = true;
+                    break;
+                }
+                curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
+                if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
+                {
+                    players[0].setIsWinner(true);
+                    isGameOver = true;
+                    status = gameConfig::GameStatus::Finish;
+                    break;
                 }
             }
         }
@@ -222,28 +219,30 @@ bool Game::isGameOver()
 
 void Game::startGame()
 {
+    bool isMenuVisible = false;
     char keyPressed = 0;
     while (status != gameConfig::GameStatus::Ended)
     {
         if (status == gameConfig::GameStatus::Finish)
         {
             announceWinner();
+            isMenuVisible = false;
+            players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
+            players[1] = Player(gameConfig::PlayerType::RIGHT_PLAYER);
+            status = gameConfig::GameStatus::NewGame;
         }
-        system("cls");
-        Print_Menu();
-        keyPressed = _getch();
+        if (!isMenuVisible) {
+            system("cls");
+            Print_Menu();
+            isMenuVisible = true;
+        }
+         keyPressed = _getch();
         if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME || keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS)
         {
             if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS)
-            {
-                useColors = !useColors;
-                players[0].getPlayerBoard().setUseColor(useColors);
-                players[1].getPlayerBoard().setUseColor(useColors);
-            }
-            else if (!useColors)
-            {
-                useColors = !useColors;
-            }
+                useColors = false;
+            else
+                useColors = true;
             system("cls");
             if (status == gameConfig::GameStatus::Paused)
             {
@@ -253,18 +252,12 @@ void Game::startGame()
                 return; 
 
             }
-           
-            if (status == gameConfig::GameStatus::Finish)
-            {
-                players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
-                players[1] = Player(gameConfig::PlayerType::RIGHT_PLAYER);
-                status = gameConfig::GameStatus::NewGame;
-            }
-            
             while (status == gameConfig::GameStatus::NewGame || status == gameConfig::GameStatus::Running)
             {
-                players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-                players[1].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+                players[0].getPlayerBoard().setUseColor(useColors);
+                players[1].getPlayerBoard().setUseColor(useColors);
+                players[0].getPlayerBoard().display_board();
+                players[1].getPlayerBoard().display_board();
                 GameLoop();
             }
 
@@ -272,8 +265,8 @@ void Game::startGame()
         else if (keyPressed == (char)gameConfig::MenuOption::CONTINUE_PAUSED_GAME && status == gameConfig::GameStatus::Paused)
         {
             system("cls");
-            players[0].getPlayerBoard().display_board(gameConfig::MIN_X_LEFT_BOARD);
-            players[1].getPlayerBoard().display_board(gameConfig::MIN_X_RIGHT_BOARD);
+            players[0].getPlayerBoard().display_board();
+            players[1].getPlayerBoard().display_board();
             players[0].displayScore();
             players[1].displayScore();
             return;
@@ -339,15 +332,14 @@ void Game::Present_instructionsand_keys()
     printSeparator();
     printRow("DROP", "x or X", "m or M");
     printSeparator();
-    cout << "Press ESC to return to menu...";
-    while (_getch() != gameConfig::ESC);
-    return;
+    cout << "Press ANY key to return to menu...";
+    _getch();
 }
 
 void Game::announceWinner()
 {
     system("cls"); 
-    gotoxy(gameConfig::MIDDLE_SCREEN_HEIGHT, gameConfig::MIDDLE_SCREEN_WIDTH); 
+    gotoxy(gameConfig::WINNDER_ANNOUNCEMENT_POS_X, gameConfig::WINNDER_ANNOUNCEMENT_POS_Y); 
     if (players[0].getIsWinner() && players[1].getIsWinner())
     {
         if (players[0].getScore() > players[1].getScore())
@@ -372,7 +364,9 @@ void Game::announceWinner()
     {
         cout << "The winner is: Player2 with " <<players[1].getScore() << " points." << endl;
     }
-     char ch= _getch();
+    cout << "Press ANY key to return to menu...";
+    _getch();
+
     
 }
 

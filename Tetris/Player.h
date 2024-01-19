@@ -12,12 +12,11 @@ class Player
 {
 private: 
 	gameConfig::PlayerType playerType; 
+
 	Board playerBoard;
-
-
-
 	int score; 
 	bool isWinner; 
+	int startingX;
 
 
 public: 

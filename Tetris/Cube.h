@@ -10,7 +10,7 @@ class Cube
 private:
 	COORD coord;
 	bool isActive;
-	int color; 
+	WORD color; 
 public: 
 
 	int get_X() const;

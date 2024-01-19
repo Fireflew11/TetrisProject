@@ -25,22 +25,22 @@ public:
 	static constexpr int NUM_OF_PLAYERS = 2;
 	
 
-	static const int COLORS[]; 
+	static const unsigned short COLORS[]; 
 	static constexpr int  NUM_OF_COLORS = 8; 
 	static constexpr int NUM_OF_SHAPES = 7; 
 
 	static constexpr int MIN_X_LEFT_BOARD = 0;
 	static constexpr int MIN_Y_LEFT_BOARD = 1;
-	static constexpr int MIN_X_RIGHT_BOARD = 50;
+	static constexpr int MIN_X_RIGHT_BOARD = 40;
 	static constexpr int MIN_Y_RIGHT_BOARD = 1;
 
-	static constexpr int MAX_X_LEFT_BOARD = 0 + GAME_WIDTH * 2 + 2;
-	static constexpr int MAX_Y_LEFT_BOARD = 1;
-	static constexpr int MAX_X_RIGHT_BOARD = 50 + GAME_WIDTH * 2 + 2;
-	static constexpr int MAX_Y_RIGHT_BOARD = 1;
+	static constexpr int MAX_X_LEFT_BOARD = 0 + GAME_WIDTH + 2;
+	static constexpr int MAX_Y_LEFT_BOARD = 1 + GAME_HEIGHT + 2;
+	static constexpr int MAX_X_RIGHT_BOARD = 40 + GAME_WIDTH + 2;
+	static constexpr int MAX_Y_RIGHT_BOARD = 1 + GAME_HEIGHT + 2;
 	
-	static constexpr int MIDDLE_SCREEN_HEIGHT = 40; 
-	static constexpr int MIDDLE_SCREEN_WIDTH = 12;
+	static constexpr int WINNDER_ANNOUNCEMENT_POS_X = 20; 
+	static constexpr int WINNDER_ANNOUNCEMENT_POS_Y = 12;
 	
 };
 

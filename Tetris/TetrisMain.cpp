@@ -13,6 +13,13 @@ int main()
 	p1.GameLoop();
 	*/
 
+	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	CONSOLE_CURSOR_INFO     cursorInfo;
+
+	GetConsoleCursorInfo(out, &cursorInfo);
+	cursorInfo.bVisible = false; // set the cursor visibility
+	SetConsoleCursorInfo(out, &cursorInfo);
 	Game game1; 
 	game1.startGame();
 	
