@@ -318,7 +318,7 @@ int Shape::getColor() const
 Function name: drop
 Input: const Board& board
 Output: --
-Function:The function moves the shape down faster than usual
+Function:The function moves the shape down to the bottom
 **********************************************************************/
 void Shape::drop(const Board& board)
 {

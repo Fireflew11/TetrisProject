@@ -21,7 +21,7 @@ public:
 
 	enum class MenuOption { START_NEW_GAME = '1', START_NEW_GAME_WITHOUT_COLORS = '3', CONTINUE_PAUSED_GAME = '2', PRESENT_INSTRUCTIONS = '8', EXIT = '9' };
 
-	enum class GameStatus { Running, Paused, NewGame, Ended,Finish };
+	enum class GameStatus { Running, Paused, NewGame, Ended, Finished }; // Ended is for if the program is over, Finished is for if the current game is over
 
 
 

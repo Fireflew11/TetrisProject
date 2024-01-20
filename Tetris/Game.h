@@ -39,10 +39,10 @@ public:
 	void startGame();
 	void printRow(const string& firstColumn, const string& secondColumn, const string& thirdColumn);
 	void printSeparator();
-	bool isGameOver();
+	bool isMaxHeight();
 	void announceWinner();
 	bool checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver);
-	void handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2);
+	bool handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2);
 	bool checkGameConditions(Player& player, Shape& shape, bool& isGameOver);
 };
 
