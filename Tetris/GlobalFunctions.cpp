@@ -9,7 +9,7 @@ void gotoxy(int x, int y)
 
 char toupperG(char ch)
 {
-    if (ch <= 'z' || ch >= 'a')
+    if (ch <= 'z' && ch >= 'a')
         return ch + 'A' - 'a';
     else
         return ch;

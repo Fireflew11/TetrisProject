@@ -43,5 +43,6 @@ public:
 	void announceWinner();
 	bool checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver);
 	void handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2);
+	bool checkGameConditions(Player& player, Shape& shape, bool& isGameOver);
 };
 

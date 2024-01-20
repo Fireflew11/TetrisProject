@@ -103,5 +103,11 @@ Function:The function retrieves the current score of the player.
      return score; 
  }
 
+ const gameConfig::PlayerType Player:: getPlayerType()const
+ {
+     return playerType;
+ }
+
+
 
 

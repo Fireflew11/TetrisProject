@@ -116,50 +116,50 @@ void Game::GameLoop()
                 if ((this->isGameOver()))
                 {
                     isGameOver = true;
-                    break;
                 }
                 break;
             }
             // Handle shape movements and updates for player 1
             if (!movedDownPlayer1)
             {
-                players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
-                if ((this->isGameOver()))// Check if the game is over after placing the shape
-                {
-                    isGameOver = true;
-                    break;
-                }
-                // Reset the shape for the next iteration
-                curShapePlayer1 = Shape(gameConfig::PlayerType::LEFT_PLAYER,useColors); 
-                // Check if the new shape is valid, if not, set player 2 as the winner
-                if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1))) 
-                {
-                    players[1].setIsWinner(true);
-                    isGameOver = true;
-                    status = gameConfig::GameStatus::Finish;
-                    break;
-                } 
+                if (checkGameConditions(players[0], curShapePlayer1, isGameOver))
+                    break; 
             }
-            // Handle shape movements and updates for player 2
             if (!movedDownPlayer2)
             {
-                players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
-                if ((this->isGameOver()))
-                {
-                    isGameOver = true;
+                if (checkGameConditions(players[1], curShapePlayer2, isGameOver))
                     break;
-                }
-                curShapePlayer2 = Shape(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
-                if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
-                {
-                    players[0].setIsWinner(true);
-                    isGameOver = true;
-                    status = gameConfig::GameStatus::Finish;
-                    break;
-                }
             }
+            
         }
     }
+}
+
+bool Game::checkGameConditions(Player& player, Shape& shape, bool& isGameOver)
+{
+    
+    player.getPlayerBoard().implementShapeToBoard(shape); 
+    if ((this->isGameOver()))// Check if the game is over after placing the shape
+    {
+        isGameOver = true;
+        return true; 
+    }
+    // Reset the shape for the next iteration
+    shape = Shape(player.getPlayerType(), useColors);
+
+    // Check if the new shape is valid, if not, set the other player as the winner
+    if (!(player.getPlayerBoard().check_valid_move(shape)))
+    {
+        if (player.getPlayerType() == gameConfig::PlayerType::LEFT_PLAYER)
+            players[1].setIsWinner(true);
+        else
+            players[0].setIsWinner(true);
+        isGameOver = true;
+        status = gameConfig::GameStatus::Finish;
+        return true; 
+    }
+    return false; 
+    
 }
 
 /**********************************************************************
@@ -170,8 +170,8 @@ Function:The function checks the key pressed by the player and calls the appropr
 **********************************************************************/
 void Game:: checkKeyChoice(int keyPressed, Shape& Leftshape,Shape& RightShape)
 {
-    //keyPressed = toupperG(keyPressed);
-    keyPressed = toupper(keyPressed); 
+    keyPressed = toupperG(keyPressed);
+    //keyPressed = toupper(keyPressed); 
     if (keyPressed == (int)gameConfig::LeftKeys::LEFT|| keyPressed == (int)gameConfig::LeftKeys::RIGHT ||
         keyPressed == (int)gameConfig::LeftKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE || 
         keyPressed == (int)gameConfig::LeftKeys::DROP)
@@ -427,26 +427,13 @@ bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer
     return true; 
 }
 
-
-
-/*
-        if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)) || !(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
-        {
-            if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
-            {
-                players[1].setIsWinner(true);
-            }
-            if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer1)))
-            {
-                players[0].setIsWinner(true);
-            }
-            isGameOver=true;
-            status = gameConfig::GameStatus::Finish;
-            break;
-        }
-        //
-*/
-
+/**********************************************************************
+Function name:handleInput
+Input: Shape& curShapePlayer1, Shape& curShapePlayer2
+Output:--
+Function:Handles user input during the game, updating player scores and checking for key presses.
+Calls checkKeyChoice to interpret and act upon key presses, and allows for pausing the game.
+**********************************************************************/
 void Game::handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2)
 {
     players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
@@ -470,11 +457,3 @@ void Game::handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2)
     Sleep(300);
 }
 
-bool Game:: 
-if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
-{
-    players[0].setIsWinner(true);
-    isGameOver = true;
-    status = gameConfig::GameStatus::Finish;
-    break;
-}

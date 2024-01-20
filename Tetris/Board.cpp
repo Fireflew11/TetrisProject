@@ -5,7 +5,7 @@
 Function name: display_board
 Input: --
 Output:--
-Function:Displays the game board on the console.The function prints the board structure, including inactive and active cubes, to the console.
+Function:Displays the game board on the console.The function prints the board structure, including inactive and active cubes,to the console.
 **********************************************************************/
 void Board::display_board() 
 {
@@ -38,7 +38,7 @@ Board::Board(int starting_X, int starting_Y, bool useColors):startingX(starting_
 		{
 			board_game[i][j].set_coord(startingX + 1 + j, startingY + i); 
 			board_game[i][j].setIsActive(false); 
-			board_game[i][j].setColor(gameConfig::COLORS[0]);
+			board_game[i][j].setColor(gameConfig::COLORS[0]);//COLORS[0] is black,the default colors for inactive cubes. 
 		}
 	}
 }
@@ -68,7 +68,7 @@ bool Board::check_valid_move(const Shape& shape) const
 	{
 		int x = shape.get_cubes()[i].get_X(); 
 		int y = shape.get_cubes()[i].get_Y();   
-		if ((x >= gameConfig::GAME_WIDTH + startingX) || (x <= startingX))
+		if ((x > gameConfig::GAME_WIDTH + startingX) || (x <= startingX))
 			return false;
 		if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
 			return false;
@@ -81,22 +81,6 @@ bool Board::check_valid_move(const Shape& shape) const
 
 }
 
-/**********************************************************************
-Function name:updateBoard
-Input: const Shape& shape
-Output: --
-Function: Updates the board based on the given shape. Marks the cubes occupied by the shape as active on the board.
-**********************************************************************/
-void Board::updateBoard(const Shape& shape)
-{
-
-	for (int i = 0; i < 4; ++i)
-	{
-		int x = shape.get_cubes()[i].get_X();
-		int y = shape.get_cubes()[i].get_Y();
-		board_game[x - startingX][y-startingY-1].setIsActive(true);
-	}
-}
 
 /**********************************************************************
 Function name:clearLine
@@ -106,7 +90,6 @@ Function:Clears a specific line on the board.
 **********************************************************************/
 void Board::clearLine(int index_line)
 {
-
 	for (int i = index_line; i > 0; i--)
 	{
 		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
@@ -203,9 +186,10 @@ void  Board::setUseColor(bool useColors)
 	this->useColors = useColors; 
 }
 
+
 void Board::print_Line()
 {
-	for (int i = 0; i < gameConfig::GAME_WIDTH + 1; i++)
+	for (int i = 0; i < gameConfig::GAME_WIDTH + 2; i++)
 	{
 		cout << "-";
 	}

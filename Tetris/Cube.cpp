@@ -28,7 +28,7 @@ int Cube::get_Y() const
 }
 
 /**********************************************************************
-   Function name: getIsActive
+   Function name:getIsActive
    Input: --
    Output: bool 
    Function: Returns the activation status of the cube.
@@ -69,15 +69,15 @@ void Cube::drawCube(const bool isActive, bool useColors) const
     if (useColors && isActive)
         SetConsoleTextAttribute(hConsole, color);
     else
-        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+        SetConsoleTextAttribute(hConsole, gameConfig::COLORS[0]);
 
     if (isActive)
-        cout << "*";
+        cout << "#";
     else
         cout << " ";
 
     // Reset text and background colors to default
-    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    SetConsoleTextAttribute(hConsole, gameConfig::COLORS[0]);
 }
 
 

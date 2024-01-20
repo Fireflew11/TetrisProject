@@ -23,7 +23,6 @@ class Player
 {
 private: 
 	gameConfig::PlayerType playerType; 
-
 	Board playerBoard;
 	int score; 
 	bool isWinner; 
@@ -32,12 +31,13 @@ private:
 
 public: 
 
-	Board& getPlayerBoard(); //צריך לשנות את השם לSET
+	Board& getPlayerBoard(); 
 	void updateScore(int numClearedLines);
 	void displayScore();
 	void setIsWinner(bool isWinner); 
 	const bool getIsWinner()const; 
 	Player(gameConfig::PlayerType,int score=0, bool isWinner=false); 
 	const int getScore();
+	const  gameConfig::PlayerType getPlayerType() const; 
 };
 
