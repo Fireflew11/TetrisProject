@@ -6,10 +6,14 @@
 #include "GlobalFunctions.h"
 
 
-
+/**********************************************************************
+Function name: keyChoice
+Input:gameConfig::LeftKeys key, Shape& shape
+Output: --
+Function:The function handles the Left player's key choices for movement, rotation, and dropping.
+**********************************************************************/
 void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape)
 {
-    
     switch(key)
     {
     case gameConfig::LeftKeys::RIGHT:
@@ -40,6 +44,12 @@ void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape)
     }
 }
 
+/**********************************************************************
+Function name: keyChoice
+Input:gameConfig::LeftKeys key, Shape& shape
+Output: --
+Function:The function handles the Right player's key choices for movement, rotation, and dropping.
+**********************************************************************/
 void Game::keyChoice(gameConfig::RightKeys key, Shape& shape)
 {
     switch (key)
@@ -70,41 +80,35 @@ void Game::keyChoice(gameConfig::RightKeys key, Shape& shape)
     }
 }
 
-
+/**********************************************************************
+Function name: GameLoop
+Input: --
+Output: --
+Function:The main game loop responsible for managing the gameplay, player moves, and checking game conditions.
+**********************************************************************/
 void Game::GameLoop()
 {
     bool isGameOver = false;
     players[0].displayScore();
     players[1].displayScore();
-    while (!isGameOver)
+    while (!isGameOver)// Main game loop
     {
-        Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors);
+        Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors); // Create new shapes for each player
         Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
         if (!checkGameValidity(curShapePlayer1, curShapePlayer2, isGameOver))
             break;       
-        while (true)
+        while (true)// Inner loop for handling player movements and shape placements
         {    
+            // Update scores and handle user input
             players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
             players[1].updateScore(players[1].getPlayerBoard().clearFullLines());
-            for (int i = 0; i < 5; i++)
-            {
-                if (_kbhit())
-                {
-                    int keyPressed = _getch();
-                    if (keyPressed == (int)gameConfig::ESC)
-                    {
-                        status = gameConfig::GameStatus::Paused;
-                        startGame();
-                        if (status == gameConfig::GameStatus::Ended || status == gameConfig::GameStatus::NewGame)
-                            return;
-                    }
-                    else
-                        checkKeyChoice(keyPressed, curShapePlayer1, curShapePlayer2);
-                }
-            }
-            Sleep(300);
+            handleInput(curShapePlayer1, curShapePlayer2);
+
+            // Move shapes down for both players
             bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
             bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
+
+            // Check if both shapes reached the bottom
             if (!movedDownPlayer1 && !movedDownPlayer2)
             {
                 players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
@@ -116,16 +120,19 @@ void Game::GameLoop()
                 }
                 break;
             }
+            // Handle shape movements and updates for player 1
             if (!movedDownPlayer1)
             {
                 players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
-                if ((this->isGameOver()))
+                if ((this->isGameOver()))// Check if the game is over after placing the shape
                 {
                     isGameOver = true;
                     break;
                 }
+                // Reset the shape for the next iteration
                 curShapePlayer1 = Shape(gameConfig::PlayerType::LEFT_PLAYER,useColors); 
-                if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1)))
+                // Check if the new shape is valid, if not, set player 2 as the winner
+                if (!(players[0].getPlayerBoard().check_valid_move(curShapePlayer1))) 
                 {
                     players[1].setIsWinner(true);
                     isGameOver = true;
@@ -133,6 +140,7 @@ void Game::GameLoop()
                     break;
                 } 
             }
+            // Handle shape movements and updates for player 2
             if (!movedDownPlayer2)
             {
                 players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
@@ -154,6 +162,12 @@ void Game::GameLoop()
     }
 }
 
+/**********************************************************************
+Function name: checkKeyChoice
+Input:int keyPressed, Shape& Leftshape,Shape& RightShape
+Output:--
+Function:The function checks the key pressed by the player and calls the appropriate keyChoice function for the respective player.
+**********************************************************************/
 void Game:: checkKeyChoice(int keyPressed, Shape& Leftshape,Shape& RightShape)
 {
     //keyPressed = toupperG(keyPressed);
@@ -196,29 +210,36 @@ bool Game::isGameOver()
     
 }
 
-
-
-
+/**********************************************************************
+Function name:startGame
+Input: --
+Output: --
+Function:Initiates or continues the game based on user input, handling different game statuses.
+**********************************************************************/
 void Game::startGame()
 {
     bool isMenuVisible = false;
     char keyPressed = 0;
+    // Main loop for game status handling
     while (status != gameConfig::GameStatus::Ended)
     {
         if (status == gameConfig::GameStatus::Finish)
         {
+            // Announce the winner and reset the game
             announceWinner();
             isMenuVisible = false;
             players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
             players[1] = Player(gameConfig::PlayerType::RIGHT_PLAYER);
             status = gameConfig::GameStatus::NewGame;
         }
+        // Clear the console, print the menu, and set the menu visibility flag
         if (!isMenuVisible) {
             system("cls");
             Print_Menu();
             isMenuVisible = true;
         }
          keyPressed = _getch();
+         // Check the pressed key for different menu options
         if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME || keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS)
         {
             if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS)
@@ -226,6 +247,7 @@ void Game::startGame()
             else
                 useColors = true;
             system("cls");
+            // Check if the game was paused, reset players, and set the game status to NewGame
             if (status == gameConfig::GameStatus::Paused)
             {
                 players[0] = Player(gameConfig::PlayerType::LEFT_PLAYER);
@@ -234,6 +256,7 @@ void Game::startGame()
                 return; 
 
             }
+            // Main loop for handling NewGame and Running status
             while (status == gameConfig::GameStatus::NewGame || status == gameConfig::GameStatus::Running)
             {
                 players[0].getPlayerBoard().setUseColor(useColors);
@@ -244,6 +267,7 @@ void Game::startGame()
             }
 
         }
+        // Continue a paused game by displaying player boards and scores
         else if (keyPressed == (char)gameConfig::MenuOption::CONTINUE_PAUSED_GAME && status == gameConfig::GameStatus::Paused)
         {
             system("cls");
@@ -269,19 +293,38 @@ void Game::startGame()
     }
 }
 
+/**********************************************************************
+ Helper function to print a row in the instructionsand_keys.
+**********************************************************************/
 void Game::printRow(const string& firstColumn, const string& secondColumn, const string& thirdColumn)
 {
     cout << "|" << setw(24) << left << firstColumn << "|" << setw(24) << left << secondColumn << "|" << setw(24) << left << thirdColumn << "|" << std::endl;
 }
+/**********************************************************************
+ Helper function to print a separator line in the instructionsand_keys.
+**********************************************************************/
 void Game::printSeparator()
 {
     cout << "+------------------------+------------------------+------------------------+" << std::endl;
 }
 
-
+/**********************************************************************
+Function name: Game(Constructor)
+Input:useColors: A boolean indicating whether colors are enabled in the game,
+status: The initial status of the game (default: gameConfig::GameStatus::Running).
+Output:--
+Function:Constructor for the Game class. Initializes the game with specified color settings and initial status.
+Creates instances of Player for the left and right players.
+**********************************************************************/
 Game::Game(bool useColors, gameConfig::GameStatus status):players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)},status(status),useColors(useColors)
 {}
 
+/**********************************************************************
+Function name: Print_Menu
+Input:--
+Output:--
+Function:Displays the main menu options
+**********************************************************************/
 void Game:: Print_Menu()
 {
     system("cls");
@@ -293,6 +336,12 @@ void Game:: Print_Menu()
     cout << "(9) EXIT" << endl; 
 }
 
+/**********************************************************************
+Function name: Present_instructionsand_keys
+Input:--
+Output:--
+Function: Displays the key instructions for player controls
+**********************************************************************/
 void Game::Present_instructionsand_keys()
 {
     // Print the top border
@@ -314,6 +363,12 @@ void Game::Present_instructionsand_keys()
     char ch=_getch();
 }
 
+/**********************************************************************
+Function name: announceWinner
+Input:--
+Output:--
+Function:Displays the winner of the game
+**********************************************************************/
 void Game::announceWinner()
 {
     system("cls"); 
@@ -347,7 +402,12 @@ void Game::announceWinner()
 
     
 }
-
+/**********************************************************************
+Function name: checkGameValidity
+Input:const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver
+Output:Returns true if the game is still valid; false if the game is over.
+Function:Checks the validity of the game based on the current positions of player shapes.
+**********************************************************************/
 bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver)
 {
     if (!(players[0].getPlayerBoard().check_valid_move(ShapePlayer1)) || !(players[1].getPlayerBoard().check_valid_move(ShapePlayer2)))
@@ -386,3 +446,35 @@ bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer
         }
         //
 */
+
+void Game::handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2)
+{
+    players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
+    players[1].updateScore(players[1].getPlayerBoard().clearFullLines());
+    for (int i = 0; i < 5; i++)
+    {
+        if (_kbhit())
+        {
+            int keyPressed = _getch();
+            if (keyPressed == (int)gameConfig::ESC)
+            {
+                status = gameConfig::GameStatus::Paused;
+                startGame();
+                if (status == gameConfig::GameStatus::Ended || status == gameConfig::GameStatus::NewGame)
+                    return;
+            }
+            else
+                checkKeyChoice(keyPressed, curShapePlayer1, curShapePlayer2);
+        }
+    }
+    Sleep(300);
+}
+
+bool Game:: 
+if (!(players[1].getPlayerBoard().check_valid_move(curShapePlayer2)))
+{
+    players[0].setIsWinner(true);
+    isGameOver = true;
+    status = gameConfig::GameStatus::Finish;
+    break;
+}

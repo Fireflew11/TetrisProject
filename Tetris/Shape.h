@@ -6,9 +6,21 @@
 #include <ctime>
 #include "Board.h"
 #include "gameConfig.h"
-//enum Direction { RIGHT = 1, LEFT };
 class Cube; 
 class Board; 
+
+/**********************************************************************
+Class: Shape
+
+Description:
+    Represents a Tetris shape, managing its properties and movement.
+
+Member Variables:
+    - type: The type of the shape (gameConfig::ShapeType).
+    - orientation: The current orientation of the shape.
+    - coordinates: An array of Cube objects representing the shape's cubes.
+    - useColors: A boolean indicating whether colors are used.
+**********************************************************************/
 class Shape
 {
 	Cube cubes[4];

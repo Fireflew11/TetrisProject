@@ -6,16 +6,19 @@
 #include "gameConfig.h"
 using namespace std;
 class Shape; 
-
 /**********************************************************************
 Class: Player
 
 Description:
-The Player class represents a player in the Tetris-like game, 
-managing the player's board, score,and game-related functions.
-Each player has a game board, a score that is updated based on the number of cleared lines, and a flag indicating if the player is the winner.
+    Represents a player in the Tetris game, managing player-specific data and actions.
 
-**************************************************************************/
+Member Variables:
+    - playerType: The type of the player (gameConfig::PlayerType).
+    - score: An integer representing the player's current score.
+    - isWinner: A boolean indicating whether the player is the winner.
+    - playerBoard: An instance of the Board class representing the player's game board.
+
+**********************************************************************/
 class Player
 {
 private: 

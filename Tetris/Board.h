@@ -6,10 +6,17 @@
 class Shape; 
 using namespace std;
 
-/**********************
-* The Board class represents the game board where shapes are placed.
-***********************/
+/**********************************************************************
+Class: Board
 
+Description:
+	Represents the game board in Tetris, managing a grid of cubes and handling operations such as clearing lines.
+
+Member Variables:
+	- boardGame: 2D array of Cube objects representing the game board.
+	- useColors: Boolean indicating whether colors are used in the console output.
+	- startingX,startingY:presents the initial X-coordinate(horizontal position) and the initial Y-coordinate(vertical position). 
+**********************************************************************/
 class Board
 {
 	Cube board_game[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];

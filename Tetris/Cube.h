@@ -1,9 +1,20 @@
 #pragma once
+
 #include <Windows.h>
 #include<iostream>
 #include"GlobalFunctions.h"
-
 using namespace std;
+/**********************************************************************
+Class: Cube
+
+Description:
+    Represents a cube in the Tetris game, managing its coordinates, activation status, and color.
+
+Member Variables:
+    - coord: COORD structure storing X and Y coordinates of the cube.
+    - isActive: Boolean indicating the activation status of the cube.
+    - color: WORD representing the color of the cube.
+**********************************************************************/
 class Cube
 {
 private:

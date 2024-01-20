@@ -4,11 +4,21 @@
 #include "gameConfig.h"
 #include "Player.h"
 #include <iomanip>
-
 using namespace std;
-
 class player; 
 
+/**********************************************************************
+Class: Game
+
+Description:
+    Represents the Tetris game and manages the game loop, player interactions, and game status.
+
+Member Variables:
+    - players: An array of Player objects representing the players in the game.
+    - status: The current status of the game (gameConfig::GameStatus).
+    - useColors: A boolean indicating whether colors are used in the game.
+
+**********************************************************************/
 class Game
 {
 	Player players[gameConfig::NUM_OF_PLAYERS];
@@ -31,6 +41,7 @@ public:
 	void printSeparator();
 	bool isGameOver();
 	void announceWinner();
-	bool checkGameValidity(const Shape& ShapePlayer1, const Shape& cShapePlayer2, bool& isGameOver);
+	bool checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver);
+	void handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2);
 };
 
