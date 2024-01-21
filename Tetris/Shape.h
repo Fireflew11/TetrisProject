@@ -44,11 +44,6 @@ public:
 	const gameConfig::ShapeType getShapeType(); 
 	Shape(gameConfig::PlayerType playerType, bool useColors=true);
 
-
-
-
-
-   
     
 };
 
