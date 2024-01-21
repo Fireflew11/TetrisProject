@@ -18,7 +18,7 @@ Bonus Additions:
 
 2. **Game Score:**
    - The game now features a scoring system to track player performance.
-   - [Explain how the scoring works, any scoring milestones, and how it enhances the gameplay.]
+
 
 
 Enjoy playing Tetris!
