@@ -1,38 +1,50 @@
-﻿#pragma once
+﻿#ifndef SHAPE_H
+#define SHAPE_H
+
 #include "Cube.h"
 #include <cstdlib>
 #include <ctime>
 #include "Board.h"
-enum Direction { RIGHT = 1, LEFT };
+#include "gameConfig.h"
 class Cube; 
+class Board; 
 
+/**********************************************************************
+Class: Shape
+
+Description:
+    Represents a Tetris shape, managing its properties and movement.
+
+Member Variables:
+    - type: The type of the shape (gameConfig::ShapeType).
+    - orientation: The current orientation of the shape.
+    - coordinates: An array of Cube objects representing the shape's cubes.
+    - useColors: A boolean indicating whether colors are used.
+**********************************************************************/
 class Shape
 {
-	//Cube starting_cube; //אנסה למצוא פתרון טוב יותר - הקוביה תשמור את אמצע הלוח למעלה של כל שחקן, כלומר נקודת ההתחלה שממנה יפלו הקוביות  
 	Cube cubes[4];
-	int id;
-	int startingX, startingY;
-	bool isIVertical = true; //unique for I shape, starts true
-public:
-	Cube* cubesBlock[][3];
+	int color; 
+	gameConfig::ShapeType type; 
+	bool useColors;
 
 public: 
-	Shape(int x, int y, int cheatShape = 0);  // הנקודה הזה תתן לי את מרכז הלוח שבו אני רוצה להתחיל את נפילת הקוביה 
 
 	const Cube* const get_cubes() const;
 	void set_cubes_by_Index(int i,  Cube cube); 
-	void initializeCubesBlock();
-	void deleteCubesBlock();
-	void drawShape() const;
+	void drawShape(bool isActive = true) const;
 	int getRowsAmount() const;
-	int getId();
-	void rotateMatrixClockwise();
-	void rotateMatrixCounterClockwise();
-	void transposeMatrix();
-	void rotateShape(Direction direction);
-	~Shape();
+	void rotate_CounterClock_wise(const Board& board);
+	void rotate_Clock_wise(const Board& board);
+	void move_Left(const Board& board);
+	void move_Right(const Board& board); 
+	bool continueMovingDown(const Board& board);
+	void drop(const Board& board);
+	int getColor() const;
+	const gameConfig::ShapeType getShapeType(); 
+	Shape(gameConfig::PlayerType playerType, bool useColors=true);
 
-   
     
 };
 
+#endif //SHAPE_H

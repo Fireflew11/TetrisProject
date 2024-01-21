@@ -1,0 +1,14 @@
+#include "gameConfig.h"
+#include <Windows.h>
+
+
+const unsigned short gameConfig::COLORS[] = {
+    FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED, //black  
+    FOREGROUND_BLUE | FOREGROUND_INTENSITY,                
+    FOREGROUND_GREEN | FOREGROUND_INTENSITY,               
+    FOREGROUND_RED | FOREGROUND_INTENSITY,                
+    FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY, 
+    FOREGROUND_BLUE | FOREGROUND_GREEN,                    
+    FOREGROUND_RED | FOREGROUND_BLUE,                      
+    FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY  
+};

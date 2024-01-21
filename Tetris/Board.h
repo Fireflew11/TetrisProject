@@ -2,38 +2,41 @@
 
 #include <iostream>
 #include"Shape.h" 
-
+#include "gameConfig.h"
 class Shape; 
-
 using namespace std;
 
+/**********************************************************************
+Class: Board
+
+Description:
+	Represents the game board in Tetris, managing a grid of cubes and handling operations such as clearing lines.
+
+Member Variables:
+	- boardGame: 2D array of Cube objects representing the game board.
+	- useColors: Boolean indicating whether colors are used in the console output.
+	- startingX,startingY:presents the initial X-coordinate(horizontal position) and the initial Y-coordinate(vertical position). 
+**********************************************************************/
 class Board
 {
-	const int height = 18;
-	const int width = 12; 
-	//char board_game[width][height]; 
-	Cube board_game[18][12]; 
-	int startingX; 
-	Shape* curShape;
-	//int startingY; 
+	Cube board_game[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
+	int startingX;
+	int startingY; 
+	bool useColors;
 
 public:
-	const int& get_height() const; 
-	const int& get_width() const; 
-	void display_board(const int startingX);
-	void insert_Shape(const Shape& shape); 
-	void move_Left(Shape& shape);
-	void move_right(Shape& shape);
-	void rotate_Clock_wise(Shape& shape);
-	void rotate_CounterClock_wise();
-	Board();
-	Shape* getCurShape() const;
-	void setCurShape(Shape* curShape);
+	void display_board();
+	Board(int starting_X=0, int starting_Y=0,  bool useColors= true);
+	const Cube(&getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
+	bool check_valid_move(const Shape& shape) const;
+	void clearLine(int index_line); 
+	bool IsLineFull(int index_line);
+	int clearFullLines();
+	void implementShapeToBoard(const Shape& shape);
+	void drawBoardCubes();
+	void setUseColor(bool useColors);
 
 private: 
 	void print_Line(); 
-	void drop_Shape();
-	bool check_valid_move(const Shape& shape) const; 
-
 };
 
