@@ -128,20 +128,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="GlobalFunctions.cpp" />
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Computer.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="GlobalFunctions.h" />
+    <ClInclude Include="Human.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shape.h" />
   </ItemGroup>

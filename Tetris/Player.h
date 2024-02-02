@@ -21,6 +21,8 @@ Member Variables:
 **********************************************************************/
 class Player
 {
+protected:
+	using ShapeFunctionType = void (Shape::*)(const Board&);
 private: 
 	gameConfig::PlayerType playerType; 
 	Board playerBoard;
@@ -36,8 +38,10 @@ public:
 	void displayScore();
 	void setIsWinner(bool isWinner); 
 	const bool getIsWinner()const; 
-	Player(gameConfig::PlayerType,int score=0, bool isWinner=false); 
+	Player(gameConfig::PlayerType); 
 	const int getScore();
-	const  gameConfig::PlayerType getPlayerType() const; 
+	const gameConfig::PlayerType getPlayerType() const; 
+	virtual ~Player() = default;
+	virtual bool decideMove(Shape& shape, char key) = 0;
 };
 
