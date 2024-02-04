@@ -21,7 +21,7 @@ Member Variables:
 **********************************************************************/
 class Player
 {
-protected:
+public:
 	using ShapeFunctionType = void (Shape::*)(const Board&);
 private: 
 	gameConfig::PlayerType playerType; 
