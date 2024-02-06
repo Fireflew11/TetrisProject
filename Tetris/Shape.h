@@ -25,15 +25,18 @@ public:
 	virtual bool continueMovingDown(const Board& board)=0;
 	virtual void implementShapeToBoard(Board& board) = 0;
 	virtual bool check_valid_move(const Board& board) const=0;
+
 	int getColor() const;
 	bool getUseColors() const; 
 	void drop(const Board& board);
 
+	virtual void rotate_CounterClock_wise(const Board& board)=0;
+	virtual void rotate_Clock_wise(const Board& board) =0;
 
 	Shape(int color, bool useColors, int startingX, int StartingY); 
 
 
-	Shape(gameConfig::PlayerType playerType, bool useColors=true);
+	//Shape(gameConfig::PlayerType playerType, bool useColors=true);
 
     
 };

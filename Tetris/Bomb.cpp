@@ -23,7 +23,7 @@ void Bomb::move_Left(const Board& board)
 	Bomb temp = *this; 
 	temp.cube= tempCube;
 
-	if (board.check_valid_move(temp))
+	if (temp.check_valid_move(board))
 	{
 		*this = temp; 
 	}
@@ -40,7 +40,7 @@ void Bomb:: move_Right(const Board& board)
 	Bomb temp = *this;
 	temp.cube = tempCube;
 
-	if (board.check_valid_move(temp))
+	if (temp.check_valid_move(board))
 	{
 		*this = temp;
 	}
@@ -54,7 +54,7 @@ bool Bomb::continueMovingDown(const Board& board)
 	Cube tempCube(cube.get_X(), y, getColor(), true);
 	temp.cube = tempCube; 
 
-	if (board.check_valid_move(temp))
+	if (temp.check_valid_move(board))
 	{
 		drawShape(false);  // Erase the current shape
 		*this = temp;      // Update the shape

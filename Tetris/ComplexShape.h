@@ -10,9 +10,10 @@ public:
 	void move_Left(const Board& board)override;
 	void move_Right(const Board& board)override;
 	bool continueMovingDown(const Board& board)override;
-	virtual void rotate_CounterClock_wise(const Board& board);
-	virtual void rotate_Clock_wise(const Board& board);
-
+	//virtual void rotate_CounterClock_wise(const Board& board) ;
+	//virtual void rotate_Clock_wise(const Board& board) ;
+	void rotate_CounterClock_wise(const Board& board) override;
+	void rotate_Clock_wise(const Board& board) override;
 	const Cube* const get_cubes() const;
 	void set_cubes_by_Index(int i, Cube cube);
 

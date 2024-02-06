@@ -56,7 +56,7 @@ void ComplexShape::move_Left(const Board& board)
 		temp.set_cubes_by_Index(i, temp_cube);
 	}
 
-	if (board.check_valid_move(temp))
+	if (temp.check_valid_move(board))
 	{
 		*this = temp;
 	}
@@ -83,7 +83,7 @@ void ComplexShape::move_Right(const Board& board)
 		temp.set_cubes_by_Index(i, temp_cube);
 	}
 
-	if (board.check_valid_move(temp))
+	if (temp.check_valid_move(board))
 	{
 		*this = temp;
 	}
@@ -106,7 +106,7 @@ bool ComplexShape::continueMovingDown(const Board& board)
 		temp.set_cubes_by_Index(i, tempCube);
 	}
 
-	if (board.check_valid_move(temp))
+	if (temp.check_valid_move(board))
 	{
 		drawShape(false);  // Erase the current shape
 		*this = temp;      // Update the shape
@@ -166,7 +166,7 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 		 tempShape.set_cubes_by_Index(i, tempCube);
 	 }
 
-	 if (board.check_valid_move(tempShape))
+	 if (tempShape.check_valid_move(board))
 	 {
 		 *this = tempShape;
 	 }
@@ -191,7 +191,7 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 		 tempShape.set_cubes_by_Index(i, tempCube);
 	 }
 
-	 if (board.check_valid_move(tempShape))
+	 if (tempShape.check_valid_move(board))
 	 {
 		 *this = tempShape;
 	 }

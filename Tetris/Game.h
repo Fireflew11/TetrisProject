@@ -25,10 +25,16 @@ class Game
 	gameConfig::GameStatus status;
 	bool useColors; 
 
+
+	Shape* currentShapeLeftPlayer;
+	Shape* currentShapeRightPlayer;
+	
+
 public: 
 
-	void keyChoice(gameConfig::LeftKeys key, Shape& shape);
-	void keyChoice(gameConfig::RightKeys key , Shape& shape);
+
+	void keyChoice(gameConfig::LeftKeys key);
+	void keyChoice(gameConfig::RightKeys key);
 	void checkKeyChoice(int keyPressed, Shape& Leftshape, Shape& RightShape);
 	Game(bool useColors=true, gameConfig::GameStatus status= gameConfig::GameStatus::Running);
 	void Print_Menu(); 
@@ -41,8 +47,9 @@ public:
 	void printSeparator();
 	bool isMaxHeight();
 	void announceWinner();
-	bool checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver);
+	bool checkGameValidity(bool& isGameOver);
 	bool handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2);
-	bool checkGameConditions(Player& player, Shape& shape, bool& isGameOver);
+	bool checkGameConditions(Player& player, Shape*& shape, bool& isGameOver);
+	Shape* createRandomShape(const Player& player);
 };
 

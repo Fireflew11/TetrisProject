@@ -62,6 +62,7 @@ Output: bool
 Function:Checks if a given shape can make a valid move on the board. 
 The function verifies if the shape's position and orientation are within the bounds of the board and if it collides with any active cubes.
 **********************************************************************/
+/*
 bool Board::check_valid_move(const Shape& shape) const
 {
 	for (int i = 0; i < 4; i++)
@@ -80,7 +81,7 @@ bool Board::check_valid_move(const Shape& shape) const
 	return true;
 
 }
-
+*/
 
 /**********************************************************************
 Function name:clearLine
@@ -150,6 +151,7 @@ Output:--
 Function:The function implements the given shape on the game board 
 by updating the state of the board_game array based on the shape's cubes' positions and color.
 **********************************************************************/
+/*
 void Board::implementShapeToBoard(const Shape& shape) 
 {
 	for (int i = 0; i < 4; i++)
@@ -159,6 +161,8 @@ void Board::implementShapeToBoard(const Shape& shape)
 	}
 	
 }
+*/
+
 
 /**********************************************************************
 Function name:drawBoardCubes
