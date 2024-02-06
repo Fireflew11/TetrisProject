@@ -4,7 +4,7 @@
 
 //Bomb::Bomb(gameConfig::PlayerType playerType, bool useColors): Shape(gameConfig::COLORS[8], true),cube(playerType,useColors){}
 
-Bomb::Bomb(int color, bool useColors, int startingX, int startingY) :Shape(color, useColors, startingX, startingY), cube(startingX +(gameConfig::GAME_WIDTH)/2 +1, startingY, gameConfig::COLORS[8])
+Bomb::Bomb(bool useColors, int startingX, int startingY) :Shape(gameConfig::COLORS[8], useColors, startingX, startingY), cube(startingX +(gameConfig::GAME_WIDTH)/2 +1, startingY, gameConfig::COLORS[8])
 {}
 
 

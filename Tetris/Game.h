@@ -35,8 +35,9 @@ public:
 
 	void keyChoice(gameConfig::LeftKeys key);
 	void keyChoice(gameConfig::RightKeys key);
-	void checkKeyChoice(int keyPressed, Shape& Leftshape, Shape& RightShape);
-	Game(bool useColors=true, gameConfig::GameStatus status= gameConfig::GameStatus::Running);
+	void checkKeyChoice(int keyPressed);
+
+	Game(bool useColors=true, gameConfig::GameStatus status= gameConfig::GameStatus::Running,Shape* ShapeLeftPlayer= nullptr, Shape* ShapeRightPlayer= nullptr);
 	void Print_Menu(); 
 	void Present_instructionsand_keys(); 
 	void GameLoop();
@@ -48,8 +49,10 @@ public:
 	bool isMaxHeight();
 	void announceWinner();
 	bool checkGameValidity(bool& isGameOver);
-	bool handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2);
+	bool handleInput();
 	bool checkGameConditions(Player& player, Shape*& shape, bool& isGameOver);
+
 	Shape* createRandomShape(const Player& player);
+	bool isBombAppearance();
 };
 

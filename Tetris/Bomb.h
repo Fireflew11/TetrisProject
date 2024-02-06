@@ -18,7 +18,7 @@ public:
 	void rotate_CounterClock_wise(const Board& board) override{};
 	void rotate_Clock_wise(const Board& board) override{};
 
-	Bomb(int color, bool useColors, int startingX, int startingY);
+	Bomb(bool useColors, int startingX, int startingY);
 	//Bomb(gameConfig::PlayerType playerType, bool useColors);
 
 	void explosion(Board& board);
