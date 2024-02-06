@@ -29,6 +29,7 @@ private:
 	int score; 
 	bool isWinner; 
 	int startingX;
+	int startingY; 
 
 
 public: 
@@ -43,5 +44,7 @@ public:
 	const gameConfig::PlayerType getPlayerType() const; 
 	virtual ~Player() = default;
 	virtual bool decideMove(Shape& shape, char key) = 0;
+	const int getStartingX() const; 
+	const int getStartingY() const; 
 };
 

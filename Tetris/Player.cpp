@@ -108,6 +108,14 @@ Function:The function retrieves the current score of the player.
      return playerType;
  }
 
+ const int Player::getStartingX() const
+ {
+     return startingX; 
+ }
+ const int Player:: getStartingY() const
+ {
+     return startingY; 
+ }
 
 
 
