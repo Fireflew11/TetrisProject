@@ -26,7 +26,7 @@ void Board::display_board()
 }
 
 /**********************************************************************
-Function name:Constructor Board
+Function name:Constructor Board 
 Input:int starting_X, int starting_Y, bool useColors
 Function:Constructor for the Board class.
 **********************************************************************/
