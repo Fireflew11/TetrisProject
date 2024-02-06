@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="ComplexShape.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="GlobalFunctions.cpp" />
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="I_Shape.cpp" />
     <ClCompile Include="J_Shape.cpp" />
     <ClCompile Include="L_Shape.cpp" />
@@ -148,12 +150,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Computer.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="ComplexShape.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="GlobalFunctions.h" />
+    <ClInclude Include="Human.h" />
     <ClInclude Include="I_Shape.h" />
     <ClInclude Include="J_Shape.h" />
     <ClInclude Include="L_Shape.h" />
