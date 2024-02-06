@@ -35,9 +35,11 @@ class Game
 public: 
 
 
+	/*
 	void keyChoice(gameConfig::LeftKeys key);
 	void keyChoice(gameConfig::RightKeys key);
 	void checkKeyChoice(int keyPressed);
+	*/
 
 	Game(bool useColors=true, gameConfig::GameStatus status= gameConfig::GameStatus::Running,Shape* ShapeLeftPlayer= nullptr, Shape* ShapeRightPlayer= nullptr);
 	void Print_Menu(); 

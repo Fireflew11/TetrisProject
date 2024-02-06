@@ -230,3 +230,4 @@ const int Board::getStartingY() const
 
 Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]{
 	return board_game;
+}

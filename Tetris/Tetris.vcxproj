@@ -141,7 +141,6 @@
     <ClCompile Include="L_Shape.cpp" />
     <ClCompile Include="O_Shape.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="RotatableShape.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="S_Shape.cpp" />
     <ClCompile Include="TetrisMain.cpp" />
@@ -163,7 +162,6 @@
     <ClInclude Include="L_Shape.h" />
     <ClInclude Include="O_Shape.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="RotatableShape.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="S_Shape.h" />
     <ClInclude Include="T_Shape.h" />

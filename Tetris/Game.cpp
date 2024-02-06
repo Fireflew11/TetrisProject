@@ -19,6 +19,7 @@ Input:gameConfig::LeftKeys key, Shape& shape
 Output: --
 Function:The function handles the Left player's key choices for movement, rotation, and dropping.
 **********************************************************************/
+/*
 void Game::keyChoice(gameConfig::LeftKeys key)
 {
     switch(key)
@@ -37,7 +38,7 @@ void Game::keyChoice(gameConfig::LeftKeys key)
             
         case gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE:
         {
-            currentShapeLeftPlayer->rotate_CounterClock_wise(players[0].getPlayerBoard());
+            currentShapeLeftPlayer->rotate_CounterClock_wise(players[0]->getPlayerBoard());
             break;
         }
         case gameConfig::LeftKeys::DROP:
@@ -55,6 +56,7 @@ Input:gameConfig::LeftKeys key, Shape& shape
 Output: --
 Function:The function handles the Right player's key choices for movement, rotation, and dropping.
 **********************************************************************/
+/*
 void Game::keyChoice(gameConfig::RightKeys key)
 {
     switch (key)
@@ -85,6 +87,7 @@ void Game::keyChoice(gameConfig::RightKeys key)
     }
   
 }
+*/
 /**********************************************************************
 Function name: GameLoop
 Input: --
@@ -98,8 +101,8 @@ void Game::GameLoop()
     players[1]->displayScore();
     while (!isGameOver)// Main game loop
     {
-        currentShapeLeftPlayer = createRandomShape(players[0]);
-        currentShapeRightPlayer=createRandomShape(players[1]); 
+        currentShapeLeftPlayer = createRandomShape(*players[0]);
+        currentShapeRightPlayer=createRandomShape(*players[1]); 
 
        // Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors); // Create new shapes for each player
         //Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
@@ -217,6 +220,7 @@ Input:int keyPressed, Shape& Leftshape,Shape& RightShape
 Output:--
 Function:The function checks the key pressed by the player and calls the appropriate keyChoice function for the respective player.
 **********************************************************************/
+/*
 void Game:: checkKeyChoice(int keyPressed)
 {
     keyPressed = toupperG(keyPressed);
@@ -234,7 +238,7 @@ void Game:: checkKeyChoice(int keyPressed)
         keyChoice((gameConfig::RightKeys)keyPressed);
     }
 }
-
+*/
 /**********************************************************************
 Function name:isMaxHeight
 Input: --
@@ -497,17 +501,17 @@ bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer
 bool Game::checkGameValidity(bool& isGameOver)
 {
    
-    bool validityLeftPlayer = currentShapeLeftPlayer->check_valid_move(players[0].getPlayerBoard());
-    bool validityRightPlayer = currentShapeRightPlayer->check_valid_move(players[1].getPlayerBoard());
+    bool validityLeftPlayer = currentShapeLeftPlayer->check_valid_move(players[0]->getPlayerBoard());
+    bool validityRightPlayer = currentShapeRightPlayer->check_valid_move(players[1]->getPlayerBoard());
     if (!validityLeftPlayer || !validityRightPlayer)
     {
         if (!validityLeftPlayer)
         {
-            players[1].setIsWinner(true);
+            players[1]->setIsWinner(true);
         }
         if (!validityRightPlayer)
         {
-            players[0].setIsWinner(true);
+            players[0]->setIsWinner(true);
         }
         isGameOver = true;
         status = gameConfig::GameStatus::Finished;
@@ -543,7 +547,7 @@ bool Game::handleInput()
         if (_kbhit())
         {
             char keyPressed = toupperG(_getch());
-            if (players[0]->decideMove(curShapePlayer1, keyPressed) || players[1]->decideMove(curShapePlayer2, keyPressed))
+            if (players[0]->decideMove(*currentShapeLeftPlayer, keyPressed) || players[1]->decideMove(*currentShapeRightPlayer, keyPressed))
             {
                 status = gameConfig::GameStatus::Paused;
                 startGame();
@@ -552,8 +556,6 @@ bool Game::handleInput()
                 if (status == gameConfig::GameStatus::Ended || status == gameConfig::GameStatus::NewGame)
                     return true;
             }
-            else
-                checkKeyChoice(keyPressed);
         }
     }
     return false;
@@ -562,7 +564,7 @@ bool Game::handleInput()
 Shape* Game::createRandomShape(const Player& player)
 {
     srand(time(0));
-    Shape* newShape;
+    Shape* newShape = nullptr;
     bool bombppearance = isBombAppearance(); 
     if (bombppearance)
     {
