@@ -102,7 +102,7 @@ bool ComplexShape::continueMovingDown(const Board& board)
 	for (int i = 0; i < 4; i++)
 	{
 		int y = temp.cubes[i].get_Y() + 1;
-		Cube tempCube(temp.cubes[i].get_X(), y, color, true);
+		Cube tempCube(temp.cubes[i].get_X(), y, getColor(), true);
 		temp.set_cubes_by_Index(i, tempCube);
 	}
 
@@ -147,4 +147,77 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 	return cubes;
 }
 
+
+ void ComplexShape::rotate_CounterClock_wise(const Board& board)
+ {
+	 drawShape(false);
+	 ComplexShape tempShape = *this;
+	 int centerX = tempShape.get_cubes()[0].get_X();
+	 int centerY = tempShape.get_cubes()[0].get_Y();
+
+	 for (int i = 1; i < 4; ++i) {
+		 int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
+		 int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
+
+		 int newX = centerX - relativeY;
+		 int newY = centerY + relativeX;
+
+		 Cube tempCube(newX, newY, getColor(), true);
+		 tempShape.set_cubes_by_Index(i, tempCube);
+	 }
+
+	 if (board.check_valid_move(tempShape))
+	 {
+		 *this = tempShape;
+	 }
+	 drawShape(true);
+ }
+
+ void ComplexShape::rotate_Clock_wise(const Board& board)
+ {
+	 drawShape(false);
+	 ComplexShape tempShape = *this;
+	 int centerX = tempShape.get_cubes()[0].get_X();
+	 int centerY = tempShape.get_cubes()[0].get_Y();
+
+	 for (int i = 1; i < 4; ++i) {
+		 int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
+		 int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
+
+		 int newX = centerX - relativeY;
+		 int newY = centerY + relativeX;
+
+		 Cube tempCube(newX, newY, getColor(), true);
+		 tempShape.set_cubes_by_Index(i, tempCube);
+	 }
+
+	 if (board.check_valid_move(tempShape))
+	 {
+		 *this = tempShape;
+	 }
+	 drawShape(true);
+ }
+
+
+void ComplexShape::implementShapeToBoard(Board& board)
+{
+	int startingX = board.getStartingX();
+	for (int i = 0; i < 4; i++)
+	{	
+		board.get_to_set_BoardGame()[(cubes[i].get_Y() - 1)][(cubes[i].get_X() - startingX - 1)].setIsActive(true);
+		board.get_to_set_BoardGame()[(cubes[i].get_Y() - 1)][(cubes[i].get_X() - startingX - 1)].setColor(getColor());
+	}
+}
+
+bool ComplexShape::check_valid_move(const Board& board) const
+{
+	bool res = true; 
+	for (int i = 0; i < 4 && res==true; i++)
+	{
+		int x = cubes[i].get_X();
+		int y = cubes[i].get_Y();
+		bool res = board.isValidPosition(x, y); 
+	}
+	return res;
+}
 

@@ -1,6 +1,14 @@
 #pragma once
-#include "RotatableShape.h"
-class L_Shape: RotatableShape
+#include "ComplexShape.h"
+/*
+		 *
+		 *
+		 * *
+*/
+class L_Shape: public ComplexShape
 {
+public: 
+	L_Shape(bool useColors, int startingX, int startingY);
+	const Cube* createCubes(int startingX, int startingY);
 };
 

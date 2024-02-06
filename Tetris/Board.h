@@ -41,6 +41,8 @@ public:
 	const int getStartingX()const; 
 	const int getStartingY() const; 
 
+	Cube(&get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
+
 private: 
 	void print_Line(); 
 };

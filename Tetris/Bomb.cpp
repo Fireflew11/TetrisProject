@@ -2,7 +2,10 @@
 #include "gameConfig.h"
 
 
-Bomb::Bomb(gameConfig::PlayerType playerType, bool useColors): Shape(gameConfig::COLORS[7], true),cube(playerType,useColors){}
+//Bomb::Bomb(gameConfig::PlayerType playerType, bool useColors): Shape(gameConfig::COLORS[8], true),cube(playerType,useColors){}
+
+Bomb::Bomb(int color, bool useColors, int startingX, int startingY) :Shape(color, useColors, startingX, startingY), cube(startingX +(gameConfig::GAME_WIDTH)/2 +1, startingY, gameConfig::COLORS[8])
+{}
 
 
 void Bomb:: drawShape(bool isActive)const
@@ -80,4 +83,14 @@ void Bomb::explosion(Board& board)
 		}
 	}
 	board.drawBoardCubes(); 
+}
+
+void Bomb::implementShapeToBoard(Board& board)
+{
+	explosion(board);
+}
+
+bool Bomb::check_valid_move(const Board& board) const
+{
+	return board.isValidPosition(cube.get_X(),cube.get_Y());
 }

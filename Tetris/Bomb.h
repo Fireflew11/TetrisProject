@@ -2,7 +2,7 @@
 #include "Shape.h"
 
 
-class Bomb: Shape
+class Bomb:public Shape
 {
 	Cube cube; 
 public:
@@ -12,10 +12,12 @@ public:
 	void move_Left(const Board& board)override;
 	void move_Right(const Board& board)override;
 	bool continueMovingDown(const Board& board)override;
+	void implementShapeToBoard(Board& board) override; 
+	bool check_valid_move(const Board& board) const override;
 
 
-
-	Bomb(gameConfig::PlayerType playerType, bool useColors);
+	Bomb(int color, bool useColors, int startingX, int startingY);
+	//Bomb(gameConfig::PlayerType playerType, bool useColors);
 
 	void explosion(Board& board);
 

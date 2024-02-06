@@ -23,8 +23,8 @@ public:
 	virtual void move_Left(const Board& board)=0;
 	virtual void move_Right(const Board& board)=0;
 	virtual bool continueMovingDown(const Board& board)=0;
-
-
+	virtual void implementShapeToBoard(Board& board) = 0;
+	virtual bool check_valid_move(const Board& board) const=0;
 	int getColor() const;
 	bool getUseColors() const; 
 	void drop(const Board& board);

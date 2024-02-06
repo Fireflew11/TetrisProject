@@ -1,6 +1,15 @@
 #pragma once
-#include "RotatableShape.h"
-class J_Shape: RotatableShape
+#include "ComplexShape.h"
+/*
+			  *
+			  *
+			* *
+
+*/
+class J_Shape:public ComplexShape
 {
+public: 
+	J_Shape(bool useColors, int startingX, int startingY);
+	const Cube* createCubes(int startingX, int startingY);
 };
 

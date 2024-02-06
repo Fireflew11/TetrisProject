@@ -196,14 +196,20 @@ void Board::print_Line()
 	cout << endl;
 }
 
-bool Board::isValidPosition(const int x, const int y)const ///check 
+bool Board::isValidPosition(const int x, const int y)const 
 {
-	if (x < startingX || x >= gameConfig::GAME_WIDTH + startingX || y < startingY || y >= gameConfig::GAME_HEIGHT + startingY)
+	if ((x > gameConfig::GAME_WIDTH + startingX) || (x <= startingX))
+		return false;
+	if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
+		return false;
+	if (board_game[y - 1][(x - startingX - 1)].getIsActive() == true)
 		return false; 
 	return true; 
 }
 
-void Board::set_cube_active_in_board_game(const int x, const int y)///check 
+
+
+void Board::set_cube_active_in_board_game(const int x, const int y) 
 {
 	board_game[y - 1][x - startingX-1].setIsActive(false); 
 }
@@ -218,4 +224,5 @@ const int Board::getStartingY() const
 	return startingY; 
 }
 
-
+Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]{
+	return board_game;

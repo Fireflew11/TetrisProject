@@ -3,15 +3,17 @@
 
 
 
-I_Shape::I_Shape(int color, bool useColors, int startingX, int startingY): ComplexShape(color, useColors, startingX, startingY,createCubes(startingX,startingY, color))
+I_Shape::I_Shape(bool useColors, int startingX, int startingY): ComplexShape(gameConfig::COLORS[1], useColors, startingX, startingY, createCubes(startingX, startingY))
 {}
 
-const Cube* I_Shape ::createCubes(int startingX, int startingY, int color) 
+const Cube* I_Shape ::createCubes(int startingX, int startingY) 
 {
+    int x = gameConfig::GAME_WIDTH / 2 + startingX + 1;
+    int y = startingY;
     Cube cubes[4] = {
-        Cube(startingX, startingY + 1, color),
-        Cube(startingX, startingY, color),
-        Cube(startingX, startingY + 2, color),
-        Cube(startingX, startingY + 3, color) };
+        Cube(x, y + 1, gameConfig::COLORS[1]),
+        Cube(x, y, gameConfig::COLORS[1]),
+        Cube(x, y + 2, gameConfig::COLORS[1]),
+        Cube(x, y + 3, gameConfig::COLORS[1]) };
     return cubes;
 }
