@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include<iostream>
 #include"GlobalFunctions.h"
+#include "gameConfig.h"
 using namespace std;
 /**********************************************************************
 Class: Cube
@@ -33,6 +34,7 @@ public:
 	void set_coord(const int& x, const int& y); 
 	void setColor(const int& color);
 	Cube(int x=0, int y=0, int colorIndex =0, bool active = true);
+	Cube(gameConfig::PlayerType player, int colorIndex, bool active=true);
 
 };
 

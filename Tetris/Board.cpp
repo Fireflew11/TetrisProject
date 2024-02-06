@@ -196,7 +196,26 @@ void Board::print_Line()
 	cout << endl;
 }
 
+bool Board::isValidPosition(const int x, const int y)const ///check 
+{
+	if (x < startingX || x >= gameConfig::GAME_WIDTH + startingX || y < startingY || y >= gameConfig::GAME_HEIGHT + startingY)
+		return false; 
+	return true; 
+}
+
+void Board::set_cube_active_in_board_game(const int x, const int y)///check 
+{
+	board_game[y - 1][x - startingX-1].setIsActive(false); 
+}
 
 
+const int Board::getStartingX()const
+{
+	return startingX; 
+}
+const int Board::getStartingY() const
+{
+	return startingY; 
+}
 
 
