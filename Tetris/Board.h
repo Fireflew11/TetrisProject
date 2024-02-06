@@ -28,13 +28,20 @@ public:
 	void display_board();
 	Board(int starting_X=0, int starting_Y=0,  bool useColors= true);
 	const Cube(&getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
-	bool check_valid_move(const Shape& shape) const;
+	//bool check_valid_move(const Shape& shape) const;
 	void clearLine(int index_line); 
 	bool IsLineFull(int index_line);
 	int clearFullLines();
-	void implementShapeToBoard(const Shape& shape);
+	//void implementShapeToBoard(const Shape& shape);
 	void drawBoardCubes();
 	void setUseColor(bool useColors);
+
+	bool isValidPosition(const int x, const int y)const;
+	void set_cube_active_in_board_game(const int x, const int y);
+	const int getStartingX()const; 
+	const int getStartingY() const; 
+
+	Cube(&get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
 
 private: 
 	void print_Line(); 
