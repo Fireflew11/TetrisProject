@@ -37,6 +37,7 @@ public:
 	void setUseColor(bool useColors);
 
 	bool isValidPosition(const int x, const int y)const;
+	bool isValidExplosion(const int x, const int y)const;
 	void set_cube_active_in_board_game(const int x, const int y);
 	const int getStartingX()const; 
 	const int getStartingY() const; 

@@ -10,16 +10,37 @@ ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startin
 }
 
 */
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube* newCubes): Shape(color, useColors, startingX, startingY)
+/*
+ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY,const Cube newCubes[4]) : Shape(color, useColors, startingX, startingY), cubes{newCubes[0], newCubes[1], newCubes[2], newCubes[3]}
 {
-	for (int i = 0; i < 4; ++i) 
+	
+	//for (int i = 0; i < 4; i++) 
+	//{
+	//	cubes[i] = newCubes[i];
+	//}
+}
+*/
+/*
+ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube newCubes[]) : Shape(color, useColors, startingX, startingY) {
+	for (int i = 0; i < 4; i++)
 	{
 		cubes[i] = newCubes[i];
 	}
 }
+*/
+/*
+ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4]): Shape(color, useColors, startingX, startingY)
+{
+	for (int i = 0; i < 4; i++) 
+	{
+		cubes[i] = newCubes[i];
+	}
+}
+*/
 
-
-
+ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4])
+	: Shape(color, useColors, startingX, startingY), cubes{ newCubes[0], newCubes[1], newCubes[2], newCubes[3] }
+{}
 
 /**********************************************************************
 Function name: drawShape
@@ -216,7 +237,7 @@ bool ComplexShape::check_valid_move(const Board& board) const
 	{
 		int x = cubes[i].get_X();
 		int y = cubes[i].get_Y();
-		bool res = board.isValidPosition(x, y); 
+		res = board.isValidPosition(x, y); 
 	}
 	return res;
 }

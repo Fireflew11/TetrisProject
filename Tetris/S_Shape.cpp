@@ -1,8 +1,8 @@
 #include "S_Shape.h"
 
-S_Shape::S_Shape(bool useColors, int startingX, int startingY) : ComplexShape(gameConfig::COLORS[4], useColors, startingX, startingY, createCubes(startingX, startingY))
-{}
-
+//S_Shape::S_Shape(bool useColors, int startingX, int startingY) : ComplexShape(gameConfig::COLORS[4], useColors, startingX, startingY, createCubes(startingX, startingY))
+//{}
+/*
 const Cube* S_Shape::createCubes(int startingX, int startingY)
 {
    int x = gameConfig::GAME_WIDTH / 2 + startingX + 1;
@@ -14,3 +14,12 @@ const Cube* S_Shape::createCubes(int startingX, int startingY)
         Cube(x , y, gameConfig::COLORS[4]) };
     return cubes;
 }
+*/
+
+S_Shape::S_Shape(bool useColors, int startingX, int startingY) : ComplexShape(gameConfig::COLORS[4], useColors, startingX, startingY,
+
+    { Cube(gameConfig::GAME_WIDTH / 2 + startingX + 1, startingY + 1, gameConfig::COLORS[4]),
+     Cube(gameConfig::GAME_WIDTH / 2 + startingX + 2,startingY , gameConfig::COLORS[4]),
+     Cube(gameConfig::GAME_WIDTH / 2 + startingX  , startingY + 1, gameConfig::COLORS[4]),
+     Cube(gameConfig::GAME_WIDTH / 2 + startingX + 1,startingY , gameConfig::COLORS[4]) })
+{}

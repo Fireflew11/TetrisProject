@@ -66,9 +66,6 @@
     <ClCompile Include="ComplexShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RotatableShape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shape.h">
@@ -117,9 +114,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ComplexShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RotatableShape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

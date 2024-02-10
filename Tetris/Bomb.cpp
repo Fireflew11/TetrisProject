@@ -74,11 +74,11 @@ void Bomb::explosion(Board& board)
 	int bombX = cube.get_X(); 
 	int bombY = cube.get_Y(); 
 
-	for (int y = bombY - blastRange; y < bombY + blastRange; y++)
+	for (int y = bombY - blastRange; y <= bombY + blastRange; y++)
 	{
-		for (int x = bombX - blastRange; x < bombX + blastRange; x++)
+		for (int x = bombX - blastRange; x <= bombX + blastRange; x++)
 		{
-			if (board.isValidPosition(x, y) == true)
+			if (board.isValidExplosion(x, y) == true)
 				board.set_cube_active_in_board_game(x, y);
 		}
 	}

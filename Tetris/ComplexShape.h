@@ -18,7 +18,12 @@ public:
 	void set_cubes_by_Index(int i, Cube cube);
 
 	
-	ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube* newCubes);
+	ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4]);
+
+	
+
+
+
 	Cube* const get_and_set_cubes();
 
 	void implementShapeToBoard(Board& board) override; 
