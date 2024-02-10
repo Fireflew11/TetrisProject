@@ -532,10 +532,10 @@ Shape*  Game::createRandomShape(const Player& player)
     srand(time(0));
     Shape* newShape= nullptr;
     bool bombppearance = isBombAppearance(); 
-    static int cont = 0; 
-    cont++; 
-    //if (bombppearance)
-    if(cont==6)
+    //static int cont = 0; 
+    //cont++; 
+    //if(cont==6)
+    if (bombppearance)
     {
       newShape = new Bomb(useColors, player.getStartingX(), player.getStartingY());
     }
