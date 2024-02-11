@@ -228,6 +228,15 @@ const int Board::getStartingY() const
 	return startingY; 
 }
 
-Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]{
+Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
+{
 	return board_game;
+}
+bool Board::isValidExplosion(const int x, const int y)const
+{
+	if ((x > gameConfig::GAME_WIDTH + startingX) || (x <= startingX))
+		return false;
+	if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
+		return false;
+	return true; 
 }

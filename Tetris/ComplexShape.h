@@ -7,18 +7,23 @@ class ComplexShape: public Shape
 	
 public: 
 	void drawShape(bool isActive = true) const override;
-	void move_Left(const Board& board)override;
-	void move_Right(const Board& board)override;
+	bool move_Left(const Board& board)override;
+	bool move_Right(const Board& board)override;
 	bool continueMovingDown(const Board& board)override;
 	//virtual void rotate_CounterClock_wise(const Board& board) ;
 	//virtual void rotate_Clock_wise(const Board& board) ;
-	void rotate_CounterClock_wise(const Board& board) override;
-	void rotate_Clock_wise(const Board& board) override;
+	bool rotate_CounterClock_wise(const Board& board) override;
+	bool rotate_Clock_wise(const Board& board) override;
 	const Cube* const get_cubes() const;
 	void set_cubes_by_Index(int i, Cube cube);
 
 	
-	ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube* newCubes);
+	ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4]);
+
+	
+
+
+
 	Cube* const get_and_set_cubes();
 
 	void implementShapeToBoard(Board& board) override; 

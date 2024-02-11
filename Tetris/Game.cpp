@@ -106,8 +106,9 @@ void Game::GameLoop()
 
        // Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors); // Create new shapes for each player
         //Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
-        if (!isGameOver)
-            break;
+        
+        //if (!isGameOver)
+          //  break;
         while (true)// Inner loop for handling player movements and shape placements
         {    
             // Update scores and handle user input
@@ -176,7 +177,7 @@ bool Game::checkGameConditions(Player& player, Shape* & shape, bool& isGameOver)
     }
     // Check if the new shape is valid, if not, set the other player as the winner, and end the game
 
-    if (shape->check_valid_move(player.getPlayerBoard()))
+    if (!shape->check_valid_move(player.getPlayerBoard()))
     {
         if (player.getPlayerType() == gameConfig::PlayerType::LEFT_PLAYER)
             players[1]->setIsWinner(true);
@@ -566,60 +567,63 @@ Shape* Game::createRandomShape(const Player& player)
     srand(time(0));
     Shape* newShape = nullptr;
     bool bombppearance = isBombAppearance(); 
+    //static int cont = 0; 
+    //cont++; 
+    //if(cont==6)
     if (bombppearance)
     {
       newShape = new Bomb(useColors, player.getStartingX(), player.getStartingY());
     }
-   else
+    else
     {
-      int randomShape = rand() % (int)gameConfig::NUM_OF_SHAPES + 1;
+        int randomShape = rand() % (int)gameConfig::NUM_OF_SHAPES + 1;
 
-      switch ((gameConfig::ShapeType)randomShape)
-      {
-      case gameConfig::ShapeType::I:
-      {
-          newShape = new I_Shape(useColors, player.getStartingX(), player.getStartingY());
-          break;
-      }
-      case  gameConfig::ShapeType::O:
-      {
-          newShape = new O_Shape(useColors, player.getStartingX(), player.getStartingY());
-          break;
-      }
-      case  gameConfig::ShapeType::T:
-      {
-          newShape = new T_Shape(useColors, player.getStartingX(), player.getStartingY());
-          break;
-      }
+        switch ((gameConfig::ShapeType)randomShape)
+        {
+        case gameConfig::ShapeType::I:
+        {
+            newShape = new I_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+        case  gameConfig::ShapeType::O:
+        {
+            newShape = new O_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+        case  gameConfig::ShapeType::T:
+        {
+            newShape = new T_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
 
-      case  gameConfig::ShapeType::S:
-      {
-          newShape = new S_Shape(useColors, player.getStartingX(), player.getStartingY());
-          break;
-      }
+        case  gameConfig::ShapeType::S:
+        {
+            newShape = new S_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
 
-      case  gameConfig::ShapeType::Z:
-      {
-          newShape = new Z_Shape(useColors, player.getStartingX(), player.getStartingY());
-          break;
-      }
-      case  gameConfig::ShapeType::J:
-      {
-          newShape = new J_Shape(useColors, player.getStartingX(), player.getStartingY());
-          break;
+        case  gameConfig::ShapeType::Z:
+        {
+            newShape = new Z_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+        case  gameConfig::ShapeType::J:
+        {
+            newShape = new J_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
 
-      }
+        }
 
-      case  gameConfig::ShapeType::L:
-      {
-          newShape = new L_Shape(useColors, player.getStartingX(), player.getStartingY());
-          break;
+        case  gameConfig::ShapeType::L:
+        {
+            newShape = new L_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
 
-      }
+        }
 
-      default:
-          break;
-      }
+        default:
+            break;
+        }
     }
     return newShape; 
 }

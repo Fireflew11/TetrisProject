@@ -24,7 +24,8 @@ The constructor sets the initial values for the player's score, winner status, a
  Player:: Player(gameConfig:: PlayerType playerType) : isWinner(false), score(0), playerType(playerType),playerBoard(
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
     (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD),
-     startingX((playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD)
+     startingX((playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD),
+     startingY((playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_Y_LEFT_BOARD : gameConfig::MIN_Y_RIGHT_BOARD)
  {}
 
 /**********************************************************************
