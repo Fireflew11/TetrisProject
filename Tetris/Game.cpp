@@ -14,81 +14,6 @@
 #include "S_Shape.h"
 #include "Bomb.h"
 /**********************************************************************
-Function name: keyChoice
-Input:gameConfig::LeftKeys key, Shape& shape
-Output: --
-Function:The function handles the Left player's key choices for movement, rotation, and dropping.
-**********************************************************************/
-/*
-void Game::keyChoice(gameConfig::LeftKeys key)
-{
-    switch(key)
-    {
-    case gameConfig::LeftKeys::RIGHT:
-        currentShapeLeftPlayer->move_Right(players[0]->getPlayerBoard());
-            break;
-        case gameConfig::LeftKeys::LEFT:
-            currentShapeLeftPlayer->move_Left(players[0]->getPlayerBoard());
-            break;
-        case gameConfig::LeftKeys::ROTATE_CLOCK_WISE:
-        {
-            currentShapeLeftPlayer->rotate_Clock_wise(players[0]->getPlayerBoard());
-            break;
-        }
-            
-        case gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE:
-        {
-            currentShapeLeftPlayer->rotate_CounterClock_wise(players[0]->getPlayerBoard());
-            break;
-        }
-        case gameConfig::LeftKeys::DROP:
-            currentShapeLeftPlayer->drop(players[0]->getPlayerBoard());
-            break;
-        default:
-            break; 
-    }
-}
-*/ //the function
-
-/**********************************************************************
-Function name: keyChoice
-Input:gameConfig::LeftKeys key, Shape& shape
-Output: --
-Function:The function handles the Right player's key choices for movement, rotation, and dropping.
-**********************************************************************/
-/*
-void Game::keyChoice(gameConfig::RightKeys key)
-{
-    switch (key)
-    {
-    case gameConfig::RightKeys::RIGHT:
-        currentShapeRightPlayer->move_Right(players[1].getPlayerBoard());
-        break;
-    case gameConfig::RightKeys::LEFT:
-        currentShapeRightPlayer->move_Left(players[1].getPlayerBoard());
-        break;
-    case gameConfig::RightKeys::ROTATE_CLOCK_WISE:
-    {
-        currentShapeRightPlayer->rotate_Clock_wise(players[1].getPlayerBoard());
-        break;
-    }
-
-    case gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE:
-    {
-        currentShapeRightPlayer->rotate_CounterClock_wise(players[1].getPlayerBoard());
-        break;
-
-    }
-    case gameConfig::RightKeys::DROP:
-        currentShapeRightPlayer->drop(players[1].getPlayerBoard());
-        break;
-    default:
-        break;
-    }
-  
-}
-*/
-/**********************************************************************
 Function name: GameLoop
 Input: --
 Output: --
@@ -97,51 +22,67 @@ Function:The main game loop responsible for managing the gameplay, player moves,
 void Game::GameLoop()
 {
     bool isGameOver = false;
+
     players[0]->displayScore();
     players[1]->displayScore();
     while (!isGameOver)// Main game loop
     {
-        currentShapeLeftPlayer = createRandomShape(*players[0]);
-        currentShapeRightPlayer=createRandomShape(*players[1]); 
+        if (status != gameConfig::GameStatus::Paused) {
+            currentShapeLeftPlayer = createRandomShape(*players[0]);
+            currentShapeRightPlayer = createRandomShape(*players[1]);
+        }
+        currentShapeLeftPlayer->drawShape();
+        currentShapeRightPlayer->drawShape();
+        status = gameConfig::GameStatus::Running;
 
-       // Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors); // Create new shapes for each player
-        //Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
-        
-        //if (!isGameOver)
-          //  break;
         while (true)// Inner loop for handling player movements and shape placements
         {    
-            // Update scores and handle user input
-            players[0]->updateScore(players[0]->getPlayerBoard().clearFullLines());
-            players[1]->updateScore(players[1]->getPlayerBoard().clearFullLines());
-
             //handleInput returns true if ESC was pressed
             if (handleInput())
                 return;
 
-            Sleep(300);
+            Sleep(500);
 
             // Move shapes down for both players
+            currentShapeLeftPlayer->drawShape(false);
+            currentShapeRightPlayer->drawShape(false);
             bool movedDownPlayer1 = currentShapeLeftPlayer->continueMovingDown(players[0]->getPlayerBoard());
             bool movedDownPlayer2 = currentShapeRightPlayer->continueMovingDown(players[1]->getPlayerBoard());
+            
 
             // Check if both shapes reached the bottom
             if (!movedDownPlayer1 && !movedDownPlayer2)
             {
+                currentShapeLeftPlayer->drawShape();
+                currentShapeRightPlayer->drawShape();
                 currentShapeLeftPlayer->implementShapeToBoard(players[0]->getPlayerBoard()); 
-                currentShapeRightPlayer->implementShapeToBoard(players[1]->getPlayerBoard()); 
+                currentShapeRightPlayer->implementShapeToBoard(players[1]->getPlayerBoard());
+                Computer* computerPlayer0 = dynamic_cast<Computer*>(players[0]);
+                if (computerPlayer0)
+                    computerPlayer0->resetTargets();
+                Computer* computerPlayer1 = dynamic_cast<Computer*>(players[1]);
+                if (computerPlayer1)
+                    computerPlayer1->resetTargets();
                 isGameOver = isMaxHeight();
                 break;
             }
             // Handle shape movements and updates for player 1
             if (!movedDownPlayer1)
             {
+                Computer* computerPlayer0 = dynamic_cast<Computer*>(players[0]);
+                if (computerPlayer0)
+                    computerPlayer0->resetTargets();
+                currentShapeLeftPlayer->drawShape();
                 if (checkGameConditions(*players[0], currentShapeLeftPlayer, isGameOver))
                     break; 
             }
             // Handle shape movements and updates for player 2
             if (!movedDownPlayer2)
             {
+                Computer* computerPlayer1 = dynamic_cast<Computer*>(players[1]);
+                if (computerPlayer1)
+                    computerPlayer1->resetTargets();
+                currentShapeRightPlayer->drawShape();
                 if (checkGameConditions(*players[1], currentShapeRightPlayer, isGameOver))
                     break;
             }
@@ -170,11 +111,7 @@ bool Game::checkGameConditions(Player& player, Shape* & shape, bool& isGameOver)
     }
     // Reroll the shape for the next iteration
     shape = createRandomShape(player);//צריך להכניס useColors /////
-    Computer* computerPlayer = dynamic_cast<Computer*>(&player);
-    if (computerPlayer)
-    {
-        computerPlayer->clearMovesList();
-    }
+    
     // Check if the new shape is valid, if not, set the other player as the winner, and end the game
 
     if (!shape->check_valid_move(player.getPlayerBoard()))
@@ -196,6 +133,7 @@ void Game::initializePlayers(char pick)
     if (players[0] != nullptr && players[1] != nullptr) {
         delete players[0];
         delete players[1];
+        players[0] = players[1] = nullptr;
     }
     MenuOption option = (MenuOption)pick;
     switch (option) {
@@ -215,31 +153,6 @@ void Game::initializePlayers(char pick)
     }
 }
 
-/**********************************************************************
-Function name: checkKeyChoice
-Input:int keyPressed, Shape& Leftshape,Shape& RightShape
-Output:--
-Function:The function checks the key pressed by the player and calls the appropriate keyChoice function for the respective player.
-**********************************************************************/
-/*
-void Game:: checkKeyChoice(int keyPressed)
-{
-    keyPressed = toupperG(keyPressed);
-    //keyPressed = toupper(keyPressed); 
-    if (keyPressed == (int)gameConfig::LeftKeys::LEFT|| keyPressed == (int)gameConfig::LeftKeys::RIGHT ||
-        keyPressed == (int)gameConfig::LeftKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE || 
-        keyPressed == (int)gameConfig::LeftKeys::DROP)
-    {
-        keyChoice((gameConfig::LeftKeys)keyPressed); 
-    }
-    else if (keyPressed == (int)gameConfig::RightKeys::LEFT || keyPressed == (int)gameConfig::RightKeys::RIGHT ||
-        keyPressed == (int)gameConfig::RightKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE ||
-        keyPressed == (int)gameConfig::RightKeys::DROP)
-    {
-        keyChoice((gameConfig::RightKeys)keyPressed);
-    }
-}
-*/
 /**********************************************************************
 Function name:isMaxHeight
 Input: --
@@ -283,13 +196,13 @@ void Game::startGame()
     // Main loop for game status handling
     while (status != gameConfig::GameStatus::Ended)
     {
+
         if (status == gameConfig::GameStatus::Finished)
         {
             // Announce the winner and reset the game
             announceWinner();
             isMenuVisible = false;
-            //delete players
-            initializePlayers(0);
+            status = gameConfig::GameStatus::Menu;
         }
         // Clear the console, print the menu, and set the menu visibility flag
         // Using isMenuVisible to prevent continuous blinking if pressing random key
@@ -311,47 +224,38 @@ void Game::startGame()
                 useColors = false;
             else
                 useColors = true;
-
             system("cls");
-            // Check if the game was paused, reset players, and set the game status to NewGame
-            if (status == gameConfig::GameStatus::Paused)
-            {
-                status = gameConfig::GameStatus::NewGame;
-                //GameLoop called StartMenu when ESC was pressed, this section resets the players and returns to the game
-                //Using return to kill the stack
-                return; 
-
-            }
-            // Main loop for handling NewGame and Running status
-            while (status == gameConfig::GameStatus::NewGame || status == gameConfig::GameStatus::Running)
-            {
-                players[0]->getPlayerBoard().setUseColor(useColors);
-                players[1]->getPlayerBoard().setUseColor(useColors);
-                players[0]->getPlayerBoard().display_board();
-                players[1]->getPlayerBoard().display_board();
-                GameLoop();
-            }
+            isMenuVisible = false;
+            players[0]->getPlayerBoard().setUseColor(useColors);
+            players[1]->getPlayerBoard().setUseColor(useColors);
+            players[0]->getPlayerBoard().display_board();
+            players[1]->getPlayerBoard().display_board();
+            status = gameConfig::GameStatus::NewGame;
+            GameLoop();
 
         }
         // Continue a paused game by displaying player boards and scores
         else if (keyPressed == (char)gameConfig::MenuOption::CONTINUE_PAUSED_GAME && status == gameConfig::GameStatus::Paused)
         {
             system("cls");
+            isMenuVisible = false;
             players[0]->getPlayerBoard().display_board();
             players[1]->getPlayerBoard().display_board();
             players[0]->displayScore();
             players[1]->displayScore();
-            return;
+            GameLoop();
         }
         else if (keyPressed == (char)gameConfig::MenuOption::PRESENT_INSTRUCTIONS)
         {
             system("cls");
+            isMenuVisible = false;
             Present_instructionsand_keys();
         }
         
         else if (keyPressed == (char)gameConfig::MenuOption::EXIT)
         {
             system("cls");
+            isMenuVisible = false;
             status = gameConfig::GameStatus::Ended;
             return;
         }
@@ -479,26 +383,6 @@ Input:const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver
 Output:Returns true if the game is still valid; false if the game is over.
 Function:Checks the validity of the game based on the current positions of player shapes.
 **********************************************************************/
-/*
-bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver)
-{
-    if (!(players[0]->getPlayerBoard().check_valid_move(ShapePlayer1)) || !(players[1]->getPlayerBoard().check_valid_move(ShapePlayer2)))
-    {
-        if (!(players[0]->getPlayerBoard().check_valid_move(ShapePlayer1)))
-        {
-            players[1]->setIsWinner(true);
-        }
-        if (!(players[1]->getPlayerBoard().check_valid_move(ShapePlayer2)))
-        {
-            players[0]->setIsWinner(true);
-        }
-        isGameOver = true;
-        status = gameConfig::GameStatus::Finished;
-        return false; 
-    }
-    return true; 
-}
-*/
 bool Game::checkGameValidity(bool& isGameOver)
 {
    
@@ -531,42 +415,37 @@ bool Game::handleInput()
 {
     players[0]->updateScore(players[0]->getPlayerBoard().clearFullLines());
     players[1]->updateScore(players[1]->getPlayerBoard().clearFullLines());
-
-    /*
-    if (players[0]->decideMove(curShapePlayer1) || players[1]->decideMove(curShapePlayer2)) {
-        status = gameConfig::GameStatus::Paused;
-        startGame();
-
-        //using return to kill the stack
-        if (status == gameConfig::GameStatus::Ended || status == gameConfig::GameStatus::NewGame)
-            return true;
-    }
-    */
-
+    Computer* computer0 = dynamic_cast<Computer*>(players[0]);
+    Computer* computer1 = dynamic_cast<Computer*>(players[1]);
+    Human* human0 = dynamic_cast<Human*>(players[0]);
+    Human* human1 = dynamic_cast<Human*>(players[1]);
+    char keyPressed = 0;
     for (int i = 0; i < 5; i++)
     {
         if (_kbhit())
         {
-            char keyPressed = toupperG(_getch());
-            if (players[0]->decideMove(*currentShapeLeftPlayer, keyPressed) || players[1]->decideMove(*currentShapeRightPlayer, keyPressed))
+            keyPressed = toupperG(_getch());
+            if ((human0 != nullptr && players[0]->decideMove(*currentShapeLeftPlayer, keyPressed)) ||
+                (human1 != nullptr && players[1]->decideMove(*currentShapeRightPlayer, keyPressed)))
             {
                 status = gameConfig::GameStatus::Paused;
-                startGame();
-
-                //using return to kill the stack
-                if (status == gameConfig::GameStatus::Ended || status == gameConfig::GameStatus::NewGame)
-                    return true;
+                return true;
             }
         }
     }
+    if (computer0 != nullptr)
+        players[0]->decideMove(*currentShapeLeftPlayer, keyPressed);
+    if (computer1 != nullptr)
+        players[1]->decideMove(*currentShapeRightPlayer, keyPressed);
+
     return false;
 }
 
 Shape* Game::createRandomShape(const Player& player)
 {
-    srand(time(0));
     Shape* newShape = nullptr;
-    bool bombppearance = isBombAppearance(); 
+    //bool bombppearance = isBombAppearance(); 
+    bool bombppearance = false;
     //static int cont = 0; 
     //cont++; 
     //if(cont==6)

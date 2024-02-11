@@ -41,7 +41,8 @@ public:
 	void set_cube_active_in_board_game(const int x, const int y);
 	const int getStartingX()const; 
 	const int getStartingY() const; 
-
+	int getMaxHeight();
+	int getHolesAmount();
 	Cube(&get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
 
 private: 

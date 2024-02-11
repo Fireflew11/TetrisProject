@@ -228,6 +228,42 @@ const int Board::getStartingY() const
 	return startingY; 
 }
 
+int Board::getMaxHeight()
+{
+	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
+	{
+		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
+		{
+			if (board_game[i][j].getIsActive())
+				return gameConfig::GAME_HEIGHT - i;
+		}
+	}
+	return 0;
+}
+int Board::getHolesAmount() {
+	int holes = 0;
+
+	// Iterate through each row and column
+	for (int row = 1; row < gameConfig::GAME_HEIGHT; row++) {
+		for (int col = 0; col < gameConfig::GAME_WIDTH; col++) {
+			// Check if the current cell is inactive and surrounded by active cubes
+			if (!board_game[row][col].getIsActive() &&
+				board_game[row - 1][col].getIsActive()) {
+				// Check if left and right cells are active
+				bool leftActive = (col > 0) ? board_game[row][col - 1].getIsActive() : true;
+				bool rightActive = (col < gameConfig::GAME_WIDTH - 1) ? board_game[row][col + 1].getIsActive() : true;
+
+				// Check if all surrounding cells are active
+				if (leftActive && rightActive) {
+					holes++;  // Found a hole
+				}
+			}
+		}
+	}
+
+	return holes;
+}
+
 Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
 {
 	return board_game;

@@ -67,7 +67,6 @@ Checks if the new position is valid on the board.
 bool ComplexShape::move_Left(const Board& board)
 {
 	bool res = false;
-	drawShape(false);
 	ComplexShape temp = *this;
 
 	for (int i = 0; i < 4; ++i)
@@ -83,7 +82,6 @@ bool ComplexShape::move_Left(const Board& board)
 		res = true;
 	}
 	return res;
-	drawShape(true);
 }
 
 
@@ -97,7 +95,6 @@ Checks if the new position is valid on the board.
 bool ComplexShape::move_Right(const Board& board)
 {
 	bool res = false;
-	drawShape(false);
 	ComplexShape temp = *this;
 
 	for (int i = 0; i < 4; ++i)
@@ -113,7 +110,6 @@ bool ComplexShape::move_Right(const Board& board)
 		res = true;
 	}
 	return res;
-	drawShape(true);
 }
 
 /**********************************************************************
@@ -134,9 +130,7 @@ bool ComplexShape::continueMovingDown(const Board& board)
 
 	if (temp.check_valid_move(board))
 	{
-		drawShape(false);  // Erase the current shape
 		*this = temp;      // Update the shape
-		drawShape(true);   // Draw the shape at its new position
 		return true;
 	}
 
@@ -168,6 +162,11 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 	cubes[i] = cube;
 }
 
+Shape* ComplexShape::clone() const
+{
+	return new ComplexShape(*this);
+}
+
  Cube* const ComplexShape::get_and_set_cubes()
 {
 	return cubes;
@@ -177,7 +176,6 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 bool ComplexShape::rotate_CounterClock_wise(const Board& board)
 {
 	bool res = false;
-	drawShape(false);
 	ComplexShape tempShape = *this;
 	int centerX = tempShape.get_cubes()[0].get_X();
 	int centerY = tempShape.get_cubes()[0].get_Y();
@@ -199,13 +197,11 @@ bool ComplexShape::rotate_CounterClock_wise(const Board& board)
 		res = true;
 	}
 	return res;
-	drawShape(true);
 }
 
 bool ComplexShape::rotate_Clock_wise(const Board& board)
 {
 	bool res = false;
-	drawShape(false);
 	ComplexShape tempShape = *this;
 	int centerX = tempShape.get_cubes()[0].get_X();
 	int centerY = tempShape.get_cubes()[0].get_Y();
@@ -227,7 +223,6 @@ bool ComplexShape::rotate_Clock_wise(const Board& board)
 		res = true;
 	}
 	return res;
-	drawShape(true);
 }
 
 

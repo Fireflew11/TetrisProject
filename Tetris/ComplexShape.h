@@ -16,7 +16,7 @@ public:
 	bool rotate_Clock_wise(const Board& board) override;
 	const Cube* const get_cubes() const;
 	void set_cubes_by_Index(int i, Cube cube);
-
+	Shape* clone() const override;
 	
 	ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4]);
 

@@ -22,7 +22,7 @@ Member Variables:
 class Player
 {
 public:
-	using ShapeFunctionType = void (Shape::*)(const Board&);
+	using ShapeFunctionType = bool (Shape::*)(const Board&);
 private: 
 	gameConfig::PlayerType playerType; 
 	Board playerBoard;

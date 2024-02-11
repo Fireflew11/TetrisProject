@@ -56,6 +56,8 @@ public:
 	void initializePlayers(char pick);
 	bool checkGameValidity(bool& isGameOver);
 	bool handleInput();
+	bool handleHuman(Player* player);
+	bool handleComputer(Player* player);
 	bool checkGameConditions(Player& player, Shape*& shape, bool& isGameOver);
 
 	Shape* createRandomShape(const Player& player);

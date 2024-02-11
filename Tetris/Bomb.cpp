@@ -4,6 +4,16 @@
 
 //Bomb::Bomb(gameConfig::PlayerType playerType, bool useColors): Shape(gameConfig::COLORS[8], true),cube(playerType,useColors){}
 
+const Cube& Bomb::getCube() const
+{
+	return cube;
+}
+
+Shape* Bomb::clone() const
+{
+	return new Bomb(*this);
+}
+
 Bomb::Bomb(bool useColors, int startingX, int startingY) :Shape(gameConfig::COLORS[8], useColors, startingX, startingY), cube(startingX +(gameConfig::GAME_WIDTH)/2 +1, startingY, gameConfig::COLORS[8])
 {}
 
@@ -16,7 +26,6 @@ void Bomb:: drawShape(bool isActive)const
 bool Bomb::move_Left(const Board& board)
 {
 	bool res = false;
-	drawShape(false); 
 	int x = cube.get_X()-1;
 	int y = cube.get_Y(); 
 
@@ -30,13 +39,11 @@ bool Bomb::move_Left(const Board& board)
 		res = true;
 	}
 	return res;
-	drawShape(true); 
 
 }
 bool Bomb:: move_Right(const Board& board)
 {
 	bool res = false;
-	drawShape(false);
 	int x = cube.get_X() + 1;
 	int y = cube.get_Y();
 
@@ -50,7 +57,6 @@ bool Bomb:: move_Right(const Board& board)
 		res = true;
 	}
 	return res;
-	drawShape(true);
 
 }
 bool Bomb::continueMovingDown(const Board& board)
@@ -62,9 +68,7 @@ bool Bomb::continueMovingDown(const Board& board)
 
 	if (temp.check_valid_move(board))
 	{
-		drawShape(false);  // Erase the current shape
 		*this = temp;      // Update the shape
-		drawShape(true);   // Draw the shape at its new position
 		return true;
 	}
 

@@ -25,12 +25,13 @@ Input: const Board& board
 Output: --
 Function:The function moves the shape down to the bottom
 **********************************************************************/
-void Shape::drop(const Board& board)
+bool Shape::drop(const Board& board)
 {
 	while (continueMovingDown(board))
 	{
 		Sleep(30);
 	}
+	return false;
 }
 
 
