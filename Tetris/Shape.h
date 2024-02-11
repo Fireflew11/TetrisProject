@@ -20,8 +20,8 @@ public:
 
 
 	virtual void drawShape(bool isActive = true) const=0;
-	virtual void move_Left(const Board& board)=0;
-	virtual void move_Right(const Board& board)=0;
+	virtual bool move_Left(const Board& board)=0;
+	virtual bool move_Right(const Board& board)=0;
 	virtual bool continueMovingDown(const Board& board)=0;
 	virtual void implementShapeToBoard(Board& board) = 0;
 	virtual bool check_valid_move(const Board& board) const=0;
@@ -30,8 +30,8 @@ public:
 	bool getUseColors() const; 
 	void drop(const Board& board);
 
-	virtual void rotate_CounterClock_wise(const Board& board)=0;
-	virtual void rotate_Clock_wise(const Board& board) =0;
+	virtual bool rotate_CounterClock_wise(const Board& board)=0;
+	virtual bool rotate_Clock_wise(const Board& board) =0;
 
 	Shape(int color, bool useColors, int startingX, int StartingY); 
 

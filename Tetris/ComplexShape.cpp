@@ -64,9 +64,9 @@ Output: --
 Function:The Function moves the shape one unit to the left.
 Checks if the new position is valid on the board.
 **********************************************************************/
-void ComplexShape::move_Left(const Board& board)
+bool ComplexShape::move_Left(const Board& board)
 {
-
+	bool res = false;
 	drawShape(false);
 	ComplexShape temp = *this;
 
@@ -80,7 +80,9 @@ void ComplexShape::move_Left(const Board& board)
 	if (temp.check_valid_move(board))
 	{
 		*this = temp;
+		res = true;
 	}
+	return res;
 	drawShape(true);
 }
 
@@ -92,8 +94,9 @@ Output: None
 Function: Moves the shape one unit to the right.
 Checks if the new position is valid on the board.
 **********************************************************************/
-void ComplexShape::move_Right(const Board& board)
+bool ComplexShape::move_Right(const Board& board)
 {
+	bool res = false;
 	drawShape(false);
 	ComplexShape temp = *this;
 
@@ -107,7 +110,9 @@ void ComplexShape::move_Right(const Board& board)
 	if (temp.check_valid_move(board))
 	{
 		*this = temp;
+		res = true;
 	}
+	return res;
 	drawShape(true);
 }
 
@@ -169,55 +174,61 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 }
 
 
- void ComplexShape::rotate_CounterClock_wise(const Board& board)
- {
-	 drawShape(false);
-	 ComplexShape tempShape = *this;
-	 int centerX = tempShape.get_cubes()[0].get_X();
-	 int centerY = tempShape.get_cubes()[0].get_Y();
+bool ComplexShape::rotate_CounterClock_wise(const Board& board)
+{
+	bool res = false;
+	drawShape(false);
+	ComplexShape tempShape = *this;
+	int centerX = tempShape.get_cubes()[0].get_X();
+	int centerY = tempShape.get_cubes()[0].get_Y();
 
-	 for (int i = 1; i < 4; ++i) {
-		 int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
-		 int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
+	for (int i = 1; i < 4; ++i) {
+		int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
+		int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
 
-		 int newX = centerX - relativeY;
-		 int newY = centerY + relativeX;
+		int newX = centerX - relativeY;
+		int newY = centerY + relativeX;
 
-		 Cube tempCube(newX, newY, getColor(), true);
-		 tempShape.set_cubes_by_Index(i, tempCube);
-	 }
+		Cube tempCube(newX, newY, getColor(), true);
+		tempShape.set_cubes_by_Index(i, tempCube);
+	}
 
-	 if (tempShape.check_valid_move(board))
-	 {
-		 *this = tempShape;
-	 }
-	 drawShape(true);
- }
+	if (tempShape.check_valid_move(board))
+	{
+		*this = tempShape;
+		res = true;
+	}
+	return res;
+	drawShape(true);
+}
 
- void ComplexShape::rotate_Clock_wise(const Board& board)
- {
-	 drawShape(false);
-	 ComplexShape tempShape = *this;
-	 int centerX = tempShape.get_cubes()[0].get_X();
-	 int centerY = tempShape.get_cubes()[0].get_Y();
+bool ComplexShape::rotate_Clock_wise(const Board& board)
+{
+	bool res = false;
+	drawShape(false);
+	ComplexShape tempShape = *this;
+	int centerX = tempShape.get_cubes()[0].get_X();
+	int centerY = tempShape.get_cubes()[0].get_Y();
 
-	 for (int i = 1; i < 4; ++i) {
-		 int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
-		 int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
+	for (int i = 1; i < 4; ++i) {
+		int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
+		int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
 
-		 int newX = centerX - relativeY;
-		 int newY = centerY + relativeX;
+		int newX = centerX - relativeY;
+		int newY = centerY + relativeX;
 
-		 Cube tempCube(newX, newY, getColor(), true);
-		 tempShape.set_cubes_by_Index(i, tempCube);
-	 }
+		Cube tempCube(newX, newY, getColor(), true);
+		tempShape.set_cubes_by_Index(i, tempCube);
+	}
 
-	 if (tempShape.check_valid_move(board))
-	 {
-		 *this = tempShape;
-	 }
-	 drawShape(true);
- }
+	if (tempShape.check_valid_move(board))
+	{
+		*this = tempShape;
+		res = true;
+	}
+	return res;
+	drawShape(true);
+}
 
 
 void ComplexShape::implementShapeToBoard(Board& board)

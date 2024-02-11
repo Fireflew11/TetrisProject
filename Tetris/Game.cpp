@@ -527,7 +527,7 @@ bool Game::handleInput()
     return false;
 }
 
-Shape*  Game::createRandomShape(const Player& player)
+Shape* Game::createRandomShape(const Player& player)
 {
     srand(time(0));
     Shape* newShape= nullptr;

@@ -13,8 +13,9 @@ void Bomb:: drawShape(bool isActive)const
 	cube.drawCube(isActive,getColor());
 }
 
-void Bomb::move_Left(const Board& board)
+bool Bomb::move_Left(const Board& board)
 {
+	bool res = false;
 	drawShape(false); 
 	int x = cube.get_X()-1;
 	int y = cube.get_Y(); 
@@ -26,12 +27,15 @@ void Bomb::move_Left(const Board& board)
 	if (temp.check_valid_move(board))
 	{
 		*this = temp; 
+		res = true;
 	}
+	return res;
 	drawShape(true); 
 
 }
-void Bomb:: move_Right(const Board& board)
+bool Bomb:: move_Right(const Board& board)
 {
+	bool res = false;
 	drawShape(false);
 	int x = cube.get_X() + 1;
 	int y = cube.get_Y();
@@ -43,7 +47,9 @@ void Bomb:: move_Right(const Board& board)
 	if (temp.check_valid_move(board))
 	{
 		*this = temp;
+		res = true;
 	}
+	return res;
 	drawShape(true);
 
 }
