@@ -26,7 +26,7 @@ void Board::display_board()
 }
 
 /**********************************************************************
-Function name:Constructor Board
+Function name:Constructor Board 
 Input:int starting_X, int starting_Y, bool useColors
 Function:Constructor for the Board class.
 **********************************************************************/
@@ -232,7 +232,6 @@ Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_W
 {
 	return board_game;
 }
-
 bool Board::isValidExplosion(const int x, const int y)const
 {
 	if ((x > gameConfig::GAME_WIDTH + startingX) || (x <= startingX))

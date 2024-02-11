@@ -36,7 +36,6 @@ public:
 	Shape(int color, bool useColors, int startingX, int StartingY); 
 
 
-	//Shape(gameConfig::PlayerType playerType, bool useColors=true);
 
     
 };

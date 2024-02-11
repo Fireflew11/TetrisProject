@@ -4,9 +4,11 @@
 #include "gameConfig.h"
 #include "Player.h"
 #include <iomanip>
+#include "Human.h"
+#include "Computer.h"
 using namespace std;
 class player; 
-
+enum class MenuOption { PVP = '1', PVC = '3', CONTINUE_PAUSED_GAME = '2', CVC = '4', PRESENT_INSTRUCTIONS = '8', EXIT = '9' };
 /**********************************************************************
 Class: Game
 
@@ -21,7 +23,7 @@ Member Variables:
 **********************************************************************/
 class Game
 {
-	Player players[gameConfig::NUM_OF_PLAYERS];
+	Player *players[gameConfig::NUM_OF_PLAYERS];
 	gameConfig::GameStatus status;
 	bool useColors; 
 
@@ -33,9 +35,11 @@ class Game
 public: 
 
 
+	/*
 	void keyChoice(gameConfig::LeftKeys key);
 	void keyChoice(gameConfig::RightKeys key);
 	void checkKeyChoice(int keyPressed);
+	*/
 
 	Game(bool useColors=true, gameConfig::GameStatus status= gameConfig::GameStatus::Running,Shape* ShapeLeftPlayer= nullptr, Shape* ShapeRightPlayer= nullptr);
 	void Print_Menu(); 
@@ -48,6 +52,8 @@ public:
 	void printSeparator();
 	bool isMaxHeight();
 	void announceWinner();
+
+	void initializePlayers(char pick);
 	bool checkGameValidity(bool& isGameOver);
 	bool handleInput();
 	bool checkGameConditions(Player& player, Shape*& shape, bool& isGameOver);

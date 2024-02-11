@@ -6,10 +6,10 @@
 
 int main() 
 {
-	
 	SetCurserVisibility(false);
 	Game game1; 
 	game1.startGame();
 	cout << "Thanks for playing!!" << endl;
+
 }
 

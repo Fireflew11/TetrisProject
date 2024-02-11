@@ -21,7 +21,7 @@ Output: --
 Function:Initializes a Player object with the specified player type, initial score, and winner status.
 The constructor sets the initial values for the player's score, winner status, and retrieves the appropriate starting coordinates and board for the player based on their type.
 **********************************************************************/
- Player:: Player(gameConfig:: PlayerType playerType, int score, bool isWinner) :isWinner(false), score(0), playerType(playerType),playerBoard(
+ Player:: Player(gameConfig:: PlayerType playerType) : isWinner(false), score(0), playerType(playerType),playerBoard(
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
     (playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig:: MIN_Y_LEFT_BOARD: gameConfig:: MIN_Y_RIGHT_BOARD),
      startingX((playerType == gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD),
@@ -117,6 +117,8 @@ Function:The function retrieves the current score of the player.
  {
      return startingY; 
  }
+
+
 
 
 
