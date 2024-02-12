@@ -15,7 +15,11 @@ bool Computer::decideMove(Shape& shape, char key)
 		for (int i = 0; i < 4; i++)
 		{
 			checkAllMoves(*temp, i, maxScoreForMove);
-			temp->rotate_Clock_wise(getPlayerBoard());
+			if(!temp->rotate_Clock_wise(getPlayerBoard()))
+			{
+				temp->continueMovingDown(getPlayerBoard());
+				temp->rotate_Clock_wise(getPlayerBoard());
+			}
 		}
 	}
 	int curX;
@@ -26,14 +30,19 @@ bool Computer::decideMove(Shape& shape, char key)
 	else if (bombTemp != nullptr)
 		curX = bombTemp->getCube().get_X();
 	shape.drawShape(false);
-	if(curRotationTarget > 0) {
-		shape.rotate_Clock_wise(getPlayerBoard());
+	if (curRotationTarget > 0) {
+		if (!shape.rotate_Clock_wise(getPlayerBoard())) {
+			shape.continueMovingDown(getPlayerBoard());
+			shape.rotate_Clock_wise(getPlayerBoard());
+		}
 		curRotationTarget--;
 	}
 	else if (curX > curXTarget)
 		shape.move_Left(getPlayerBoard());
-	else if(curX < curXTarget)
+	else if (curX < curXTarget)
 		shape.move_Right(getPlayerBoard());
+	else
+		shape.drop(getPlayerBoard());
 	shape.drawShape(true);
 	return false;
 }
@@ -55,7 +64,7 @@ void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int&
 
 		while (tempDown->continueMovingDown(tempBoard));
 		tempDown->implementShapeToBoard(tempBoard);
-		int curScore = calculateScore(tempBoard);
+		int curScore = calculateScore(tempBoard, tempDown);
 		if (curScore > maxScoreForMove)
 		{
 			maxScoreForMove = curScore;
@@ -81,12 +90,21 @@ void Computer::createTempShape(Shape& shape, Shape*& tempShape) {
 	tempShape = shape.clone();
 }
 
-int Computer::calculateScore(Board board)
+int Computer::calculateScore(Board board, Shape* shape) const
 {
 	int score = 0;
-	score += board.getMaxHeight() * (int)ScoringVariables::maxHeight;
-	score += board.getHolesAmount() * (int)ScoringVariables::Hole;
+	ComplexShape *tempShape = dynamic_cast<ComplexShape*>(shape);
+	if (tempShape->fillsWell(board))
+		score += 100;
 	score += board.clearFullLines() * (int)ScoringVariables::ClearLine;
+	score += board.getMaxHeight() * -30;
+	score += board.calculateSmoothness() * -10;
+	score += board.getHolesAmount() * -80;
+
+	
+	
+
+
 	return score;
 }
 

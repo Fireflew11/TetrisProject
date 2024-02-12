@@ -19,7 +19,7 @@ public:
 	Shape* clone() const override;
 	
 	ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4]);
-
+	bool fillsWell(const Board& board) const;
 	
 
 

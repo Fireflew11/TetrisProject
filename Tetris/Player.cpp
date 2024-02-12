@@ -57,6 +57,8 @@ Function:Updates the player's score based on the number of lines cleared during 
      default:
          break;
      }
+     if(numClearedLines > 0)
+       playerBoard.drawBoardCubes();
  }
 
 /**********************************************************************

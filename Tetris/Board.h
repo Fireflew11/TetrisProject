@@ -44,6 +44,8 @@ public:
 	int getMaxHeight();
 	int getHolesAmount();
 	Cube(&get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
+	double calculateSmoothness();
+	int getMaxHeight(int col);
 
 private: 
 	void print_Line(); 

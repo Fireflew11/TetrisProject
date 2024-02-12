@@ -1,6 +1,6 @@
 ﻿#include "Board.h"
 #include "gameConfig.h"
-
+#include <cmath>
 /**********************************************************************
 Function name: display_board
 Input: --
@@ -138,9 +138,6 @@ int  Board::clearFullLines()
 			clearLine(i);  
 		}
 	}
-	if (numClearedLines > 0)
-		drawBoardCubes();
-
 	return numClearedLines; 
 }
 
@@ -247,16 +244,8 @@ int Board::getHolesAmount() {
 	for (int row = 1; row < gameConfig::GAME_HEIGHT; row++) {
 		for (int col = 0; col < gameConfig::GAME_WIDTH; col++) {
 			// Check if the current cell is inactive and surrounded by active cubes
-			if (!board_game[row][col].getIsActive() &&
-				board_game[row - 1][col].getIsActive()) {
-				// Check if left and right cells are active
-				bool leftActive = (col > 0) ? board_game[row][col - 1].getIsActive() : true;
-				bool rightActive = (col < gameConfig::GAME_WIDTH - 1) ? board_game[row][col + 1].getIsActive() : true;
-
-				// Check if all surrounding cells are active
-				if (leftActive && rightActive) {
+			if (!board_game[row][col].getIsActive() && board_game[row - 1][col].getIsActive()) {
 					holes++;  // Found a hole
-				}
 			}
 		}
 	}
@@ -267,6 +256,29 @@ int Board::getHolesAmount() {
 Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
 {
 	return board_game;
+}
+double Board::calculateSmoothness()
+{
+	double smoothness = 0.0;
+	int minForMaxRow = 0;
+	for (int col = 0; col < gameConfig::GAME_WIDTH - 1; ++col) {
+		int height1 = this->getMaxHeight(col);
+		int height2 = this->getMaxHeight(col + 1);
+		smoothness += std::abs(height1 - height2);
+	}
+
+	return smoothness;
+}
+int Board::getMaxHeight(int col)
+{
+	int max_height = 0;
+	for (int row = 0; row < gameConfig::GAME_HEIGHT; ++row) {
+		if (board_game[row][col].getIsActive()) {
+			max_height = gameConfig::GAME_HEIGHT - row;
+			break;
+		}
+	}
+	return max_height;
 }
 bool Board::isValidExplosion(const int x, const int y)const
 {
