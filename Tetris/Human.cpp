@@ -23,7 +23,9 @@ bool Human::decideMove(Shape& shape, char key) {
         return true;
     auto func = moveFunctions.find(key);
     if (func != moveFunctions.end()) {
+        shape.drawShape(false);
         (shape.*(func->second))(getPlayerBoard());
+        shape.drawShape(true);
     }
     return false;
 }

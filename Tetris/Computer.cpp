@@ -15,7 +15,11 @@ bool Computer::decideMove(Shape& shape, char key)
 		for (int i = 0; i < 4; i++)
 		{
 			checkAllMoves(*temp, i, maxScoreForMove);
-			temp->rotate_Clock_wise(getPlayerBoard());
+			if(!temp->rotate_Clock_wise(getPlayerBoard()))
+			{
+				temp->continueMovingDown(getPlayerBoard());
+				temp->rotate_Clock_wise(getPlayerBoard());
+			}
 		}
 	}
 	int curX;
@@ -26,14 +30,23 @@ bool Computer::decideMove(Shape& shape, char key)
 	else if (bombTemp != nullptr)
 		curX = bombTemp->getCube().get_X();
 	shape.drawShape(false);
-	if(curRotationTarget > 0) {
-		shape.rotate_Clock_wise(getPlayerBoard());
-		curRotationTarget--;
+	for (int i = 0; i < 2; i++)
+	{
+		if (curRotationTarget > 0) {
+			if (!shape.rotate_Clock_wise(getPlayerBoard())) {
+				shape.continueMovingDown(getPlayerBoard());
+				shape.rotate_Clock_wise(getPlayerBoard());
+			}
+			curRotationTarget--;
+		}
+		else if (curX > curXTarget)
+			shape.move_Left(getPlayerBoard());
+		else if (curX < curXTarget)
+			shape.move_Right(getPlayerBoard());
+		else
+			shape.drop(getPlayerBoard());
 	}
-	else if (curX > curXTarget)
-		shape.move_Left(getPlayerBoard());
-	else if(curX < curXTarget)
-		shape.move_Right(getPlayerBoard());
+	
 	shape.drawShape(true);
 	return false;
 }
@@ -50,12 +63,13 @@ void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int&
 
 	while ((moveLeft ? tempShape->move_Left(playerBoard) : tempShape->move_Right(playerBoard))) {
 		Board tempBoard(playerBoard);
+		tempShape->continueMovingDown(tempBoard);
 		Shape* tempDown = nullptr;
 		createTempShape(*tempShape, tempDown);
 
 		while (tempDown->continueMovingDown(tempBoard));
 		tempDown->implementShapeToBoard(tempBoard);
-		int curScore = calculateScore(tempBoard);
+		int curScore = calculateScore(tempBoard, tempDown);
 		if (curScore > maxScoreForMove)
 		{
 			maxScoreForMove = curScore;
@@ -81,12 +95,30 @@ void Computer::createTempShape(Shape& shape, Shape*& tempShape) {
 	tempShape = shape.clone();
 }
 
-int Computer::calculateScore(Board board)
+int Computer::calculateScore(Board board, Shape* shape) const
 {
 	int score = 0;
-	score += board.getMaxHeight() * (int)ScoringVariables::maxHeight;
-	score += board.getHolesAmount() * (int)ScoringVariables::Hole;
-	score += board.clearFullLines() * (int)ScoringVariables::ClearLine;
+	ComplexShape *tempShape = dynamic_cast<ComplexShape*>(shape);
+	if (tempShape->fillsWell(board))
+		score += 150;
+	int linesCleard = board.clearFullLines();
+	switch (linesCleard) {
+	case 2:
+		score += 200;
+		break;
+	case 3:
+		score += 500;
+		break;
+	case 4:
+		score += 800;
+		break;
+
+}
+	//score += board.clearFullLines() * (int)ScoringVariables::ClearLine;
+	score += board.getMaxHeight() * -30;
+	score += board.calculateSmoothness() * -15;
+	score += board.getHolesAmount() * -80;
+
 	return score;
 }
 

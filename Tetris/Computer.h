@@ -11,7 +11,7 @@ public:
 	Computer(gameConfig::PlayerType playerType) : Player(playerType), curXTarget(0), curRotationTarget(0) {}
 	bool decideMove(Shape& shape, char key) override;
 	void checkAllMoves(Shape& shape, int rotation,int& maxScoreForMove);
-	int calculateScore(Board board);
+	int calculateScore(Board board, Shape* shape) const;
 	void createTempShape(Shape& shape, Shape*& tempShape);
 	void performMoves(Shape& shape, Board& playerBoard, int rotation, int& maxScoreForMove, bool moveLeft);
 	void resetTargets();

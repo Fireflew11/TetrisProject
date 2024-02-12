@@ -42,6 +42,35 @@ ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startin
 	: Shape(color, useColors, startingX, startingY), cubes{ newCubes[0], newCubes[1], newCubes[2], newCubes[3] }
 {}
 
+bool ComplexShape::fillsWell(const Board& board) const {
+	int startX = INT_MAX;  // Initialize to a large value
+	int endX = INT_MIN;    // Initialize to a small value
+	int bottomY = INT_MIN; // Initialize to a small value
+
+	// Determine the range of X coordinates and the lowest Y coordinate of the shape
+	for (int i = 0; i < 4; ++i) {
+		startX = std::fmin(startX, cubes[i].get_X());
+		endX = std::fmax(endX, cubes[i].get_X());
+		bottomY = std::fmax(bottomY, cubes[i].get_Y());
+	}
+
+	// Check if the shape is against the left wall
+	bool againstLeftWall = (startX == 1);
+
+	// Check if the shape is against the right wall
+	bool againstRightWall = (endX == gameConfig::GAME_WIDTH);
+
+	// Check if the shape's bottom is against the bottom of the board
+	bool againstBottom = (bottomY == gameConfig::GAME_HEIGHT);
+
+	// Check if the shape fills a well
+	if ((againstLeftWall || againstRightWall) && againstBottom) {
+		return true;
+	}
+
+	return false;
+}
+
 /**********************************************************************
 Function name: drawShape
 Input: bool isActive

@@ -48,13 +48,13 @@ void Game::GameLoop()
             currentShapeRightPlayer->drawShape(false);
             bool movedDownPlayer1 = currentShapeLeftPlayer->continueMovingDown(players[0]->getPlayerBoard());
             bool movedDownPlayer2 = currentShapeRightPlayer->continueMovingDown(players[1]->getPlayerBoard());
+            currentShapeLeftPlayer->drawShape();
+            currentShapeRightPlayer->drawShape();
             
 
             // Check if both shapes reached the bottom
             if (!movedDownPlayer1 && !movedDownPlayer2)
             {
-                currentShapeLeftPlayer->drawShape();
-                currentShapeRightPlayer->drawShape();
                 currentShapeLeftPlayer->implementShapeToBoard(players[0]->getPlayerBoard()); 
                 currentShapeRightPlayer->implementShapeToBoard(players[1]->getPlayerBoard());
                 Computer* computerPlayer0 = dynamic_cast<Computer*>(players[0]);
@@ -72,7 +72,6 @@ void Game::GameLoop()
                 Computer* computerPlayer0 = dynamic_cast<Computer*>(players[0]);
                 if (computerPlayer0)
                     computerPlayer0->resetTargets();
-                currentShapeLeftPlayer->drawShape();
                 if (checkGameConditions(*players[0], currentShapeLeftPlayer, isGameOver))
                     break; 
             }
@@ -82,7 +81,6 @@ void Game::GameLoop()
                 Computer* computerPlayer1 = dynamic_cast<Computer*>(players[1]);
                 if (computerPlayer1)
                     computerPlayer1->resetTargets();
-                currentShapeRightPlayer->drawShape();
                 if (checkGameConditions(*players[1], currentShapeRightPlayer, isGameOver))
                     break;
             }
@@ -426,7 +424,8 @@ bool Game::handleInput()
         {
             keyPressed = toupperG(_getch());
             if ((human0 != nullptr && players[0]->decideMove(*currentShapeLeftPlayer, keyPressed)) ||
-                (human1 != nullptr && players[1]->decideMove(*currentShapeRightPlayer, keyPressed)))
+                (human1 != nullptr && players[1]->decideMove(*currentShapeRightPlayer, keyPressed)) ||
+                (computer1 != nullptr && keyPressed == gameConfig::ESC))
             {
                 status = gameConfig::GameStatus::Paused;
                 return true;
@@ -456,7 +455,7 @@ Shape* Game::createRandomShape(const Player& player)
     else
     {
         int randomShape = rand() % (int)gameConfig::NUM_OF_SHAPES + 1;
-
+        //int randomShape = 3;
         switch ((gameConfig::ShapeType)randomShape)
         {
         case gameConfig::ShapeType::I:
