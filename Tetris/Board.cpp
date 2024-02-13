@@ -202,9 +202,9 @@ void Board::print_Line()
 
 bool Board::isValidPosition(const int x, const int y)const 
 {
-	if ((x > gameConfig::GAME_WIDTH + startingX) || (x <= startingX))
+	if ((x >= gameConfig::GAME_WIDTH + startingX) || (x < startingX))
 		return false;
-	if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
+	if (y >= gameConfig::GAME_HEIGHT + startingY || y < startingY)
 		return false;
 	if (board_game[y -startingY][(x - startingX )].getIsActive() == true)
 		return false; 
@@ -261,11 +261,38 @@ void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExp
 {
 	for (int y = startingYExplosion; y >= startingY; y--)
 	{
-		for (int x = startingXExplosion; x <= startingXExplosion + rangeX; x++)
+		for (int x = startingXExplosion; x < startingXExplosion + rangeX; x++)
 		{
-			board_game[y - startingY + rangeY][x-startingX+rangeX].setIsActive(board_game[y-startingY][x-startingX].getIsActive());
+			//cout << "x: " << x << " " << "y : " << y << endl;
+			board_game[y - startingY + rangeY][x-startingX].setIsActive(board_game[y-startingY][x-startingX].getIsActive());
+			board_game[y - startingY + rangeY][x - startingX].setColor(board_game[y - startingY][x - startingX].getColor());
 			board_game[y - startingY][x - startingX].setIsActive(false); 
+
 		}
+		
 	}
 	//(board_game[y - 1][(x - startingX - 1)].getIsActive() == true)
 }
+
+/*
+void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY)
+{
+	
+	for (int y = startingYExplosion; y >= startingY; y--)
+	{
+		
+		for (int x = startingXExplosion; x < startingXExplosion + rangeX; x++)
+		{
+			
+			if (x >= startingX && x < startingX + gameConfig::GAME_WIDTH &&
+				y - startingY + rangeY >= 0 && y - startingY + rangeY < gameConfig::GAME_HEIGHT)
+			{
+				
+				board_game[y - startingY + rangeY][x - startingX].setIsActive(board_game[y - startingY][x - startingX].getIsActive());
+				// Set the current position (x, y) as inactive
+				board_game[y - startingY][x - startingX].setIsActive(false);
+			}
+		}
+	}
+}
+*/

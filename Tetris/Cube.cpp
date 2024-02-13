@@ -157,6 +157,10 @@ void Cube::setColor(const int& color)
 {
     this->color = color;
 }
+WORD Cube::getColor()const
+{
+    return color; 
+}
 
 
 

@@ -10,7 +10,7 @@ Bomb::Bomb(bool useColors, int startingX, int startingY) :Shape(gameConfig::COLO
 
 void Bomb:: drawShape(bool isActive)const
 {
-	cube.drawCube(isActive,getColor());
+	cube.drawCube(isActive, getUseColors());
 }
 
 void Bomb::move_Left(const Board& board)
@@ -80,7 +80,6 @@ void Bomb::explosion(Board& board)
 	int rangeY = 0;
 	//הוספת ניקוד
 	//שימוש בטווח לפיצוץ 
-
 	CalculateBlastRange(bombX, bombY, startingXExplosion, startingYExplosion, rangeX, rangeY, board);
 	for (int y = bombY - blastRange; y <= bombY + blastRange; y++)
 	{

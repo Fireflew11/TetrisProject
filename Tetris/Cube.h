@@ -35,6 +35,7 @@ public:
 	void setColor(const int& color);
 	Cube(int x=0, int y=0, int colorIndex =0, bool active = true);
 	Cube(gameConfig::PlayerType player, int colorIndex, bool active=true);
+	WORD getColor()const; 
 
 };
 
