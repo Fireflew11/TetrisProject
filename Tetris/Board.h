@@ -43,7 +43,9 @@ public:
 	const int getStartingY() const; 
 
 	Cube(&get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
-
+	bool isValidYExplosion(const int y)const;
+	bool isValidXExplosion(const int x)const;
+	void moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY);
 private: 
 	void print_Line(); 
 };

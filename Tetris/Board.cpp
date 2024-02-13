@@ -241,3 +241,31 @@ bool Board::isValidExplosion(const int x, const int y)const
 		return false;
 	return true; 
 }
+
+bool Board::isValidYExplosion(const int y)const
+{
+	if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
+		return false;
+	return true; 
+}
+
+bool Board::isValidXExplosion(const int x)const
+{
+	if ((x > gameConfig::GAME_WIDTH + startingX) || (x <= startingX))
+		return false;
+	return true; 
+}
+
+
+void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY)
+{
+	for (int y = startingYExplosion; y >= startingY; y--)
+	{
+		for (int x = startingXExplosion; x <= startingXExplosion + rangeX; x++)
+		{
+			board_game[y - 1 + rangeY][x-startingX-1+rangeX].setIsActive(board_game[y-1][x-startingX-1].getIsActive());
+			board_game[y - 1][x - startingX - 1].setIsActive(false); 
+		}
+	}
+	//(board_game[y - 1][(x - startingX - 1)].getIsActive() == true)
+}

@@ -1,4 +1,4 @@
-#include "Bomb.h"
+﻿#include "Bomb.h"
 #include "gameConfig.h"
 
 
@@ -74,6 +74,14 @@ void Bomb::explosion(Board& board)
 	int bombX = cube.get_X(); 
 	int bombY = cube.get_Y(); 
 
+	int startingXExplosion = 0;
+	int startingYExplosion = 0;
+	int rangeX = 0;
+	int rangeY = 0;
+	//הוספת ניקוד
+	//שימוש בטווח לפיצוץ 
+
+	CalculateBlastRange(bombX, bombY, startingXExplosion, startingYExplosion, rangeX, rangeY, board);
 	for (int y = bombY - blastRange; y <= bombY + blastRange; y++)
 	{
 		for (int x = bombX - blastRange; x <= bombX + blastRange; x++)
@@ -82,6 +90,7 @@ void Bomb::explosion(Board& board)
 				board.set_cube_active_in_board_game(x, y);
 		}
 	}
+	board.moveCubesDownAfterExplosion(startingXExplosion, startingYExplosion, rangeX, rangeY); 
 	board.drawBoardCubes(); 
 }
 
@@ -94,3 +103,29 @@ bool Bomb::check_valid_move(const Board& board) const
 {
 	return board.isValidPosition(cube.get_X(),cube.get_Y());
 }
+
+void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, int& startingYExplosion, int&rangeX, int& rangeY, const Board& board)
+{
+	bool isFirstValidX = false;
+	bool isFirstValidY = false;	
+		for (int y = bombY - blastRange; (y <= bombY + blastRange) && (board.isValidYExplosion(y) == true); y++)
+		{
+			rangeY++;
+			if (isFirstValidY == false)
+			{
+				startingYExplosion = y;
+				isFirstValidY = true;
+			}
+		}
+		for (int x = bombX - blastRange; (x <= bombX + blastRange) && (board.isValidXExplosion(x) == true); x++)
+		{
+			rangeX++;
+			if (isFirstValidX == false)
+			{
+				startingXExplosion = x;
+				isFirstValidX = true;
+			}
+		}
+}
+
+

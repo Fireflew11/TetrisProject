@@ -20,7 +20,7 @@ public:
 
 	Bomb(bool useColors, int startingX, int startingY);
 	//Bomb(gameConfig::PlayerType playerType, bool useColors);
-
+	void CalculateBlastRange(int bombX, int bombY, int& startingXExplosion, int& startingYExplosion, int& rangeX, int& rangeY, const Board& board);
 	void explosion(Board& board);
 
 };
