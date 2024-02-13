@@ -4,40 +4,45 @@
 #include "Board.h"
 #include <cctype>
 #include "GlobalFunctions.h"
-
-
+#include "ComplexShape.h"
+#include "O_Shape.h"
+#include "Z_Shape.h"
+#include "T_Shape.h"
+#include "L_Shape.h"
+#include "I_Shape.h"
+#include "J_Shape.h"
+#include "S_Shape.h"
+#include "Bomb.h"
 /**********************************************************************
 Function name: keyChoice
 Input:gameConfig::LeftKeys key, Shape& shape
 Output: --
 Function:The function handles the Left player's key choices for movement, rotation, and dropping.
 **********************************************************************/
-void Game::keyChoice(gameConfig::LeftKeys key, Shape& shape)
+void Game::keyChoice(gameConfig::LeftKeys key)
 {
     switch(key)
     {
     case gameConfig::LeftKeys::RIGHT:
-            shape.move_Right(players[0].getPlayerBoard());
+        currentShapeLeftPlayer->move_Right(players[0].getPlayerBoard());
             break;
         case gameConfig::LeftKeys::LEFT:
-            shape.move_Left(players[0].getPlayerBoard());
+            currentShapeLeftPlayer->move_Left(players[0].getPlayerBoard());
             break;
         case gameConfig::LeftKeys::ROTATE_CLOCK_WISE:
         {
-            if (shape.getShapeType()!= gameConfig::ShapeType::O)
-               shape.rotate_Clock_wise(players[0].getPlayerBoard());
+            currentShapeLeftPlayer->rotate_Clock_wise(players[0].getPlayerBoard());
             break;
         }
             
         case gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE:
         {
-            if (shape.getShapeType() != gameConfig::ShapeType::O)
-                shape.rotate_CounterClock_wise(players[0].getPlayerBoard());
+            currentShapeLeftPlayer->rotate_CounterClock_wise(players[0].getPlayerBoard());
             break;
                 
         }
         case gameConfig::LeftKeys::DROP:
-            shape.drop(players[0].getPlayerBoard());
+            currentShapeLeftPlayer->drop(players[0].getPlayerBoard());
             break;
         default:
             break; 
@@ -50,34 +55,35 @@ Input:gameConfig::LeftKeys key, Shape& shape
 Output: --
 Function:The function handles the Right player's key choices for movement, rotation, and dropping.
 **********************************************************************/
-void Game::keyChoice(gameConfig::RightKeys key, Shape& shape)
+void Game::keyChoice(gameConfig::RightKeys key)
 {
     switch (key)
     {
     case gameConfig::RightKeys::RIGHT:
-        shape.move_Right(players[1].getPlayerBoard());
+        currentShapeRightPlayer->move_Right(players[1].getPlayerBoard());
         break;
     case gameConfig::RightKeys::LEFT:
-        shape.move_Left(players[1].getPlayerBoard());
+        currentShapeRightPlayer->move_Left(players[1].getPlayerBoard());
         break;
     case gameConfig::RightKeys::ROTATE_CLOCK_WISE:
     {
-        if (shape.getShapeType()!= gameConfig::ShapeType::O)
-            shape.rotate_Clock_wise(players[1].getPlayerBoard());
-        break;
-    } 
-    case gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE:
-    {
-        if(shape.getShapeType() != gameConfig::ShapeType::O)
-            shape.rotate_CounterClock_wise(players[1].getPlayerBoard());
+        currentShapeRightPlayer->rotate_Clock_wise(players[1].getPlayerBoard());
         break;
     }
+
+    case gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE:
+    {
+        currentShapeRightPlayer->rotate_CounterClock_wise(players[1].getPlayerBoard());
+        break;
+
+    }
     case gameConfig::RightKeys::DROP:
-        shape.drop(players[1].getPlayerBoard());
+        currentShapeRightPlayer->drop(players[1].getPlayerBoard());
         break;
     default:
         break;
     }
+  
 }
 
 /**********************************************************************
@@ -93,10 +99,14 @@ void Game::GameLoop()
     players[1].displayScore();
     while (!isGameOver)// Main game loop
     {
-        Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors); // Create new shapes for each player
-        Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
-        if (!checkGameValidity(curShapePlayer1, curShapePlayer2, isGameOver))
-            break;
+        currentShapeLeftPlayer = createRandomShape(players[0]);
+        currentShapeRightPlayer=createRandomShape(players[1]); 
+
+       // Shape curShapePlayer1(gameConfig::PlayerType::LEFT_PLAYER, useColors); // Create new shapes for each player
+        //Shape curShapePlayer2(gameConfig::PlayerType::RIGHT_PLAYER, useColors);
+        
+        //if (!isGameOver)
+          //  break;
         while (true)// Inner loop for handling player movements and shape placements
         {    
             // Update scores and handle user input
@@ -104,33 +114,36 @@ void Game::GameLoop()
             players[1].updateScore(players[1].getPlayerBoard().clearFullLines());
 
             //handleInput returns true if ESC was pressed
-            if (handleInput(curShapePlayer1, curShapePlayer2))
+            if (handleInput())
                 return;
 
             Sleep(300);
 
             // Move shapes down for both players
-            bool movedDownPlayer1 = curShapePlayer1.continueMovingDown(players[0].getPlayerBoard());
-            bool movedDownPlayer2 = curShapePlayer2.continueMovingDown(players[1].getPlayerBoard());
+
+            bool movedDownPlayer1 = currentShapeLeftPlayer->continueMovingDown(players[0].getPlayerBoard());
+            bool movedDownPlayer2 = currentShapeRightPlayer->continueMovingDown(players[1].getPlayerBoard());
 
             // Check if both shapes reached the bottom
             if (!movedDownPlayer1 && !movedDownPlayer2)
             {
-                players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
-                players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
+                currentShapeLeftPlayer->implementShapeToBoard(players[0].getPlayerBoard()); 
+                currentShapeRightPlayer->implementShapeToBoard(players[1].getPlayerBoard()); 
+                //players[0].getPlayerBoard().implementShapeToBoard(curShapePlayer1);
+                //players[1].getPlayerBoard().implementShapeToBoard(curShapePlayer2);
                 isGameOver = isMaxHeight();
                 break;
             }
             // Handle shape movements and updates for player 1
             if (!movedDownPlayer1)
             {
-                if (checkGameConditions(players[0], curShapePlayer1, isGameOver))
+                if (checkGameConditions(players[0], currentShapeLeftPlayer, isGameOver))
                     break; 
             }
             // Handle shape movements and updates for player 2
             if (!movedDownPlayer2)
             {
-                if (checkGameConditions(players[1], curShapePlayer2, isGameOver))
+                if (checkGameConditions(players[1], currentShapeRightPlayer, isGameOver))
                     break;
             }
             
@@ -146,20 +159,26 @@ Function:The function checks if the game is over or if it's not, it rerolls the 
 if 1. a player reaches the max height with blocks this player loses
 or 2. The newly created shape cannot go down
 **********************************************************************/
-bool Game::checkGameConditions(Player& player, Shape& shape, bool& isGameOver)
+bool Game::checkGameConditions(Player& player, Shape* & shape, bool& isGameOver)
 {
+    shape->implementShapeToBoard(player.getPlayerBoard()); 
     
-    player.getPlayerBoard().implementShapeToBoard(shape); 
+    //player.getPlayerBoard().implementShapeToBoard(shape); 
     if ((isMaxHeight()))// Check if the game is over after placing the shape
     {
         isGameOver = true;
         return true; 
     }
     // Reroll the shape for the next iteration
-    shape = Shape(player.getPlayerType(), useColors);
+
+    shape = createRandomShape(player);//צריך להכניס useColors /////
+
+
+    //shape = Shape(player.getPlayerType(), useColors);
 
     // Check if the new shape is valid, if not, set the other player as the winner, and end the game
-    if (!(player.getPlayerBoard().check_valid_move(shape)))
+
+    if (!shape->check_valid_move(player.getPlayerBoard()))
     {
         if (player.getPlayerType() == gameConfig::PlayerType::LEFT_PLAYER)
             players[1].setIsWinner(true);
@@ -179,7 +198,7 @@ Input:int keyPressed, Shape& Leftshape,Shape& RightShape
 Output:--
 Function:The function checks the key pressed by the player and calls the appropriate keyChoice function for the respective player.
 **********************************************************************/
-void Game:: checkKeyChoice(int keyPressed, Shape& Leftshape,Shape& RightShape)
+void Game:: checkKeyChoice(int keyPressed)
 {
     keyPressed = toupperG(keyPressed);
     //keyPressed = toupper(keyPressed); 
@@ -187,13 +206,13 @@ void Game:: checkKeyChoice(int keyPressed, Shape& Leftshape,Shape& RightShape)
         keyPressed == (int)gameConfig::LeftKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::LeftKeys::ROTATE_COUNTER_CLOCK_WISE || 
         keyPressed == (int)gameConfig::LeftKeys::DROP)
     {
-        keyChoice((gameConfig::LeftKeys)keyPressed, Leftshape); 
+        keyChoice((gameConfig::LeftKeys)keyPressed); 
     }
     else if (keyPressed == (int)gameConfig::RightKeys::LEFT || keyPressed == (int)gameConfig::RightKeys::RIGHT ||
         keyPressed == (int)gameConfig::RightKeys::ROTATE_CLOCK_WISE || keyPressed == (int)gameConfig::RightKeys::ROTATE_COUNTER_CLOCK_WISE ||
         keyPressed == (int)gameConfig::RightKeys::DROP)
     {
-        keyChoice((gameConfig::RightKeys)keyPressed, RightShape);
+        keyChoice((gameConfig::RightKeys)keyPressed);
     }
 }
 
@@ -338,7 +357,8 @@ Output:--
 Function:Constructor for the Game class. Initializes the game with specified color settings and initial status.
 Creates instances of Player for the left and right players.
 **********************************************************************/
-Game::Game(bool useColors, gameConfig::GameStatus status):players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)},status(status),useColors(useColors)
+Game::Game(bool useColors, gameConfig::GameStatus status, Shape* ShapeLeftPlayer, Shape* ShapeRightPlayer):players{Player(gameConfig::PlayerType::LEFT_PLAYER),Player(gameConfig::PlayerType::RIGHT_PLAYER)},status(status),
+useColors(useColors), currentShapeLeftPlayer(ShapeLeftPlayer), currentShapeRightPlayer(ShapeRightPlayer)
 {}
 
 /**********************************************************************
@@ -434,6 +454,7 @@ Input:const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver
 Output:Returns true if the game is still valid; false if the game is over.
 Function:Checks the validity of the game based on the current positions of player shapes.
 **********************************************************************/
+/*
 bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver)
 {
     if (!(players[0].getPlayerBoard().check_valid_move(ShapePlayer1)) || !(players[1].getPlayerBoard().check_valid_move(ShapePlayer2)))
@@ -452,7 +473,28 @@ bool Game::checkGameValidity(const Shape& ShapePlayer1, const Shape& ShapePlayer
     }
     return true; 
 }
-
+*/
+bool Game::checkGameValidity(bool& isGameOver)
+{
+   
+    bool validityLeftPlayer = currentShapeLeftPlayer->check_valid_move(players[0].getPlayerBoard());
+    bool validityRightPlayer = currentShapeRightPlayer->check_valid_move(players[1].getPlayerBoard());
+    if (!validityLeftPlayer || !validityRightPlayer)
+    {
+        if (!validityLeftPlayer)
+        {
+            players[1].setIsWinner(true);
+        }
+        if (!validityRightPlayer)
+        {
+            players[0].setIsWinner(true);
+        }
+        isGameOver = true;
+        status = gameConfig::GameStatus::Finished;
+        return false;
+    }
+    return true;
+}
 /**********************************************************************
 Function name:handleInput
 Input: Shape& curShapePlayer1, Shape& curShapePlayer2
@@ -460,7 +502,7 @@ Output:--
 Function:Handles user input during the game, updating player scores and checking for key presses.
 Calls checkKeyChoice to interpret and act upon key presses, and allows for pausing the game.
 **********************************************************************/
-bool Game::handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2)
+bool Game::handleInput()
 {
     players[0].updateScore(players[0].getPlayerBoard().clearFullLines());
     players[1].updateScore(players[1].getPlayerBoard().clearFullLines());
@@ -479,9 +521,82 @@ bool Game::handleInput(Shape& curShapePlayer1, Shape& curShapePlayer2)
                     return true;
             }
             else
-                checkKeyChoice(keyPressed, curShapePlayer1, curShapePlayer2);
+                checkKeyChoice(keyPressed);
         }
     }
     return false;
 }
 
+Shape*  Game::createRandomShape(const Player& player)
+{
+    srand(time(0));
+    Shape* newShape= nullptr;
+    bool bombppearance = isBombAppearance(); 
+    static int cont = 0; 
+    cont++; 
+    // if (bombppearance)
+    if(cont==7)
+    {
+      newShape = new Bomb(useColors, player.getStartingX(), player.getStartingY());
+    }
+    else
+    {
+        int randomShape = rand() % (int)gameConfig::NUM_OF_SHAPES + 1;
+
+        switch ((gameConfig::ShapeType)randomShape)
+        {
+        case gameConfig::ShapeType::I:
+        {
+            newShape = new I_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+        case  gameConfig::ShapeType::O:
+        {
+            newShape = new O_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+        case  gameConfig::ShapeType::T:
+        {
+            newShape = new T_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+
+        case  gameConfig::ShapeType::S:
+        {
+            newShape = new S_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+
+        case  gameConfig::ShapeType::Z:
+        {
+            newShape = new Z_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+        }
+        case  gameConfig::ShapeType::J:
+        {
+            newShape = new J_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+
+        }
+
+        case  gameConfig::ShapeType::L:
+        {
+            newShape = new L_Shape(useColors, player.getStartingX(), player.getStartingY());
+            break;
+
+        }
+
+        default:
+            break;
+        }
+    }
+    return newShape; 
+}
+
+bool Game::isBombAppearance()
+{
+    int randomNumber = rand() %20 + 1; 
+    if (randomNumber == 1)
+        return true; 
+    return false; 
+}

@@ -109,6 +109,22 @@ Cube::Cube(int x , int y , int colorIndex, bool active )
     isActive = active;
 }
 
+Cube::Cube(gameConfig::PlayerType playerType, int colorIndex, bool active)
+{
+    if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
+    {
+        coord.X = gameConfig::GAME_WIDTH / 2 + gameConfig::MIN_X_LEFT_BOARD + 1;///check 
+        coord.Y = gameConfig::MIN_Y_LEFT_BOARD;
+    }
+    else
+    {
+        coord.X = gameConfig::GAME_WIDTH / 2 + gameConfig::MIN_X_RIGHT_BOARD + 1;// check 
+        coord.Y = gameConfig::MIN_Y_RIGHT_BOARD;
+    }
+    color = colorIndex; 
+    isActive = active; 
+}
+
 /**********************************************************************
 Function name: set_X
 Input: const int& x 
@@ -140,6 +156,10 @@ Function:Sets the color of the cube.
 void Cube::setColor(const int& color)
 {
     this->color = color;
+}
+WORD Cube::getColor()const
+{
+    return color; 
 }
 
 

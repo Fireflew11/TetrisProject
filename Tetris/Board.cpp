@@ -10,16 +10,16 @@ Function:Displays the game board on the console.The function prints the board st
 void Board::display_board() 
 {
 	int i, j;
-	gotoxy(startingX, 0);
+	gotoxy(startingX-1, 0);
 	Board::print_Line();
-	gotoxy(startingX, 1);
+	gotoxy(startingX-1, 1);
 	for (i = 1; i < gameConfig::GAME_HEIGHT + 2; i++)
 	{
 		cout << "|";
 		for (j = 1; j < gameConfig::GAME_WIDTH + 1; j++)
 			cout << " ";
 		cout << "|" << endl;
-		gotoxy(startingX, i);
+		gotoxy(startingX-1, i);
 	}
 	Board::print_Line();
 	drawBoardCubes();
@@ -36,7 +36,7 @@ Board::Board(int starting_X, int starting_Y, bool useColors):startingX(starting_
 	{
 		for (int j = 0; j < (int)gameConfig::GAME_WIDTH; j++)
 		{
-			board_game[i][j].set_coord(startingX + 1 + j, startingY + i); 
+			board_game[i][j].set_coord(startingX + j, startingY + i); 
 			board_game[i][j].setIsActive(false); 
 			board_game[i][j].setColor(gameConfig::COLORS[0]);//COLORS[0] is black,the default colors for inactive cubes. 
 		}
@@ -62,6 +62,7 @@ Output: bool
 Function:Checks if a given shape can make a valid move on the board. 
 The function verifies if the shape's position and orientation are within the bounds of the board and if it collides with any active cubes.
 **********************************************************************/
+/*
 bool Board::check_valid_move(const Shape& shape) const
 {
 	for (int i = 0; i < 4; i++)
@@ -80,7 +81,7 @@ bool Board::check_valid_move(const Shape& shape) const
 	return true;
 
 }
-
+*/
 
 /**********************************************************************
 Function name:clearLine
@@ -150,6 +151,7 @@ Output:--
 Function:The function implements the given shape on the game board 
 by updating the state of the board_game array based on the shape's cubes' positions and color.
 **********************************************************************/
+/*
 void Board::implementShapeToBoard(const Shape& shape) 
 {
 	for (int i = 0; i < 4; i++)
@@ -159,6 +161,8 @@ void Board::implementShapeToBoard(const Shape& shape)
 	}
 	
 }
+*/
+
 
 /**********************************************************************
 Function name:drawBoardCubes
@@ -196,7 +200,99 @@ void Board::print_Line()
 	cout << endl;
 }
 
+bool Board::isValidPosition(const int x, const int y)const 
+{
+	if ((x >= gameConfig::GAME_WIDTH + startingX) || (x < startingX))
+		return false;
+	if (y >= gameConfig::GAME_HEIGHT + startingY || y < startingY)
+		return false;
+	if (board_game[y -startingY][(x - startingX )].getIsActive() == true)
+		return false; 
+	return true; 
+}
 
 
 
+void Board::set_cube_active_in_board_game(const int x, const int y) 
+{
+	board_game[y - startingY][x - startingX].setIsActive(false); 
+}
 
+
+const int Board::getStartingX()const
+{
+	return startingX; 
+}
+const int Board::getStartingY() const
+{
+	return startingY; 
+}
+
+Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
+{
+	return board_game;
+}
+
+bool Board::isValidExplosion(const int x, const int y)const
+{
+	if ((x > gameConfig::GAME_WIDTH + startingX) || (x < startingX))
+		return false;
+	if (y >= gameConfig::GAME_HEIGHT + startingY || y < startingY)
+		return false;
+	return true; 
+}
+
+bool Board::isValidYExplosion(const int y)const
+{
+	if (y >= gameConfig::GAME_HEIGHT + startingY || y < startingY)
+		return false;
+	return true; 
+}
+
+bool Board::isValidXExplosion(const int x)const
+{
+	if ((x > gameConfig::GAME_WIDTH + startingX) || (x < startingX))
+		return false;
+	return true; 
+}
+
+
+void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY)
+{
+	for (int y = startingYExplosion; y >= startingY; y--)
+	{
+		for (int x = startingXExplosion; x < startingXExplosion + rangeX; x++)
+		{
+			//cout << "x: " << x << " " << "y : " << y << endl;
+			board_game[y - startingY + rangeY][x-startingX].setIsActive(board_game[y-startingY][x-startingX].getIsActive());
+			board_game[y - startingY + rangeY][x - startingX].setColor(board_game[y - startingY][x - startingX].getColor());
+			board_game[y - startingY][x - startingX].setIsActive(false); 
+
+		}
+		
+	}
+	//(board_game[y - 1][(x - startingX - 1)].getIsActive() == true)
+}
+
+/*
+void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY)
+{
+	
+	for (int y = startingYExplosion; y >= startingY; y--)
+	{
+		
+		for (int x = startingXExplosion; x < startingXExplosion + rangeX; x++)
+		{
+			
+			if (x >= startingX && x < startingX + gameConfig::GAME_WIDTH &&
+				y - startingY + rangeY >= 0 && y - startingY + rangeY < gameConfig::GAME_HEIGHT)
+			{
+				
+				board_game[y - startingY + rangeY][x - startingX].setIsActive(board_game[y - startingY][x - startingX].getIsActive());
+				// Set the current position (x, y) as inactive
+				board_game[y - startingY][x - startingX].setIsActive(false);
+			}
+		}
+	}
+}
+*/

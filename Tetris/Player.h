@@ -27,6 +27,7 @@ private:
 	int score; 
 	bool isWinner; 
 	int startingX;
+	int startingY; 
 
 
 public: 
@@ -39,5 +40,7 @@ public:
 	Player(gameConfig::PlayerType,int score=0, bool isWinner=false); 
 	const int getScore();
 	const  gameConfig::PlayerType getPlayerType() const; 
+	const int getStartingX() const; 
+	const int getStartingY() const; 
 };
 
