@@ -176,7 +176,8 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 	 int centerX = tempShape.get_cubes()[0].get_X();
 	 int centerY = tempShape.get_cubes()[0].get_Y();
 
-	 for (int i = 1; i < 4; ++i) {
+	 for (int i = 1; i < 4; ++i) 
+	 {
 		 int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
 		 int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
 
@@ -223,10 +224,11 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 void ComplexShape::implementShapeToBoard(Board& board)
 {
 	int startingX = board.getStartingX();
+	int startingY = board.getStartingY(); 
 	for (int i = 0; i < 4; i++)
 	{	
-		board.get_to_set_BoardGame()[(cubes[i].get_Y() - 1)][(cubes[i].get_X() - startingX - 1)].setIsActive(true);
-		board.get_to_set_BoardGame()[(cubes[i].get_Y() - 1)][(cubes[i].get_X() - startingX - 1)].setColor(getColor());
+		board.get_to_set_BoardGame()[(cubes[i].get_Y() - startingY)][(cubes[i].get_X() - startingX )].setIsActive(true);
+		board.get_to_set_BoardGame()[(cubes[i].get_Y() - startingY)][(cubes[i].get_X() - startingX )].setColor(getColor());
 	}
 }
 

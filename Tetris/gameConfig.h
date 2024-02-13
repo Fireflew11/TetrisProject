@@ -36,7 +36,7 @@ public:
 	static constexpr int  NUM_OF_COLORS = 9; 
 	static constexpr int NUM_OF_SHAPES = 7; 
 
-	static constexpr int MIN_X_LEFT_BOARD = 0;
+	static constexpr int MIN_X_LEFT_BOARD = 1;
 	static constexpr int MIN_Y_LEFT_BOARD = 1;
 	static constexpr int MIN_X_RIGHT_BOARD = 40;
 	static constexpr int MIN_Y_RIGHT_BOARD = 1;
