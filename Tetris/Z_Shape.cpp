@@ -2,7 +2,7 @@
 
 
 
-Z_Shape::Z_Shape(bool useColors, int startingX, int startingY) : ComplexShape(gameConfig::COLORS[5], useColors, startingX, startingY,
+Z_Shape::Z_Shape(bool useColors, int startingX, int startingY) : ComplexShape(gameConfig::COLORS[5], useColors, startingX, startingY, 7,
 
     { Cube(gameConfig::GAME_WIDTH / 2 + startingX + 1, startingY+1, gameConfig::COLORS[5]),
      Cube(gameConfig::GAME_WIDTH / 2 + startingX,startingY , gameConfig::COLORS[5]),

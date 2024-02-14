@@ -41,7 +41,7 @@ void Game::GameLoop()
             if (handleInput())
                 return;
 
-            Sleep(500);
+            Sleep(250);
 
             // Move shapes down for both players
             currentShapeLeftPlayer->drawShape(false);
@@ -413,29 +413,40 @@ bool Game::handleInput()
 {
     players[0]->updateScore(players[0]->getPlayerBoard().clearFullLines());
     players[1]->updateScore(players[1]->getPlayerBoard().clearFullLines());
+    /*
     Computer* computer0 = dynamic_cast<Computer*>(players[0]);
     Computer* computer1 = dynamic_cast<Computer*>(players[1]);
     Human* human0 = dynamic_cast<Human*>(players[0]);
     Human* human1 = dynamic_cast<Human*>(players[1]);
+    */
     char keyPressed = 0;
-    for (int i = 0; i < 5; i++)
+    /*
+    if (_kbhit())
     {
-        if (_kbhit())
+        keyPressed = toupperG(_getch());
+        if (((keyPressed == gameConfig::ESC) ||
+            players[0]->decideMove(*currentShapeLeftPlayer, keyPressed)) ||
+            players[1]->decideMove(*currentShapeRightPlayer, keyPressed))
         {
-            keyPressed = toupperG(_getch());
-            if ((human0 != nullptr && players[0]->decideMove(*currentShapeLeftPlayer, keyPressed)) ||
-                (human1 != nullptr && players[1]->decideMove(*currentShapeRightPlayer, keyPressed)) ||
-                (computer1 != nullptr && keyPressed == gameConfig::ESC))
-            {
-                status = gameConfig::GameStatus::Paused;
-                return true;
-            }
+            status = gameConfig::GameStatus::Paused;
+            return true;
         }
     }
     if (computer0 != nullptr)
         players[0]->decideMove(*currentShapeLeftPlayer, keyPressed);
     if (computer1 != nullptr)
         players[1]->decideMove(*currentShapeRightPlayer, keyPressed);
+        */
+    if (_kbhit()) {
+        keyPressed = toupperG(_getch());
+        if (keyPressed == gameConfig::ESC)
+        {
+            status = gameConfig::GameStatus::Paused;
+            return true;
+        }
+    }
+    players[0]->decideMove(*currentShapeLeftPlayer, keyPressed);
+    players[1]->decideMove(*currentShapeRightPlayer, keyPressed);
 
     return false;
 }

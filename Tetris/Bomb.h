@@ -14,7 +14,7 @@ public:
 	bool continueMovingDown(const Board& board)override;
 	void implementShapeToBoard(Board& board) override; 
 	bool check_valid_move(const Board& board) const override;
-
+	int getX() const override;
 	bool rotate_CounterClock_wise(const Board& board) override { return false; };
 	bool rotate_Clock_wise(const Board& board) override { return false; };
 	const Cube& getCube() const;
@@ -22,6 +22,7 @@ public:
 
 	Bomb(bool useColors, int startingX, int startingY);
 	//Bomb(gameConfig::PlayerType playerType, bool useColors);
+
 
 	void explosion(Board& board);
 

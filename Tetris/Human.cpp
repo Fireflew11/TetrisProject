@@ -17,15 +17,12 @@ Human::Human(gameConfig::PlayerType playerType) : Player(playerType) {
     }
 }
 
-bool Human::decideMove(Shape& shape, char key) {
-
-    if (key == gameConfig::ESC)
-        return true;
+void Human::decideMove(Shape& shape, char key)
+{
     auto func = moveFunctions.find(key);
     if (func != moveFunctions.end()) {
         shape.drawShape(false);
         (shape.*(func->second))(getPlayerBoard());
         shape.drawShape(true);
     }
-    return false;
 }

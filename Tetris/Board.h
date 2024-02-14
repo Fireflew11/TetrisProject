@@ -3,6 +3,7 @@
 #include <iostream>
 #include"Shape.h" 
 #include "gameConfig.h"
+#include <vector>
 class Shape; 
 using namespace std;
 
@@ -46,6 +47,8 @@ public:
 	Cube(&get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
 	double calculateSmoothness();
 	int getMaxHeight(int col);
+	int preventTallTowersScore() const;
+	std::vector<int> calculateColumnHeights() const;
 
 private: 
 	void print_Line(); 

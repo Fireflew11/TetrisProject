@@ -38,37 +38,30 @@ ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startin
 }
 */
 
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4])
-	: Shape(color, useColors, startingX, startingY), cubes{ newCubes[0], newCubes[1], newCubes[2], newCubes[3] }
+ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, int shapeType, const Cube(&newCubes)[4])
+	: Shape(color, useColors, startingX, startingY), shapeType(shapeType), cubes{newCubes[0], newCubes[1], newCubes[2], newCubes[3]}
 {}
 
-bool ComplexShape::fillsWell(const Board& board) const {
-	int startX = INT_MAX;  // Initialize to a large value
-	int endX = INT_MIN;    // Initialize to a small value
-	int bottomY = INT_MIN; // Initialize to a small value
+int ComplexShape::fillsWell(const Board& board) const {
+	int filledParts = 0; // Counter for filled parts of the well
 
-	// Determine the range of X coordinates and the lowest Y coordinate of the shape
+	// Iterate through each cube of the shape
 	for (int i = 0; i < 4; ++i) {
-		startX = std::fmin(startX, cubes[i].get_X());
-		endX = std::fmax(endX, cubes[i].get_X());
-		bottomY = std::fmax(bottomY, cubes[i].get_Y());
+		int currX = cubes[i].get_X() - board.getStartingX(); // Adjust X coordinate
+		int currY = cubes[i].get_Y() - 1;                     // Adjust Y coordinate
+
+		// Check if the cube is against the left or right wall and at the bottom of the board
+		if ((currX == 0 || currX == gameConfig::GAME_WIDTH - 1) && currY == gameConfig::GAME_HEIGHT - 1) {
+			filledParts++; // Increment the counter for filled parts
+		}
 	}
 
-	// Check if the shape is against the left wall
-	bool againstLeftWall = (startX == 1);
+	return filledParts;
+}
 
-	// Check if the shape is against the right wall
-	bool againstRightWall = (endX == gameConfig::GAME_WIDTH);
-
-	// Check if the shape's bottom is against the bottom of the board
-	bool againstBottom = (bottomY == gameConfig::GAME_HEIGHT);
-
-	// Check if the shape fills a well
-	if ((againstLeftWall || againstRightWall) && againstBottom) {
-		return true;
-	}
-
-	return false;
+int ComplexShape::getX() const
+{
+	return cubes[0].get_X();
 }
 
 /**********************************************************************
@@ -194,6 +187,11 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 Shape* ComplexShape::clone() const
 {
 	return new ComplexShape(*this);
+}
+
+int ComplexShape::getShapeType() const
+{
+	return shapeType;
 }
 
  Cube* const ComplexShape::get_and_set_cubes()

@@ -4,15 +4,26 @@
 #include "ComplexShape.h"
 #include "Bomb.h"
 
-bool Computer::decideMove(Shape& shape, char key)
+int Computer::getRotationAmount(ComplexShape& shape)
 {
-	if (key == gameConfig::ESC)
-		return true;
+	int type = shape.getShapeType();
+	if (type == 4)
+		return 1;
+	if (type == 1 || type == 5 || type == 7)
+		return 2;
+	else
+		return 4;
+}
+
+void Computer::decideMove(Shape& shape, char key)
+{
 	int maxScoreForMove = -1000000;
 	Shape* temp;
 	createTempShape(shape, temp);
+
 	if (curXTarget == 0) {
-		for (int i = 0; i < 4; i++)
+		int rotationsAmount = getRotationAmount(*dynamic_cast<ComplexShape*>(&shape));
+		for (int i = 0; i < rotationsAmount; i++)
 		{
 			checkAllMoves(*temp, i, maxScoreForMove);
 			if(!temp->rotate_Clock_wise(getPlayerBoard()))
@@ -22,33 +33,24 @@ bool Computer::decideMove(Shape& shape, char key)
 			}
 		}
 	}
-	int curX;
-	ComplexShape* complexTemp = dynamic_cast<ComplexShape*>(&shape);
-	Bomb* bombTemp = dynamic_cast<Bomb*>(&shape);
-	if (complexTemp != nullptr)
-		curX = complexTemp->get_cubes()[0].get_X();
-	else if (bombTemp != nullptr)
-		curX = bombTemp->getCube().get_X();
+	int curX = temp->getX();
 	shape.drawShape(false);
-	for (int i = 0; i < 2; i++)
-	{
-		if (curRotationTarget > 0) {
-			if (!shape.rotate_Clock_wise(getPlayerBoard())) {
-				shape.continueMovingDown(getPlayerBoard());
-				shape.rotate_Clock_wise(getPlayerBoard());
-			}
+	if (curRotationTarget > 0) {
+		if (shape.rotate_Clock_wise(getPlayerBoard())) 
 			curRotationTarget--;
-		}
-		else if (curX > curXTarget)
-			shape.move_Left(getPlayerBoard());
-		else if (curX < curXTarget)
-			shape.move_Right(getPlayerBoard());
-		else
-			shape.drop(getPlayerBoard());
 	}
+	else if (curX > curXTarget) {
+		shape.move_Left(getPlayerBoard());
+	}
+	else if (curX < curXTarget) {
+		shape.move_Right(getPlayerBoard());
+	}
+	/*
+	else
+		shape.drop(getPlayerBoard());
+		*/
 	
 	shape.drawShape(true);
-	return false;
 }
 
 void Computer::checkAllMoves(Shape& shape, int rotation, int& maxScoreForMove)
@@ -60,8 +62,8 @@ void Computer::checkAllMoves(Shape& shape, int rotation, int& maxScoreForMove)
 void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int& maxScoreForMove, bool moveLeft) {
 	Shape* tempShape = nullptr;
 	createTempShape(shape, tempShape);
-
-	while ((moveLeft ? tempShape->move_Left(playerBoard) : tempShape->move_Right(playerBoard))) {
+	bool didSucceed = false;
+	while (!didSucceed) {
 		Board tempBoard(playerBoard);
 		tempShape->continueMovingDown(tempBoard);
 		Shape* tempDown = nullptr;
@@ -74,13 +76,9 @@ void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int&
 		{
 			maxScoreForMove = curScore;
 			curRotationTarget = rotation;
-			ComplexShape* complexTemp = dynamic_cast<ComplexShape*>(tempDown);
-			Bomb* bombTemp = dynamic_cast<Bomb*>(tempDown);
-			if (complexTemp != nullptr)
-				curXTarget = complexTemp->get_cubes()[0].get_X();
-			else if (bombTemp != nullptr)
-				curXTarget = bombTemp->getCube().get_X();
+			curXTarget = tempDown->getX();
 		}
+		didSucceed = !(moveLeft ? tempShape->move_Left(playerBoard) : tempShape->move_Right(playerBoard));
 		delete tempDown;
 	}
 
@@ -98,26 +96,27 @@ void Computer::createTempShape(Shape& shape, Shape*& tempShape) {
 int Computer::calculateScore(Board board, Shape* shape) const
 {
 	int score = 0;
+	
 	ComplexShape *tempShape = dynamic_cast<ComplexShape*>(shape);
-	if (tempShape->fillsWell(board))
-		score += 150;
+	score += tempShape->fillsWell(board) * 35;
 	int linesCleard = board.clearFullLines();
 	switch (linesCleard) {
 	case 2:
 		score += 200;
 		break;
 	case 3:
-		score += 500;
+		score += 1000;
 		break;
 	case 4:
-		score += 800;
+		score += 2000;
 		break;
 
 }
 	//score += board.clearFullLines() * (int)ScoringVariables::ClearLine;
 	score += board.getMaxHeight() * -30;
-	score += board.calculateSmoothness() * -15;
+	score += board.calculateSmoothness() * -20;
 	score += board.getHolesAmount() * -80;
+	//score += board.preventTallTowersScore();
 
 	return score;
 }

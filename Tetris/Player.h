@@ -43,7 +43,7 @@ public:
 	const int getScore();
 	const gameConfig::PlayerType getPlayerType() const; 
 	virtual ~Player() = default;
-	virtual bool decideMove(Shape& shape, char key) = 0;
+	virtual void decideMove(Shape& shape, char key) = 0;
 	const int getStartingX() const; 
 	const int getStartingY() const; 
 };

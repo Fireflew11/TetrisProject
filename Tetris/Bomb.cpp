@@ -104,3 +104,8 @@ bool Bomb::check_valid_move(const Board& board) const
 {
 	return board.isValidPosition(cube.get_X(),cube.get_Y());
 }
+
+int Bomb::getX() const
+{
+	return cube.get_X();
+}

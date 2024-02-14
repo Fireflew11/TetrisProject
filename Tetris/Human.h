@@ -8,5 +8,5 @@ private:
     map<char, ShapeFunctionType> moveFunctions;
 public:
     Human(gameConfig::PlayerType playerType);
-    bool decideMove(Shape& shape, char key) override;
+    void decideMove(Shape& shape, char key) override;
 };
