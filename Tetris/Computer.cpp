@@ -71,6 +71,11 @@ void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int&
 
 		while (tempDown->continueMovingDown(tempBoard));
 		tempDown->implementShapeToBoard(tempBoard, false);
+
+
+
+
+
 		int curScore = calculateScore(tempBoard, tempDown);
 		if (curScore > maxScoreForMove)
 		{

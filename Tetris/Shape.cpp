@@ -19,6 +19,7 @@ int Shape::getColor() const
 	return color;
 }
 
+
 /**********************************************************************
 Function name: drop
 Input: const Board& board

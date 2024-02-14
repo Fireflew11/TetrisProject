@@ -218,7 +218,7 @@ bool ComplexShape::rotate_Clock_wise(const Board& board)
 }
 
 
-void ComplexShape::implementShapeToBoard(Board& board,bool isDraw)
+void ComplexShape::implementShapeToBoard(Board& board,bool isDraw) const
 {
 	int startingX = board.getStartingX();
 	int startingY = board.getStartingY(); 

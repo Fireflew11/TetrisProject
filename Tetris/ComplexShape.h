@@ -21,13 +21,14 @@ public:
 	ComplexShape(int color, bool useColors, int startingX, int startingY, int shapeType, const Cube(&newCubes)[4]);
 	int fillsWell(const Board& board) const;
 	int getX() const override;
+	~ComplexShape() override {};
 	
 
 
 
 	Cube* const get_and_set_cubes();
 
-	void implementShapeToBoard(Board& board, bool isDraw) override;
+	void implementShapeToBoard(Board& board, bool isDraw) const override;
 	bool check_valid_move(const Board& board) const override;
 
 

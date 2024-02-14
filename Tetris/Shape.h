@@ -23,7 +23,7 @@ public:
 	virtual bool move_Left(const Board& board)=0;
 	virtual bool move_Right(const Board& board)=0;
 	virtual bool continueMovingDown(const Board& board)=0;
-	virtual void implementShapeToBoard(Board& board, bool isDraw) = 0;
+	virtual void implementShapeToBoard(Board& board, bool isDraw) const = 0 ;
 	virtual bool check_valid_move(const Board& board) const=0;
 
 	int getColor() const;
@@ -36,6 +36,7 @@ public:
 	virtual int getX() const = 0;
 
 	Shape(int color, bool useColors, int startingX, int StartingY); 
+	virtual ~Shape() {};
 
 
 

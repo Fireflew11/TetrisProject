@@ -233,7 +233,7 @@ Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_W
 
 bool Board::isValidExplosion(const int x, const int y)const
 {
-	if ((x > gameConfig::GAME_WIDTH + startingX) || (x < startingX))
+	if ((x >= gameConfig::GAME_WIDTH + startingX) || (x < startingX))
 		return false;
 	if (y >= gameConfig::GAME_HEIGHT + startingY || y < startingY)
 		return false;
@@ -249,7 +249,7 @@ bool Board::isValidYExplosion(const int y)const
 
 bool Board::isValidXExplosion(const int x)const
 {
-	if ((x > gameConfig::GAME_WIDTH + startingX) || (x < startingX))
+	if ((x >= gameConfig::GAME_WIDTH + startingX) || (x < startingX))
 		return false;
 	return true; 
 }
@@ -262,7 +262,7 @@ void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExp
 		for (int x = startingXExplosion; x < startingXExplosion + rangeX; x++)
 		{
 			//cout << "x: " << x << " " << "y : " << y << endl;
-			board_game[y - startingY + rangeY][x-startingX].setIsActive(board_game[y-startingY][x-startingX].getIsActive());
+			board_game[y - startingY + rangeY][x - startingX].setIsActive(board_game[y-startingY][x-startingX].getIsActive());
 			board_game[y - startingY + rangeY][x - startingX].setColor(board_game[y - startingY][x - startingX].getColor());
 			board_game[y - startingY][x - startingX].setIsActive(false); 
 

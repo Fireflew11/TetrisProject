@@ -81,7 +81,7 @@ bool Bomb::continueMovingDown(const Board& board)
 
 
 
-void Bomb::explosion(Board& board,bool isDraw)
+void Bomb::explosion(Board& board,bool isDraw) const
 {
 	
 	int bombX = cube.get_X(); 
@@ -108,7 +108,7 @@ void Bomb::explosion(Board& board,bool isDraw)
 		board.drawBoardCubes(); 
 }
 
-void Bomb::implementShapeToBoard(Board& board, bool isDraw)
+void Bomb::implementShapeToBoard(Board& board, bool isDraw) const
 {
 	explosion(board, isDraw);
 }
@@ -119,7 +119,7 @@ bool Bomb::check_valid_move(const Board& board) const
 }
 
 
-void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, int& startingYExplosion, int&rangeX, int& rangeY, const Board& board)
+void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, int& startingYExplosion, int&rangeX, int& rangeY, const Board& board) const
 {
 	bool isFirstValidX = false;
 	bool isFirstValidY = false;	
@@ -128,11 +128,11 @@ void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, in
 			rangeY++;
 			if (isFirstValidY == false)
 			{
-				startingYExplosion = y;
+				startingYExplosion = y - board.getStartingY();
 				isFirstValidY = true;
 			}
 		}
-		for (int x = bombX - blastRange; (x <= bombX + blastRange) && (board.isValidXExplosion(x) == true); x++)
+		for (int x = fmax(bombX - blastRange, board.getStartingX()); (x <= bombX + blastRange) && (board.isValidXExplosion(x) == true); x++)
 		{
 			rangeX++;
 			if (isFirstValidX == false)
