@@ -6,10 +6,11 @@
 
 int main() 
 {
-	
+	srand(time(0));
 	SetCurserVisibility(false);
-	Game game1; 
+	Game game1;
 	game1.startGame();
 	cout << "Thanks for playing!!" << endl;
+
 }
 

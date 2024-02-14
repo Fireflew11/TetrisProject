@@ -138,8 +138,6 @@ int  Board::clearFullLines()
 			clearLine(i);  
 		}
 	}
-	if (numClearedLines > 0)
-		drawBoardCubes();
 
 	return numClearedLines; 
 }
@@ -296,3 +294,97 @@ void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExp
 	}
 }
 */
+
+int Board::getMaxHeight()
+{
+	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
+	{
+		for (int j = 0; j < gameConfig::GAME_WIDTH; j++)
+		{
+			if (board_game[i][j].getIsActive())
+				return (gameConfig::GAME_HEIGHT - i);
+		}
+	}
+	return 0;
+}
+
+int Board::getHolesAmount() {
+	int holes = 0;
+
+	// Iterate through each column
+	for (int col = 0; col < gameConfig::GAME_WIDTH; col++) {
+		int activeFound = 0;  // Flag to indicate if an active cube is found in the column
+
+		// Iterate through each row, starting from the bottom
+		for (int row = 0; row < gameConfig::GAME_HEIGHT; row++) {
+			// Check if the current cell is active
+			if (board_game[row][col].getIsActive()) {
+				activeFound++;  // Set the flag indicating an active cube is found in this column
+			}
+			else if (!board_game[row][col].getIsActive() && activeFound) {
+				holes += activeFound;  // Found a hole
+			}
+		}
+	}
+
+	return holes;
+}
+double Board::calculateSmoothness()
+{
+	double smoothness = 0.0;
+	int minForMaxRow = 0;
+	for (int col = 0; col < gameConfig::GAME_WIDTH - 1; ++col) {
+		int height1 = this->getMaxHeight(col);
+		int height2 = this->getMaxHeight(col + 1);
+		smoothness += std::abs(height1 - height2);
+	}
+
+	return smoothness;
+}
+
+int Board::getMaxHeight(int col)
+{
+	int max_height = 0;
+	for (int row = 0; row < gameConfig::GAME_HEIGHT; ++row) {
+		if (board_game[row][col].getIsActive()) {
+			max_height = gameConfig::GAME_HEIGHT - row;
+			break;
+		}
+	}
+	return max_height;
+}
+
+int Board::preventTallTowersScore() const 
+{
+	const int TOWER_THRESHOLD = 5; // Adjust as needed
+	int tallTowersPenalty = 0;
+
+	std::vector<int> columnHeights = calculateColumnHeights();
+	for (int height : columnHeights) {
+		if (height > TOWER_THRESHOLD) {
+			// Penalize for each cube exceeding the threshold
+			tallTowersPenalty += (height - TOWER_THRESHOLD) * -150;
+		}
+	}
+
+	return tallTowersPenalty;
+}
+
+vector<int> Board::calculateColumnHeights() const 
+{
+	vector<int> columnHeights(gameConfig::GAME_WIDTH, 0);
+
+	// Iterate through each column
+	for (int col = 0; col < gameConfig::GAME_WIDTH; ++col) {
+		// Iterate through each row, starting from the bottom
+		for (int row = 0; row < gameConfig::GAME_HEIGHT; ++row) {
+			if (board_game[row][col].getIsActive()) {
+				// Increment the height of the current column if an active cube is found
+				columnHeights[col] = gameConfig::GAME_HEIGHT - row;
+				break; // Move to the next column once the height is updated
+			}
+		}
+	}
+
+	return columnHeights;
+}

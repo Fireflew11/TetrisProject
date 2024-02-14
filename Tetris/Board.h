@@ -3,6 +3,7 @@
 #include <iostream>
 #include"Shape.h" 
 #include "gameConfig.h"
+#include <vector>
 class Shape; 
 using namespace std;
 
@@ -41,11 +42,19 @@ public:
 	void set_cube_active_in_board_game(const int x, const int y);
 	const int getStartingX()const; 
 	const int getStartingY() const; 
-
+	int getMaxHeight();
+	int getHolesAmount();
 	Cube(&get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
+
 	bool isValidYExplosion(const int y)const;
 	bool isValidXExplosion(const int x)const;
 	void moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY);
+
+	double calculateSmoothness();
+	int getMaxHeight(int col);
+	int preventTallTowersScore() const;
+	std::vector<int> calculateColumnHeights() const;
+
 private: 
 	void print_Line(); 
 };

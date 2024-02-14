@@ -1,46 +1,32 @@
 #include "ComplexShape.h"
 
-/*
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY): Shape(color, useColors, startingX, startingY)
-{
-	for (auto& cube : cubes)
-	{
-		cube.set_coord(startingX, startingY); 
-	}
-}
 
-*/
-/*
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY,const Cube newCubes[4]) : Shape(color, useColors, startingX, startingY), cubes{newCubes[0], newCubes[1], newCubes[2], newCubes[3]}
-{
-	
-	//for (int i = 0; i < 4; i++) 
-	//{
-	//	cubes[i] = newCubes[i];
-	//}
-}
-*/
-/*
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube newCubes[]) : Shape(color, useColors, startingX, startingY) {
-	for (int i = 0; i < 4; i++)
-	{
-		cubes[i] = newCubes[i];
-	}
-}
-*/
-/*
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4]): Shape(color, useColors, startingX, startingY)
-{
-	for (int i = 0; i < 4; i++) 
-	{
-		cubes[i] = newCubes[i];
-	}
-}
-*/
 
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, const Cube(&newCubes)[4])
-	: Shape(color, useColors, startingX, startingY), cubes{ newCubes[0], newCubes[1], newCubes[2], newCubes[3] }
+ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, int shapeType, const Cube(&newCubes)[4])
+	: Shape(color, useColors, startingX, startingY), shapeType(shapeType), cubes{newCubes[0], newCubes[1], newCubes[2], newCubes[3]}
 {}
+
+int ComplexShape::fillsWell(const Board& board) const {
+	int filledParts = 0; // Counter for filled parts of the well
+
+	// Iterate through each cube of the shape
+	for (int i = 0; i < 4; ++i) {
+		int currX = cubes[i].get_X() - board.getStartingX(); // Adjust X coordinate
+		int currY = cubes[i].get_Y() - 1;                     // Adjust Y coordinate
+
+		// Check if the cube is against the left or right wall and at the bottom of the board
+		if ((currX == 0 || currX == gameConfig::GAME_WIDTH - 1) && currY == gameConfig::GAME_HEIGHT - 1) {
+			filledParts++; // Increment the counter for filled parts
+		}
+	}
+
+	return filledParts;
+}
+
+int ComplexShape::getX() const
+{
+	return cubes[0].get_X();
+}
 
 /**********************************************************************
 Function name: drawShape
@@ -64,10 +50,9 @@ Output: --
 Function:The Function moves the shape one unit to the left.
 Checks if the new position is valid on the board.
 **********************************************************************/
-void ComplexShape::move_Left(const Board& board)
+bool ComplexShape::move_Left(const Board& board)
 {
-
-	drawShape(false);
+	bool res = false;
 	ComplexShape temp = *this;
 
 	for (int i = 0; i < 4; ++i)
@@ -80,8 +65,9 @@ void ComplexShape::move_Left(const Board& board)
 	if (temp.check_valid_move(board))
 	{
 		*this = temp;
+		res = true;
 	}
-	drawShape(true);
+	return res;
 }
 
 
@@ -92,9 +78,9 @@ Output: None
 Function: Moves the shape one unit to the right.
 Checks if the new position is valid on the board.
 **********************************************************************/
-void ComplexShape::move_Right(const Board& board)
+bool ComplexShape::move_Right(const Board& board)
 {
-	drawShape(false);
+	bool res = false;
 	ComplexShape temp = *this;
 
 	for (int i = 0; i < 4; ++i)
@@ -107,8 +93,9 @@ void ComplexShape::move_Right(const Board& board)
 	if (temp.check_valid_move(board))
 	{
 		*this = temp;
+		res = true;
 	}
-	drawShape(true);
+	return res;
 }
 
 /**********************************************************************
@@ -129,9 +116,7 @@ bool ComplexShape::continueMovingDown(const Board& board)
 
 	if (temp.check_valid_move(board))
 	{
-		drawShape(false);  // Erase the current shape
 		*this = temp;      // Update the shape
-		drawShape(true);   // Draw the shape at its new position
 		return true;
 	}
 
@@ -163,65 +148,77 @@ void ComplexShape::set_cubes_by_Index(int i, Cube cube)
 	cubes[i] = cube;
 }
 
+Shape* ComplexShape::clone() const
+{
+	return new ComplexShape(*this);
+}
+
+int ComplexShape::getShapeType() const
+{
+	return shapeType;
+}
+
  Cube* const ComplexShape::get_and_set_cubes()
 {
 	return cubes;
 }
 
 
- void ComplexShape::rotate_CounterClock_wise(const Board& board)
- {
-	 drawShape(false);
-	 ComplexShape tempShape = *this;
-	 int centerX = tempShape.get_cubes()[0].get_X();
-	 int centerY = tempShape.get_cubes()[0].get_Y();
-
-	 for (int i = 1; i < 4; ++i) 
-	 {
-		 int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
-		 int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
-
-		 int newX = centerX - relativeY;
-		 int newY = centerY + relativeX;
-
-		 Cube tempCube(newX, newY, getColor(), true);
-		 tempShape.set_cubes_by_Index(i, tempCube);
-	 }
-
-	 if (tempShape.check_valid_move(board))
-	 {
-		 *this = tempShape;
-	 }
-	 drawShape(true);
- }
-
- void ComplexShape::rotate_Clock_wise(const Board& board)
- {
-	 drawShape(false);
-	 ComplexShape tempShape = *this;
-	 int centerX = tempShape.get_cubes()[0].get_X();
-	 int centerY = tempShape.get_cubes()[0].get_Y();
-
-	 for (int i = 1; i < 4; ++i) {
-		 int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
-		 int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
-
-		 int newX = centerX - relativeY;
-		 int newY = centerY + relativeX;
-
-		 Cube tempCube(newX, newY, getColor(), true);
-		 tempShape.set_cubes_by_Index(i, tempCube);
-	 }
-
-	 if (tempShape.check_valid_move(board))
-	 {
-		 *this = tempShape;
-	 }
-	 drawShape(true);
- }
+bool ComplexShape::rotate_CounterClock_wise(const Board& board)
+{
+	bool res = false;
+	ComplexShape tempShape = *this;
+	int centerX = tempShape.get_cubes()[0].get_X();
+	int centerY = tempShape.get_cubes()[0].get_Y();
 
 
-void ComplexShape::implementShapeToBoard(Board& board)
+	for (int i = 1; i < 4; ++i) {
+		int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
+		int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
+
+		int newX = centerX - relativeY;
+		int newY = centerY + relativeX;
+
+		Cube tempCube(newX, newY, getColor(), true);
+		tempShape.set_cubes_by_Index(i, tempCube);
+	}
+
+	if (tempShape.check_valid_move(board))
+	{
+		*this = tempShape;
+		res = true;
+	}
+	return res;
+}
+
+bool ComplexShape::rotate_Clock_wise(const Board& board)
+{
+	bool res = false;
+	ComplexShape tempShape = *this;
+	int centerX = tempShape.get_cubes()[0].get_X();
+	int centerY = tempShape.get_cubes()[0].get_Y();
+
+	for (int i = 1; i < 4; ++i) {
+		int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
+		int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
+
+		int newX = centerX - relativeY;
+		int newY = centerY + relativeX;
+
+		Cube tempCube(newX, newY, getColor(), true);
+		tempShape.set_cubes_by_Index(i, tempCube);
+	}
+
+	if (tempShape.check_valid_move(board))
+	{
+		*this = tempShape;
+		res = true;
+	}
+	return res;
+}
+
+
+void ComplexShape::implementShapeToBoard(Board& board,bool isDraw)
 {
 	int startingX = board.getStartingX();
 	int startingY = board.getStartingY(); 

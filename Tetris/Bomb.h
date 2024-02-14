@@ -9,19 +9,24 @@ public:
 	static constexpr int blastRange = 4; 
 
 	void drawShape(bool isActive = true) const override;
-	void move_Left(const Board& board)override;
-	void move_Right(const Board& board)override;
+	bool move_Left(const Board& board)override;
+	bool move_Right(const Board& board)override;
 	bool continueMovingDown(const Board& board)override;
-	void implementShapeToBoard(Board& board) override; 
+	void implementShapeToBoard(Board& board, bool isDraw) override;
 	bool check_valid_move(const Board& board) const override;
-
-	void rotate_CounterClock_wise(const Board& board) override{};
-	void rotate_Clock_wise(const Board& board) override{};
+	int getX() const override;
+	bool rotate_CounterClock_wise(const Board& board) override { return false; };
+	bool rotate_Clock_wise(const Board& board) override { return false; };
+	const Cube& getCube() const;
+	Shape* clone() const override;
 
 	Bomb(bool useColors, int startingX, int startingY);
-	//Bomb(gameConfig::PlayerType playerType, bool useColors);
+
+
 	void CalculateBlastRange(int bombX, int bombY, int& startingXExplosion, int& startingYExplosion, int& rangeX, int& rangeY, const Board& board);
-	void explosion(Board& board);
+
+
+	void explosion(Board& board, bool isDraw);
 
 };
 
