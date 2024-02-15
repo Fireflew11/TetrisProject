@@ -249,7 +249,7 @@ bool Board::isValidYExplosion(const int y)const
 
 bool Board::isValidXExplosion(const int x)const
 {
-	if ((x >= gameConfig::GAME_WIDTH+startingX) || (x < startingX))
+	if ((x > gameConfig::GAME_WIDTH + startingX) || (x < startingX))
 		return false;
 	return true; 
 }
