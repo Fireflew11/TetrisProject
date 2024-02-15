@@ -313,16 +313,16 @@ int Board::getHolesAmount() {
 
 	// Iterate through each column
 	for (int col = 0; col < gameConfig::GAME_WIDTH; col++) {
-		int activeFound = 0;  // Flag to indicate if an active cube is found in the column
+		bool activeFound = false;  // Flag to indicate if an active cube is found in the column
 
 		// Iterate through each row, starting from the bottom
 		for (int row = 0; row < gameConfig::GAME_HEIGHT; row++) {
 			// Check if the current cell is active
 			if (board_game[row][col].getIsActive()) {
-				activeFound++;  // Set the flag indicating an active cube is found in this column
+				activeFound = true;  // Set the flag indicating an active cube is found in this column
 			}
 			else if (!board_game[row][col].getIsActive() && activeFound) {
-				holes += activeFound;  // Found a hole
+				holes++;  // Found a hole
 			}
 		}
 	}

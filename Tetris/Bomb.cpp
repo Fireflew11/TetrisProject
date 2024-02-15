@@ -5,7 +5,7 @@
 //Bomb::Bomb(gameConfig::PlayerType playerType, bool useColors): Shape(gameConfig::COLORS[8], true),cube(playerType,useColors){}
 
 
-Bomb::Bomb(bool useColors, int startingX, int startingY) :Shape(gameConfig::COLORS[8], useColors, startingX, startingY), cube(startingX +(gameConfig::GAME_WIDTH)/2 , startingY, gameConfig::COLORS[8])
+Bomb::Bomb(bool useColors, int startingX, int startingY) :Shape(gameConfig::COLORS[8], useColors, startingX, startingY, 1), cube(startingX +(gameConfig::GAME_WIDTH)/2 , startingY, gameConfig::COLORS[8])
 {}
 const Cube& Bomb::getCube() const
 {
@@ -110,6 +110,7 @@ void Bomb::explosion(Board& board,bool isDraw) const
 
 void Bomb::implementShapeToBoard(Board& board, bool isDraw) const
 {
+	
 	explosion(board, isDraw);
 }
 
@@ -128,7 +129,7 @@ void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, in
 			rangeY++;
 			if (isFirstValidY == false)
 			{
-				startingYExplosion = y - board.getStartingY();
+				startingYExplosion = y;
 				isFirstValidY = true;
 			}
 		}

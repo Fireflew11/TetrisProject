@@ -6,7 +6,7 @@
 
 
 
-Shape::Shape(int color, bool useColors, int startingX, int StartingY) : color(color), useColors(useColors), startingX(startingX), StartingY(StartingY) {}
+Shape::Shape(int color, bool useColors, int startingX, int StartingY, int differentRotations) : color(color), useColors(useColors), startingX(startingX), StartingY(StartingY), differentRotations(differentRotations) {}
 
 /**********************************************************************
 Function name: getColor
@@ -18,7 +18,9 @@ int Shape::getColor() const
 {
 	return color;
 }
-
+int Shape::getDifferentRotations() const {
+	return differentRotations;
+}
 
 /**********************************************************************
 Function name: drop

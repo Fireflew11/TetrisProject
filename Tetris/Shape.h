@@ -16,6 +16,7 @@ class Shape
 	bool useColors;
 	int startingX; 
 	int StartingY; 
+	int differentRotations;
 public: 
 
 
@@ -34,8 +35,8 @@ public:
 	virtual bool rotate_Clock_wise(const Board& board) =0;
 	virtual Shape* clone() const = 0;
 	virtual int getX() const = 0;
-
-	Shape(int color, bool useColors, int startingX, int StartingY); 
+	int getDifferentRotations() const;
+	Shape(int color, bool useColors, int startingX, int StartingY, int differentRotations); 
 	virtual ~Shape() {};
 
 

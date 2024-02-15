@@ -2,8 +2,8 @@
 
 
 
-ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, int shapeType, const Cube(&newCubes)[4])
-	: Shape(color, useColors, startingX, startingY), shapeType(shapeType), cubes{newCubes[0], newCubes[1], newCubes[2], newCubes[3]}
+ComplexShape::ComplexShape(int color, bool useColors, int startingX, int startingY, int differentRotations, const Cube(&newCubes)[4])
+	: Shape(color, useColors, startingX, startingY, differentRotations), cubes{newCubes[0], newCubes[1], newCubes[2], newCubes[3]}
 {}
 
 int ComplexShape::fillsWell(const Board& board) const {
@@ -153,10 +153,6 @@ Shape* ComplexShape::clone() const
 	return new ComplexShape(*this);
 }
 
-int ComplexShape::getShapeType() const
-{
-	return shapeType;
-}
 
  Cube* const ComplexShape::get_and_set_cubes()
 {
