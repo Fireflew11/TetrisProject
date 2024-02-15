@@ -4,17 +4,6 @@
 #include "ComplexShape.h"
 #include "Bomb.h"
 
-int Computer::getRotationAmount(ComplexShape& shape)
-{
-	int type = shape.getShapeType();
-	if (type == 4)
-		return 1;
-	if (type == 1 || type == 5 || type == 7)
-		return 2;
-	else
-		return 4;
-}
-
 void Computer::decideMove(Shape& shape, char key)
 {
 	int maxScoreForMove = -1000000;
@@ -22,8 +11,8 @@ void Computer::decideMove(Shape& shape, char key)
 	createTempShape(shape, temp);
 
 	if (curXTarget == 0) {
-		//int rotationsAmount = getRotationAmount(*dynamic_cast<ComplexShape*>(&shape));
-		for (int i = 0; i < 4; i++)
+		int rotationsAmount = temp->getDifferentRotations();
+		for (int i = 0; i < rotationsAmount; i++)
 		{
 			checkAllMoves(*temp, i, maxScoreForMove);
 			if(!temp->rotate_Clock_wise(getPlayerBoard()))
@@ -45,10 +34,10 @@ void Computer::decideMove(Shape& shape, char key)
 	else if (curX < curXTarget) {
 		shape.move_Right(getPlayerBoard());
 	}
-	/*
+	
 	else
 		shape.drop(getPlayerBoard());
-		*/
+		
 	
 	shape.drawShape(true);
 }
@@ -71,6 +60,11 @@ void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int&
 
 		while (tempDown->continueMovingDown(tempBoard));
 		tempDown->implementShapeToBoard(tempBoard, false);
+
+
+
+
+
 		int curScore = calculateScore(tempBoard, tempDown);
 		if (curScore > maxScoreForMove)
 		{

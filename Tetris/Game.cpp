@@ -456,12 +456,14 @@ Shape* Game::createRandomShape(const Player& player)
 {
 
     Shape* newShape = nullptr;
-    //bool bombppearance = isBombAppearance(); 
+    bool bombppearance = isBombAppearance(); 
+    /*
     bool bombppearance = false;
     static int cont = 0; 
     cont++; 
     if(cont==7)
-    //if (bombppearance)
+    */
+    if (bombppearance)
     {
       newShape = new Bomb(useColors, player.getStartingX(), player.getStartingY());
     }

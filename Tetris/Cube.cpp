@@ -64,7 +64,6 @@ void Cube::drawCube(const bool isActive, bool useColors) const
 
     // Set the cursor position
     gotoxy(coord.X, coord.Y);
-
     // Set the text and background colors based on conditions
     if (useColors && isActive)
         SetConsoleTextAttribute(hConsole, color);

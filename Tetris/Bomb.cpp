@@ -5,7 +5,7 @@
 //Bomb::Bomb(gameConfig::PlayerType playerType, bool useColors): Shape(gameConfig::COLORS[8], true),cube(playerType,useColors){}
 
 
-Bomb::Bomb(bool useColors, int startingX, int startingY) :Shape(gameConfig::COLORS[8], useColors, startingX, startingY), cube(startingX +(gameConfig::GAME_WIDTH)/2 , startingY, gameConfig::COLORS[8])
+Bomb::Bomb(bool useColors, int startingX, int startingY) :Shape(gameConfig::COLORS[8], useColors, startingX, startingY, 1), cube(startingX +(gameConfig::GAME_WIDTH)/2 , startingY, gameConfig::COLORS[8])
 {}
 const Cube& Bomb::getCube() const
 {
@@ -81,7 +81,7 @@ bool Bomb::continueMovingDown(const Board& board)
 
 
 
-void Bomb::explosion(Board& board,bool isDraw)
+void Bomb::explosion(Board& board,bool isDraw) const
 {
 	
 	int bombX = cube.get_X(); 
@@ -108,8 +108,9 @@ void Bomb::explosion(Board& board,bool isDraw)
 		board.drawBoardCubes(); 
 }
 
-void Bomb::implementShapeToBoard(Board& board, bool isDraw)
+void Bomb::implementShapeToBoard(Board& board, bool isDraw) const
 {
+	
 	explosion(board, isDraw);
 }
 
@@ -119,7 +120,7 @@ bool Bomb::check_valid_move(const Board& board) const
 }
 
 
-void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, int& startingYExplosion, int&rangeX, int& rangeY, const Board& board)
+void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, int& startingYExplosion, int&rangeX, int& rangeY, const Board& board) const
 {
 	bool isFirstValidX = false;
 	bool isFirstValidY = false;	
@@ -132,7 +133,7 @@ void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, in
 				isFirstValidY = true;
 			}
 		}
-		for (int x = bombX - blastRange; (x <= bombX + blastRange) && (board.isValidXExplosion(x) == true); x++)
+		for (int x = fmax(bombX - blastRange, board.getStartingX()); (x <= bombX + blastRange) && (board.isValidXExplosion(x) == true); x++)
 		{
 			rangeX++;
 			if (isFirstValidX == false)
