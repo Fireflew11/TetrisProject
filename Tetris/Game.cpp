@@ -212,17 +212,32 @@ void Game::startGame()
         }
          keyPressed = _getch();
          // Check the pressed key for different menu options
-         
+         if (keyPressed == '5')
+         {
+             PrintNoColorsMenu();
+             keyPressed = _getch();
+             useColors = false;
+         }
+         else
+             useColors = true;
+
+         if ((keyPressed == (char)MenuOption::PVC/*'3'*/) || (keyPressed == (char)MenuOption::CVC/*'4'*/))
+         {
+             PrintComputerOption();
+
+             //char computerLevel = _getch(); 
+         }
+
         if (keyPressed == (char)MenuOption::PVP /*'1'*/ ||
-            keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS/*'3'*/ ||
             keyPressed == (char)MenuOption::PVC/*'3'*/ ||
             keyPressed == (char)MenuOption::CVC/*'4'*/)
         {
             initializePlayers(keyPressed);
-            if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS/*'3'*/)
-                useColors = false;
-            else
-                useColors = true;
+
+            //if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS/*'3'*/)
+               // useColors = false;
+            //else
+               // useColors = true;
             system("cls");
             isMenuVisible = false;
             players[0]->getPlayerBoard().setUseColor(useColors);
@@ -296,16 +311,41 @@ Function:Displays the main menu options
 **********************************************************************/
 void Game:: Print_Menu()
 {
+    /*
     system("cls");
-    cout << "(1) Start a new game, PVP" << endl; 
+    cout << " (1) Start a new game - Human vs Human" << endl; 
     if(status == gameConfig::GameStatus::Paused)
         cout << "(2) Continue a paused game" << endl; 
     cout << "(3) Start a new game, PVC " << endl; 
     cout << "(4) Start a new game, CVC " << endl;
     cout << "(8) Present instructionsand keys" << endl; 
     cout << "(9) EXIT" << endl; 
+    */
+    system("cls");
+    cout << "(1) Start a new game - Human vs Human" << endl;
+    cout << "(2) Start a new game - Human vs Computer" << endl;
+    cout << "(3) Start a new game - Computer vs Computer" << endl;
+    if (status == gameConfig::GameStatus::Paused)
+        cout << "(4) Continue a paused game" << endl; 
+    cout << "(5) Start a new game without colors" << endl;
+    cout << "(8) Present instructionsand keys" << endl;
+    cout << "(9) EXIT" << endl;
 }
-
+void Game::PrintNoColorsMenu()
+{
+    cout << "(1) Start a new game without colors - Human vs Human" << endl;
+    cout << "(2) Start a new game without colors- Human vs Computer" << endl;
+    cout << "(3) Start a new game without colors- Computer vs Computer" << endl;
+    cout << "(8) Present instructionsand keys" << endl;
+    cout << "(9) EXIT" << endl;
+}
+void Game::PrintComputerOption()
+{
+    cout << "Choose computer level: " << endl; ;
+    cout << "(a) BEST" << endl; 
+    cout << "(b) GOOD" << endl; 
+    cout<< "(c) NOVICE"<< endl; 
+}
 /**********************************************************************
 Function name: Present_instructionsand_keys
 Input:--
@@ -528,3 +568,25 @@ bool Game::isBombAppearance()
         return true; 
     return false; 
 }
+/*
+void Game::ChooseComputerLevel()
+{
+    PrintComputerOption();
+    char computerLevel = _getch();
+    switch (computerLevel)
+    {
+    case gameConfig::ComputerLevel::BEST: 
+    {
+        break; 
+    }
+    case gameConfig::ComputerLevel::GOOD:
+    {
+        break; 
+    }
+    case gameConfig::ComputerLevel::NOVIC: 
+    {
+        break; 
+    }
+    }
+}
+*/

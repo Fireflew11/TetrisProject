@@ -60,6 +60,10 @@ public:
 	bool handleComputer(Player* player);
 	bool checkGameConditions(Player& player, Shape*& shape, bool& isGameOver);
 
+	void PrintNoColorsMenu();
+	void PrintComputerOption();
+	void ChooseComputerLevel()
+
 	Shape* createRandomShape(const Player& player);
 	bool isBombAppearance();
 };
