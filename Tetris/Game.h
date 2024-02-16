@@ -61,11 +61,10 @@ public:
 
 	bool checkGameValidity(bool& isGameOver);
 	bool handleInput();
-	bool handleHuman(Player* player);
-	bool handleComputer(Player* player);
 	bool checkGameConditions(Player& player, Shape*& shape, bool& isGameOver);
-
+	void moveShapesDown(Shape* shapeLeft, Shape* shapeRight, bool& movedDownPlayer1, bool& movedDownPlayer2);
 	Shape* createRandomShape(const Player& player);
+	void ResetIfComputer(Player* player);
 	bool isBombAppearance();
 	void Print_No_Colors_Menu();
 	void Print_Computer_Level_Menu();

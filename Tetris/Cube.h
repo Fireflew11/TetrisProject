@@ -30,7 +30,7 @@ public:
 	void set_X(const int& x);
 	void set_Y(const int& y);
 	void setIsActive(const bool isActive);
-	void drawCube(const bool isActive, bool useColors) const;
+	void drawCube(const bool isActive, bool useColors, char ch = '#') const;
 	void set_coord(const int& x, const int& y); 
 	void setColor(const int& color);
 	Cube(int x=0, int y=0, int colorIndex =0, bool active = true);

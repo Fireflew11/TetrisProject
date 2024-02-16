@@ -57,7 +57,7 @@ bool useColors - Whether to use colors in the console output
 Output: --
 Function: Draws the cube on the console screen with optional colors.
 **********************************************************************/
-void Cube::drawCube(const bool isActive, bool useColors) const
+void Cube::drawCube(const bool isActive, bool useColors, char ch) const
 {
     // Get the console handle
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -71,7 +71,7 @@ void Cube::drawCube(const bool isActive, bool useColors) const
         SetConsoleTextAttribute(hConsole, gameConfig::COLORS[0]);
 
     if (isActive)
-        cout << "#";
+        cout << ch;
     else
         cout << " ";
 

@@ -23,7 +23,7 @@ public:
 
 	enum class GameStatus { Running, Paused, NewGame, Ended, Finished, Menu, MenuWithoutColors}; // Ended is for if the program is over, Finished is for if the current game is over
 
-	enum class ComputerLevel{ BEST= 'a', GOOD='b', NOVICE= 'c'};
+	enum class Difficulty { BEST = 'a', GOOD = 'b', NOVICE = 'c' };
 
 
 	static constexpr int ESC = 27;

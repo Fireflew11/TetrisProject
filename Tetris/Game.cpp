@@ -44,12 +44,8 @@ void Game::GameLoop()
             Sleep(250);
 
             // Move shapes down for both players
-            currentShapeLeftPlayer->drawShape(false);
-            currentShapeRightPlayer->drawShape(false);
-            bool movedDownPlayer1 = currentShapeLeftPlayer->continueMovingDown(players[0]->getPlayerBoard());
-            bool movedDownPlayer2 = currentShapeRightPlayer->continueMovingDown(players[1]->getPlayerBoard());
-            currentShapeLeftPlayer->drawShape();
-            currentShapeRightPlayer->drawShape();
+            bool movedDownPlayer1 = true, movedDownPlayer2 = true;
+            moveShapesDown(currentShapeLeftPlayer, currentShapeRightPlayer, movedDownPlayer1, movedDownPlayer2);
             
 
             // Check if both shapes reached the bottom
@@ -58,30 +54,22 @@ void Game::GameLoop()
                 currentShapeLeftPlayer->implementShapeToBoard(players[0]->getPlayerBoard(), true); 
                 currentShapeRightPlayer->implementShapeToBoard(players[1]->getPlayerBoard(), true);
 
-                Computer* computerPlayer0 = dynamic_cast<Computer*>(players[0]);
-                if (computerPlayer0)
-                    computerPlayer0->resetTargets();
-                Computer* computerPlayer1 = dynamic_cast<Computer*>(players[1]);
-                if (computerPlayer1)
-                    computerPlayer1->resetTargets();
+                ResetIfComputer(players[0]);
+                ResetIfComputer(players[1]);
                 isGameOver = isMaxHeight();
                 break;
             }
             // Handle shape movements and updates for player 1
             if (!movedDownPlayer1)
             {
-                Computer* computerPlayer0 = dynamic_cast<Computer*>(players[0]);
-                if (computerPlayer0)
-                    computerPlayer0->resetTargets();
+                ResetIfComputer(players[0]);
                 if (checkGameConditions(*players[0], currentShapeLeftPlayer, isGameOver))
                     break; 
             }
             // Handle shape movements and updates for player 2
             if (!movedDownPlayer2)
             {
-                Computer* computerPlayer1 = dynamic_cast<Computer*>(players[1]);
-                if (computerPlayer1)
-                    computerPlayer1->resetTargets();
+                ResetIfComputer(players[1]);
                 if (checkGameConditions(*players[1], currentShapeRightPlayer, isGameOver))
                     break;
             }
@@ -89,7 +77,19 @@ void Game::GameLoop()
         }
     }
 }
-
+void Game::ResetIfComputer(Player* player) {
+    Computer* computerPlayer = dynamic_cast<Computer*>(player);
+    if (computerPlayer)
+        computerPlayer->resetTargets();
+}
+void Game::moveShapesDown(Shape* shapeLeft, Shape* shapeRight, bool& movedDownPlayer1, bool& movedDownPlayer2) {
+    shapeLeft->drawShape(false);
+    shapeRight->drawShape(false);
+    movedDownPlayer1 = shapeLeft->continueMovingDown(players[0]->getPlayerBoard());
+    movedDownPlayer2 = shapeRight->continueMovingDown(players[1]->getPlayerBoard());
+    shapeLeft->drawShape();
+    shapeRight->drawShape();
+}
 /**********************************************************************
 Function name: checkGameConditions
 Input:Player& player, Shape& shape, bool& isGameOver
@@ -693,30 +693,7 @@ bool Game::handleInput()
 {
     players[0]->updateScore(players[0]->getPlayerBoard().clearFullLines());
     players[1]->updateScore(players[1]->getPlayerBoard().clearFullLines());
-    /*
-    Computer* computer0 = dynamic_cast<Computer*>(players[0]);
-    Computer* computer1 = dynamic_cast<Computer*>(players[1]);
-    Human* human0 = dynamic_cast<Human*>(players[0]);
-    Human* human1 = dynamic_cast<Human*>(players[1]);
-    */
     char keyPressed = 0;
-    /*
-    if (_kbhit())
-    {
-        keyPressed = toupperG(_getch());
-        if (((keyPressed == gameConfig::ESC) ||
-            players[0]->decideMove(*currentShapeLeftPlayer, keyPressed)) ||
-            players[1]->decideMove(*currentShapeRightPlayer, keyPressed))
-        {
-            status = gameConfig::GameStatus::Paused;
-            return true;
-        }
-    }
-    if (computer0 != nullptr)
-        players[0]->decideMove(*currentShapeLeftPlayer, keyPressed);
-    if (computer1 != nullptr)
-        players[1]->decideMove(*currentShapeRightPlayer, keyPressed);
-        */
     if (_kbhit()) {
         keyPressed = toupperG(_getch());
         if (keyPressed == gameConfig::ESC)
@@ -749,7 +726,7 @@ Shape* Game::createRandomShape(const Player& player)
     else
     {
         int randomShape = rand() % (int)gameConfig::NUM_OF_SHAPES + 1;
-        //int randomShape = 3;
+        
         switch ((gameConfig::ShapeType)randomShape)
         {
         case gameConfig::ShapeType::I:

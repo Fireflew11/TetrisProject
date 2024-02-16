@@ -1,6 +1,6 @@
 ﻿#include "Board.h"
 #include "gameConfig.h"
-
+#include "ComplexShape.h"
 /**********************************************************************
 Function name: display_board
 Input: --
@@ -55,33 +55,7 @@ const Cube(&Board::getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GA
 }
 
 
-/**********************************************************************
-Function name:check_valid_move
-Input: const Shape& shape
-Output: bool
-Function:Checks if a given shape can make a valid move on the board. 
-The function verifies if the shape's position and orientation are within the bounds of the board and if it collides with any active cubes.
-**********************************************************************/
-/*
-bool Board::check_valid_move(const Shape& shape) const
-{
-	for (int i = 0; i < 4; i++)
-	{
-		int x = shape.get_cubes()[i].get_X(); 
-		int y = shape.get_cubes()[i].get_Y();   
-		if ((x > gameConfig::GAME_WIDTH + startingX) || (x <= startingX))
-			return false;
-		if (y >= gameConfig::GAME_HEIGHT + 1 || y < 1)
-			return false;
-		if (board_game[y - 1][(x - startingX - 1)].getIsActive() == true) 
-			
-			return false;
 
-	}
-	return true;
-
-}
-*/
 
 /**********************************************************************
 Function name:clearLine
@@ -141,26 +115,6 @@ int  Board::clearFullLines()
 
 	return numClearedLines; 
 }
-
-/**********************************************************************
-Function name:implementShapeToBoard
-Input:const Shape& shape
-Output:--
-Function:The function implements the given shape on the game board 
-by updating the state of the board_game array based on the shape's cubes' positions and color.
-**********************************************************************/
-/*
-void Board::implementShapeToBoard(const Shape& shape) 
-{
-	for (int i = 0; i < 4; i++)
-	{
-		board_game[shape.get_cubes()[i].get_Y() - 1][shape.get_cubes()[i].get_X() - startingX - 1].setIsActive(true);
-		board_game[shape.get_cubes()[i].get_Y() - 1][shape.get_cubes()[i].get_X() - startingX - 1].setColor(shape.getColor());
-	}
-	
-}
-*/
-
 
 /**********************************************************************
 Function name:drawBoardCubes
@@ -387,4 +341,23 @@ vector<int> Board::calculateColumnHeights() const
 	}
 
 	return columnHeights;
+}
+int Board::fillsWell(Shape* shape) const {
+	ComplexShape* newShape = dynamic_cast<ComplexShape*>(shape);
+	if (!newShape)
+		return 0;
+	int filledParts = 0; // Counter for filled parts of the well
+
+	// Iterate through each cube of the shape
+	for (int i = 0; i < 4; ++i) {
+		int currX = newShape->get_cubes()[i].get_X() - startingX; // Adjust X coordinate
+		int currY = newShape->get_cubes()[i].get_Y() - 1;                     // Adjust Y coordinate
+
+		// Check if the cube is against the left or right wall and at the bottom of the board
+		if ((currX == 0 || currX == gameConfig::GAME_WIDTH - 1) && currY == gameConfig::GAME_HEIGHT - 1) {
+			filledParts++; // Increment the counter for filled parts
+		}
+	}
+
+	return filledParts;
 }
