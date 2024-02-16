@@ -48,7 +48,8 @@ void Computer::checkAllMoves(Shape& shape, int rotation, int& maxScoreForMove)
 	performMoves(shape, getPlayerBoard(), rotation, maxScoreForMove, false);
 
 }
-void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int& maxScoreForMove, bool moveLeft) {
+void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int& maxScoreForMove, bool moveLeft) 
+{
 	Shape* tempShape = nullptr;
 	createTempShape(shape, tempShape);
 	bool didSucceed = false;
@@ -60,10 +61,6 @@ void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int&
 
 		while (tempDown->continueMovingDown(tempBoard));
 		tempDown->implementShapeToBoard(tempBoard, false);
-
-
-
-
 
 		int curScore = calculateScore(tempBoard, tempDown);
 		if (curScore > maxScoreForMove)
@@ -83,7 +80,8 @@ void Computer::resetTargets()
 	curRotationTarget = 0;
 	curXTarget = 0;
 }
-void Computer::createTempShape(Shape& shape, Shape*& tempShape) {
+void Computer::createTempShape(Shape& shape, Shape*& tempShape) 
+{
 	tempShape = shape.clone();
 }
 

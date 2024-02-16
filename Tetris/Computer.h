@@ -8,8 +8,9 @@ class Computer : public Player
 private:
 	int curXTarget;
 	int curRotationTarget;
+	gameConfig::ComputerLevel level;
 public:
-	Computer(gameConfig::PlayerType playerType) : Player(playerType), curXTarget(0), curRotationTarget(0) {}
+	Computer(gameConfig::PlayerType playerType, gameConfig::ComputerLevel level) : Player(playerType), curXTarget(0), curRotationTarget(0), level(level) {}
 	void decideMove(Shape& shape, char key) override;
 	void checkAllMoves(Shape& shape, int rotation,int& maxScoreForMove);
 	int calculateScore(Board board, Shape* shape) const;

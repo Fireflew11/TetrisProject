@@ -127,30 +127,35 @@ bool Game::checkGameConditions(Player& player, Shape* & shape, bool& isGameOver)
     
 }
 
-void Game::initializePlayers(char pick)
+void Game::initializePlayers(char pick, gameConfig::ComputerLevel level)
 {
-    if (players[0] != nullptr && players[1] != nullptr) {
+    if (players[0] != nullptr && players[1] != nullptr) 
+    {
         delete players[0];
         delete players[1];
         players[0] = players[1] = nullptr;
     }
     MenuOption option = (MenuOption)pick;
-    switch (option) {
-    case MenuOption::PVP:
+    switch (option) 
+    {
+    case MenuOption::START_NEW_GAME_PVP:
         players[0] = new Human(gameConfig::PlayerType::LEFT_PLAYER);
         players[1] = new Human(gameConfig::PlayerType::RIGHT_PLAYER);
         break;
-    case MenuOption::PVC:
+    case MenuOption::START_NEW_GAME_PVC:
         players[0] = new Human(gameConfig::PlayerType::LEFT_PLAYER);
-        players[1] = new Computer(gameConfig::PlayerType::RIGHT_PLAYER);
+        players[1] = new Computer(gameConfig::PlayerType::RIGHT_PLAYER, level);
         break;
-    case MenuOption::CVC:
-        players[0] = new Computer(gameConfig::PlayerType::LEFT_PLAYER);
-        players[1] = new Computer(gameConfig::PlayerType::RIGHT_PLAYER);
+    case MenuOption::START_NEW_GAME_CVC:
+        players[0] = new Computer(gameConfig::PlayerType::LEFT_PLAYER, level);
+        players[1] = new Computer(gameConfig::PlayerType::RIGHT_PLAYER, level);
     default:
         break;
     }
 }
+
+
+
 
 /**********************************************************************
 Function name:isMaxHeight
@@ -188,7 +193,10 @@ Input: --
 Output: --
 Function:Initiates or continues the game based on user input, handling different game statuses.
 **********************************************************************/
-void Game::startGame()
+
+
+//this is the original 
+void Game::startGame2()
 {
     bool isMenuVisible = false;
     char keyPressed = 0;
@@ -205,7 +213,8 @@ void Game::startGame()
         }
         // Clear the console, print the menu, and set the menu visibility flag
         // Using isMenuVisible to prevent continuous blinking if pressing random key
-        if (!isMenuVisible) {
+        if (!isMenuVisible) 
+        {
             system("cls");
             Print_Menu();
             isMenuVisible = true;
@@ -213,10 +222,10 @@ void Game::startGame()
          keyPressed = _getch();
          // Check the pressed key for different menu options
          
-        if (keyPressed == (char)MenuOption::PVP /*'1'*/ ||
+        if (keyPressed == (char)MenuOption::START_NEW_GAME_PVP /*'1'*/ ||
             keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS/*'3'*/ ||
-            keyPressed == (char)MenuOption::PVC/*'3'*/ ||
-            keyPressed == (char)MenuOption::CVC/*'4'*/)
+            keyPressed == (char)MenuOption::START_NEW_GAME_PVC/*'3'*/ ||
+            keyPressed == (char)MenuOption::START_NEW_GAME_CVC/*'4'*/)
         {
             initializePlayers(keyPressed);
             if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS/*'3'*/)
@@ -261,6 +270,228 @@ void Game::startGame()
     }
 }
 
+void Game::startGame1()
+{
+    bool isMenuVisible = false;
+    char keyPressed = 0;
+    // Main loop for game status handling
+    while (status != gameConfig::GameStatus::Ended)
+    {
+
+        if (status == gameConfig::GameStatus::Finished)
+        {
+            // Announce the winner and reset the game
+            announceWinner();
+            isMenuVisible = false;
+            status = gameConfig::GameStatus::Menu;
+        }
+        // Clear the console, print the menu, and set the menu visibility flag
+        // Using isMenuVisible to prevent continuous blinking if pressing random key
+        if (!isMenuVisible)
+        {
+            system("cls");
+            if (status == gameConfig::GameStatus::Menu)
+            {
+                Print_Menu();
+            }
+            else if (status == gameConfig::GameStatus::MenuWithoutColors)
+            {
+                Print_No_Colors_Menu();
+            }
+            //else 
+            //{
+              //  Print_Computer_Level_Menu();
+           // }
+            isMenuVisible = true;
+        }
+
+
+
+
+
+
+
+
+
+
+        keyPressed = _getch();
+        // Check the pressed key for different menu options
+        switch (keyPressed)
+        {
+        case static_cast<int>(MenuOption::START_NEW_GAME_PVP):
+        {
+            initializePlayers(keyPressed);
+            system("cls");
+            isMenuVisible = false;
+            players[0]->getPlayerBoard().setUseColor(useColors);
+            players[1]->getPlayerBoard().setUseColor(useColors);
+            players[0]->getPlayerBoard().display_board();
+            players[1]->getPlayerBoard().display_board();
+            status = gameConfig::GameStatus::NewGame;
+            GameLoop();
+            break;
+        }
+        case static_cast<int>(MenuOption::START_NEW_GAME_CVC):
+        case static_cast<int>(MenuOption::START_NEW_GAME_PVC):
+        {
+            system("cls");
+            Print_Computer_Level_Menu();
+            gameConfig::ComputerLevel ComuterLevel = Computer_Level_Selection();
+            initializePlayers(keyPressed, ComuterLevel);
+            isMenuVisible = false;
+            players[0]->getPlayerBoard().setUseColor(useColors);
+            players[1]->getPlayerBoard().setUseColor(useColors);
+            players[0]->getPlayerBoard().display_board();
+            players[1]->getPlayerBoard().display_board();
+            status = gameConfig::GameStatus::NewGame;
+            GameLoop();
+        }
+        case static_cast<int>(MenuOption::CONTINUE_PAUSED_GAME):
+        {
+            if (status == gameConfig::GameStatus::Paused)
+            {
+                system("cls");
+                isMenuVisible = false;
+                players[0]->getPlayerBoard().display_board();
+                players[1]->getPlayerBoard().display_board();
+                players[0]->displayScore();
+                players[1]->displayScore();
+                GameLoop();
+            }
+            break;
+        }
+        case static_cast<int>(MenuOption::START_NEW_GAME_WITHOUT_COLORS):
+        {
+            useColors = false;
+            status = gameConfig::GameStatus::MenuWithoutColors;
+            break;
+        }
+        case static_cast<int>(MenuOption::PRESENT_INSTRUCTIONS):
+        {
+            system("cls");
+            isMenuVisible = false;
+            Present_instructionsand_keys();
+            break;
+        }
+        case static_cast<int>(MenuOption::EXIT):
+        {
+            system("cls");
+            isMenuVisible = false;
+            status = gameConfig::GameStatus::Ended;
+            break;
+        }
+        default:
+            break;
+        }
+    }
+}
+
+void Game::startGame()
+{
+    bool isMenuVisible = false;
+    char keyPressed = 0;
+    // Main loop for game status handling
+    while (status != gameConfig::GameStatus::Ended)
+    {
+
+        if (status == gameConfig::GameStatus::Finished)
+        {
+            // Announce the winner and reset the game
+            announceWinner();
+            isMenuVisible = false;
+            status = gameConfig::GameStatus::Menu;
+        }
+        // Clear the console, print the menu, and set the menu visibility flag
+        // Using isMenuVisible to prevent continuous blinking if pressing random key
+        if (!isMenuVisible)
+        {
+            system("cls");
+            if (status == gameConfig::GameStatus::MenuWithoutColors)
+            {
+                Print_No_Colors_Menu();
+            }
+            else
+            {
+                Print_Menu(); 
+            }
+            isMenuVisible = true;
+        }
+        keyPressed = _getch();
+        // Check the pressed key for different menu options
+        switch (keyPressed)
+        {
+        case static_cast<int>(MenuOption::START_NEW_GAME_PVP):
+        {
+            initializePlayers(keyPressed);
+            system("cls");
+            isMenuVisible = false;
+            players[0]->getPlayerBoard().setUseColor(useColors);
+            players[1]->getPlayerBoard().setUseColor(useColors);
+            players[0]->getPlayerBoard().display_board();
+            players[1]->getPlayerBoard().display_board();
+            status = gameConfig::GameStatus::NewGame;
+            GameLoop();
+            break;
+        }
+        case static_cast<int>(MenuOption::START_NEW_GAME_CVC):
+        case static_cast<int>(MenuOption::START_NEW_GAME_PVC):
+        {
+            system("cls");
+            Print_Computer_Level_Menu();
+            gameConfig::ComputerLevel computerLevel = Computer_Level_Selection();
+            initializePlayers(keyPressed, computerLevel);
+            isMenuVisible = false;
+
+            players[0]->getPlayerBoard().setUseColor(useColors);
+            players[1]->getPlayerBoard().setUseColor(useColors);
+            players[0]->getPlayerBoard().display_board();
+            players[1]->getPlayerBoard().display_board();
+            status = gameConfig::GameStatus::NewGame;
+            GameLoop();
+            break;
+        }
+        case static_cast<int>(MenuOption::CONTINUE_PAUSED_GAME):
+        {
+            if (status == gameConfig::GameStatus::Paused)
+            {
+                system("cls");
+                isMenuVisible = false;
+                players[0]->getPlayerBoard().display_board();
+                players[1]->getPlayerBoard().display_board();
+                players[0]->displayScore();
+                players[1]->displayScore();
+                GameLoop();
+            }
+            break;
+        }
+        case static_cast<int>(MenuOption::START_NEW_GAME_WITHOUT_COLORS):
+        {
+            useColors = false;
+            isMenuVisible = false;
+            status = gameConfig::GameStatus::MenuWithoutColors;
+            break;
+        }
+        case static_cast<int>(MenuOption::PRESENT_INSTRUCTIONS):
+        {
+            system("cls");
+            isMenuVisible = false;
+            Present_instructionsand_keys();
+            break;
+        }
+        case static_cast<int>(MenuOption::EXIT):
+        {
+            system("cls");
+            isMenuVisible = false;
+            status = gameConfig::GameStatus::Ended;
+            break;
+        }
+        default:
+            break;
+        }
+    }
+}
+
+
 /**********************************************************************
  Helper function to print a row in the instructionsand_keys.
 **********************************************************************/
@@ -296,15 +527,63 @@ Function:Displays the main menu options
 **********************************************************************/
 void Game:: Print_Menu()
 {
-    system("cls");
-    cout << "(1) Start a new game, PVP" << endl; 
-    if(status == gameConfig::GameStatus::Paused)
-        cout << "(2) Continue a paused game" << endl; 
-    cout << "(3) Start a new game, PVC " << endl; 
-    cout << "(4) Start a new game, CVC " << endl;
-    cout << "(8) Present instructionsand keys" << endl; 
+    cout <<"(1) Start a new game - Human vs Human" << endl; 
+    cout <<"(2) Start a new game - Human vs Computer" << endl; 
+    cout <<"(3) Start a new game - Computer vs Computer" << endl;
+    if (status == gameConfig::GameStatus::Paused)
+        cout <<"(4) Continue a paused game" << endl; 
+    cout <<"(5) Start a new game without colors" << endl; 
+    cout <<"(8) Present instructions and keys" << endl;
     cout << "(9) EXIT" << endl; 
 }
+
+void Game::Print_No_Colors_Menu()
+{
+    cout << "(1) Start a new game without colors- Human vs Human" << endl;
+    cout << "(2) Start a new game without colors- Human vs Computer" << endl;
+    cout << "(3) Start a new game without colors- Computer vs Computer" << endl;
+    cout << "(8) Present instructions and keys" << endl;
+    cout << "(9) EXIT" << endl;
+}
+
+void Game::Print_Computer_Level_Menu()
+{
+    cout << "Choose computer shall have 3 levels" << endl; 
+    cout << "(a) BEST" << endl; 
+    cout << "(b) GOOD" << endl; 
+    cout << "(c) NOVICE" << endl; 
+
+}
+
+gameConfig::ComputerLevel Game::Computer_Level_Selection()
+{
+    gameConfig::ComputerLevel level;
+    bool validInput = false;
+    while (!validInput)
+    {
+        char selection = _getch();
+        switch (selection)
+        {
+        case 'a':
+            level = gameConfig::ComputerLevel::BEST;
+            validInput = true;
+            break;
+        case 'b':
+            level = gameConfig::ComputerLevel::GOOD;
+            validInput = true;
+            break;
+        case 'c':
+            level = gameConfig::ComputerLevel::NOVICE;
+            validInput = true;
+            break;
+        default:
+            break;
+        }
+    }
+    system("cls");
+    return level;
+}
+
 
 /**********************************************************************
 Function name: Present_instructionsand_keys
