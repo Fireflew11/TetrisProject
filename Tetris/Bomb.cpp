@@ -22,7 +22,7 @@ Shape* Bomb::clone() const
 
 void Bomb:: drawShape(bool isActive)const
 {
-	cube.drawCube(isActive, getUseColors());
+	cube.drawCube(isActive, getUseColors(), '?');
 }
 
 bool Bomb::move_Left(const Board& board)
@@ -129,7 +129,7 @@ void Bomb::CalculateBlastRange(int bombX, int bombY, int &startingXExplosion, in
 			rangeY++;
 			if (isFirstValidY == false)
 			{
-				startingYExplosion = y;
+				startingYExplosion = y - board.getStartingY();
 				isFirstValidY = true;
 			}
 		}

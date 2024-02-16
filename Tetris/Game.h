@@ -56,11 +56,10 @@ public:
 	void initializePlayers(char pick);
 	bool checkGameValidity(bool& isGameOver);
 	bool handleInput();
-	bool handleHuman(Player* player);
-	bool handleComputer(Player* player);
 	bool checkGameConditions(Player& player, Shape*& shape, bool& isGameOver);
-
+	void moveShapesDown(Shape* shapeLeft, Shape* shapeRight, bool& movedDownPlayer1, bool& movedDownPlayer2);
 	Shape* createRandomShape(const Player& player);
+	void ResetIfComputer(Player* player);
 	bool isBombAppearance();
 };
 

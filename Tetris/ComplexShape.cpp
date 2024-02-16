@@ -12,7 +12,7 @@ int ComplexShape::fillsWell(const Board& board) const {
 	// Iterate through each cube of the shape
 	for (int i = 0; i < 4; ++i) {
 		int currX = cubes[i].get_X() - board.getStartingX(); // Adjust X coordinate
-		int currY = cubes[i].get_Y() - 1;                     // Adjust Y coordinate
+		int currY = cubes[i].get_Y() - board.getStartingY(); // Adjust Y coordinate
 
 		// Check if the cube is against the left or right wall and at the bottom of the board
 		if ((currX == 0 || currX == gameConfig::GAME_WIDTH - 1) && currY == gameConfig::GAME_HEIGHT - 1) {
@@ -172,8 +172,8 @@ bool ComplexShape::rotate_CounterClock_wise(const Board& board)
 		int relativeX = tempShape.get_cubes()[i].get_X() - centerX;
 		int relativeY = tempShape.get_cubes()[i].get_Y() - centerY;
 
-		int newX = centerX - relativeY;
-		int newY = centerY + relativeX;
+		int newX = centerX + relativeY;
+		int newY = centerY - relativeX;
 
 		Cube tempCube(newX, newY, getColor(), true);
 		tempShape.set_cubes_by_Index(i, tempCube);
