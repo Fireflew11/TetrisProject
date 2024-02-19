@@ -4,9 +4,6 @@
 #include "Shape.h"
 #include "Board.h"
 #include "gameConfig.h"
-using std::cout;
-using std::cin;
-using std::endl;
 class Shape; 
 /**********************************************************************
 The Player class represents a player in the game. It serves as a base

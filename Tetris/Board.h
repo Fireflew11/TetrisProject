@@ -50,7 +50,7 @@ public:
 	bool isValidXExplosion(const int x)const;
 	void moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY);
 	int calculateSmoothness();
-	int getMaxHeight(int col);
+	int getMaxHeightOfcol(int col);
 
 private: 
 	void print_Line(); 

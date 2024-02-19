@@ -39,7 +39,7 @@ Function name: getIsBestMove
 Input: None
 Output: int
 Function: Determines if the current move should be the best move based on the difficulty level.
-Returns 1 if the best move should be chosen, otherwise returns a random value.
+Returns 0 if the move should not be the best move, otherwise returns a random value.
 **********************************************************************/
 int Computer::getIsBestMove()
 {
@@ -119,7 +119,7 @@ Function name: checkAllMoves
 Input: Shape& shape, int rotation, int& maxScoreForMove
 Output:--
 Function: Checks all possible moves (left and right) for the given shape rotation.
-Updates the maximum score for the move.
+Updates the maximum score, and targets for the move.
 **********************************************************************/
 void Computer::checkAllMoves(Shape& shape, int rotation, int& maxScoreForMove)
 {
@@ -133,7 +133,7 @@ Function name:performMoves
 Input: Shape& shape, Board& playerBoard, int rotation, int& maxScoreForMove, bool moveLeft
 Output:--
 Function:Performs the sequence of moves for the given shape rotation and direction (left or right).
-Updates the maximum score for the move.
+Updates the maximum score, and targets for the move.
 **********************************************************************/
 void Computer::performMoves(Shape& shape, Board& playerBoard, int rotation, int& maxScoreForMove, bool moveLeft) 
 {

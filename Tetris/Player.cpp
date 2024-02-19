@@ -65,8 +65,8 @@ Function:Displays the player's current score on the game screen.
 **********************************************************************/
  void Player::displayScore()
  {
-         gotoxy(startingX, gameConfig::MAX_Y_RIGHT_BOARD + 1);
-     cout << "Player " << (int)playerType << " score: " << score;
+    gotoxy(startingX, gameConfig::MAX_Y_RIGHT_BOARD + 1);
+    cout << "Player " << (int)playerType << " score: " << score;
  }
 
 /**********************************************************************

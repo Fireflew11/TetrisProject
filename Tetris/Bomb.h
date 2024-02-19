@@ -5,7 +5,7 @@
 Class: Bomb
 
 Description:
-	Represents a bomb shape in the game, inheriting from the Shape class. It has the ability to explode and cause damage in a blast range.
+	Represents a bomb shape in the game, inheriting from the Shape class. It has the ability to explode and destroy cubes in a blast range.
 
 **********************************************************************/
 class Bomb:public Shape

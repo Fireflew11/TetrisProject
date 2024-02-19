@@ -58,7 +58,6 @@ void Game::GameLoop()
             {
                 currentShapeLeftPlayer->implementShapeToBoard(players[0]->getPlayerBoard(), true); 
                 currentShapeRightPlayer->implementShapeToBoard(players[1]->getPlayerBoard(), true);
-
                 ResetIfComputer(players[0]);
                 ResetIfComputer(players[1]);
                 isGameOver = isMaxHeight();
@@ -69,10 +68,7 @@ void Game::GameLoop()
             {
                 ResetIfComputer(players[0]);
                 if (checkGameConditions(*players[0], currentShapeLeftPlayer, isGameOver))
-                {
-                    
-                    break;
-                }     
+                    break;            
             }
             // Handle shape movements and updates for player 2
             if (!movedDownPlayer2)

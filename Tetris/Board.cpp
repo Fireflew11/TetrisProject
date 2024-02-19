@@ -303,12 +303,12 @@ int Board::getMaxHeight()
 }
 
 /**********************************************************************
-Function name: getMaxHeight
+Function name: getMaxHeightOfcol
 Input: int col
 Output: int
 Function: Determines the maximum height of active cubes in a specific column of the board.
 **********************************************************************/
-int Board::getMaxHeight(int col)
+int Board::getMaxHeightOfcol(int col)
 {
 	int max_height = 0;
 	for (int row = 0; row < gameConfig::GAME_HEIGHT; ++row)
@@ -362,8 +362,8 @@ int Board::calculateSmoothness()
 	int minForMaxRow = 0;
 	for (int col = 0; col < gameConfig::GAME_WIDTH - 1; ++col) 
 	{
-		int height1 = this->getMaxHeight(col);
-		int height2 = this->getMaxHeight(col + 1);
+		int height1 = this->getMaxHeightOfcol(col);
+		int height2 = this->getMaxHeightOfcol(col + 1);
 		smoothness += std::abs(height1 - height2);
 	}
 

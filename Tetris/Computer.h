@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "ComplexShape.h"
-#include <list>
+
 
 /**********************************************************************
 Class name: Computer
