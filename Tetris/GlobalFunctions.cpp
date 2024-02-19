@@ -1,4 +1,5 @@
 #include"GlobalFunctions.h"
+
 void gotoxy(int x, int y) 
 {
     COORD coord;
@@ -15,7 +16,13 @@ char toupperG(char ch)
     else
         return ch;
 }
-
+/**********************************************************************
+Function name: SetCursorVisibility
+Input: bool visible
+Output:--
+Function: Sets the visibility of the cursor in the console window.
+If 'visible' is true, the cursor is displayed; if false, it is hidden.
+**********************************************************************/
 void SetCurserVisibility(bool visible)
 {
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);

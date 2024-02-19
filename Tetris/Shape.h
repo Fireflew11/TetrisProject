@@ -8,7 +8,18 @@
 #include "gameConfig.h"
 class Cube; 
 class Board; 
+/**********************************************************************
+Class: Shape
 
+Description:
+	Represents a generic shape in the game. This is an abstract base class that defines common functionality for all shapes in the game.
+
+Member Variables:
+	- color: The color of the shape.
+	- useColors: Boolean indicating whether colors are used in the console output.
+	- startingX, StartingY: The initial X and Y coordinates (horizontal and vertical position) of the shape.
+	- differentRotations: The number of different possible rotations for the shape.
+**********************************************************************/
 
 class Shape
 {
@@ -17,9 +28,8 @@ class Shape
 	int startingX; 
 	int StartingY; 
 	int differentRotations;
+
 public: 
-
-
 	virtual void drawShape(bool isActive = true) const=0;
 	virtual bool move_Left(const Board& board)=0;
 	virtual bool move_Right(const Board& board)=0;
@@ -37,11 +47,7 @@ public:
 	virtual int getX() const = 0;
 	int getDifferentRotations() const;
 	Shape(int color, bool useColors, int startingX, int StartingY, int differentRotations); 
-	virtual ~Shape() {};
-
-
-
-    
+	virtual ~Shape() {};  
 };
 
 #endif //SHAPE_H

@@ -3,10 +3,12 @@
 #include <iostream>
 #include"Shape.h" 
 #include "gameConfig.h"
-#include <vector>
-class Shape; 
-using namespace std;
+#include <vector> 
 
+using std::cout;
+using std::cin;
+using std::endl;
+class Shape;
 /**********************************************************************
 Class: Board
 
@@ -47,11 +49,8 @@ public:
 	bool isValidYExplosion(const int y)const;
 	bool isValidXExplosion(const int x)const;
 	void moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY);
-
-	double calculateSmoothness();
+	int calculateSmoothness();
 	int getMaxHeight(int col);
-	int preventTallTowersScore() const;
-	std::vector<int> calculateColumnHeights() const;
 
 private: 
 	void print_Line(); 

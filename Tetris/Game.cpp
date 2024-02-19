@@ -27,7 +27,12 @@ void Game::GameLoop()
     players[1]->displayScore();
     while (!isGameOver)// Main game loop
     {
-        if (status != gameConfig::GameStatus::Paused) {
+        if (status != gameConfig::GameStatus::Paused) 
+        {
+            if (currentShapeLeftPlayer != nullptr)
+                delete currentShapeLeftPlayer; 
+            if (currentShapeRightPlayer != nullptr)
+                delete currentShapeRightPlayer; 
             currentShapeLeftPlayer = createRandomShape(*players[0]);
             currentShapeRightPlayer = createRandomShape(*players[1]);
         }
@@ -64,7 +69,10 @@ void Game::GameLoop()
             {
                 ResetIfComputer(players[0]);
                 if (checkGameConditions(*players[0], currentShapeLeftPlayer, isGameOver))
-                    break; 
+                {
+                    
+                    break;
+                }     
             }
             // Handle shape movements and updates for player 2
             if (!movedDownPlayer2)
@@ -73,16 +81,32 @@ void Game::GameLoop()
                 if (checkGameConditions(*players[1], currentShapeRightPlayer, isGameOver))
                     break;
             }
-            
         }
     }
 }
-void Game::ResetIfComputer(Player* player) {
+
+/**********************************************************************
+Function name: ResetIfComputer
+Input: Player* player
+Output:--
+Function: Resets the target coordinates for the computer player if the provided player is a computer.
+**********************************************************************/
+void Game::ResetIfComputer(Player* player) 
+{
     Computer* computerPlayer = dynamic_cast<Computer*>(player);
     if (computerPlayer)
         computerPlayer->resetTargets();
 }
-void Game::moveShapesDown(Shape* shapeLeft, Shape* shapeRight, bool& movedDownPlayer1, bool& movedDownPlayer2) {
+
+/**********************************************************************
+Function name:moveShapesDown
+Input: Shape* shapeLeft, Shape* shapeRight, bool& movedDownPlayer1, bool& movedDownPlayer2
+Output:--
+Function: Moves the shapes of both players down on their respective boards.
+Updates the boolean variables to indicate if each player's shape moved down.
+**********************************************************************/
+void Game::moveShapesDown(Shape* shapeLeft, Shape* shapeRight, bool& movedDownPlayer1, bool& movedDownPlayer2) 
+{
     shapeLeft->drawShape(false);
     shapeRight->drawShape(false);
     movedDownPlayer1 = shapeLeft->continueMovingDown(players[0]->getPlayerBoard());
@@ -90,9 +114,10 @@ void Game::moveShapesDown(Shape* shapeLeft, Shape* shapeRight, bool& movedDownPl
     shapeLeft->drawShape();
     shapeRight->drawShape();
 }
+
 /**********************************************************************
-Function name: checkGameConditions
-Input:Player& player, Shape& shape, bool& isGameOver
+Function name:checkGameConditions
+Input:Player& player, Shape* & shape, bool& isGameOver
 Output: bool
 Function:The function checks if the game is over or if it's not, it rerolls the shape to a new one
 if 1. a player reaches the max height with blocks this player loses
@@ -101,15 +126,14 @@ or 2. The newly created shape cannot go down
 bool Game::checkGameConditions(Player& player, Shape* & shape, bool& isGameOver)
 {
     shape->implementShapeToBoard(player.getPlayerBoard(), true); 
-    
-    //player.getPlayerBoard().implementShapeToBoard(shape); 
     if ((isMaxHeight()))// Check if the game is over after placing the shape
     {
         isGameOver = true;
         return true; 
     }
     // Reroll the shape for the next iteration
-    shape = createRandomShape(player);//צריך להכניס useColors /////
+    delete shape; 
+    shape = createRandomShape(player);
     
     // Check if the new shape is valid, if not, set the other player as the winner, and end the game
 
@@ -120,14 +144,24 @@ bool Game::checkGameConditions(Player& player, Shape* & shape, bool& isGameOver)
         else
             players[0]->setIsWinner(true);
         isGameOver = true;
+
         status = gameConfig::GameStatus::Finished;
+        delete currentShapeLeftPlayer;
+        delete currentShapeRightPlayer;
         return true; 
     }
     return false; 
     
 }
 
-void Game::initializePlayers(char pick, gameConfig::ComputerLevel level)
+/**********************************************************************
+Function name:initializePlayers
+Input: char pick, gameConfig::Difficulty level
+Output:--
+Function: Initializes the players based on the chosen game mode and difficulty level.
+Deletes existing players if they already exist.
+**********************************************************************/
+void Game::initializePlayers(char pick, gameConfig::Difficulty level)
 {
     if (players[0] != nullptr && players[1] != nullptr) 
     {
@@ -149,13 +183,11 @@ void Game::initializePlayers(char pick, gameConfig::ComputerLevel level)
     case MenuOption::START_NEW_GAME_CVC:
         players[0] = new Computer(gameConfig::PlayerType::LEFT_PLAYER, level);
         players[1] = new Computer(gameConfig::PlayerType::RIGHT_PLAYER, level);
+        break;
     default:
         break;
     }
 }
-
-
-
 
 /**********************************************************************
 Function name:isMaxHeight
@@ -193,199 +225,6 @@ Input: --
 Output: --
 Function:Initiates or continues the game based on user input, handling different game statuses.
 **********************************************************************/
-
-
-//this is the original 
-void Game::startGame2()
-{
-    bool isMenuVisible = false;
-    char keyPressed = 0;
-    // Main loop for game status handling
-    while (status != gameConfig::GameStatus::Ended)
-    {
-
-        if (status == gameConfig::GameStatus::Finished)
-        {
-            // Announce the winner and reset the game
-            announceWinner();
-            isMenuVisible = false;
-            status = gameConfig::GameStatus::Menu;
-        }
-        // Clear the console, print the menu, and set the menu visibility flag
-        // Using isMenuVisible to prevent continuous blinking if pressing random key
-        if (!isMenuVisible) 
-        {
-            system("cls");
-            Print_Menu();
-            isMenuVisible = true;
-        }
-         keyPressed = _getch();
-         // Check the pressed key for different menu options
-         
-        if (keyPressed == (char)MenuOption::START_NEW_GAME_PVP /*'1'*/ ||
-            keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS/*'3'*/ ||
-            keyPressed == (char)MenuOption::START_NEW_GAME_PVC/*'3'*/ ||
-            keyPressed == (char)MenuOption::START_NEW_GAME_CVC/*'4'*/)
-        {
-            initializePlayers(keyPressed);
-            if (keyPressed == (char)gameConfig::MenuOption::START_NEW_GAME_WITHOUT_COLORS/*'3'*/)
-                useColors = false;
-            else
-                useColors = true;
-            system("cls");
-            isMenuVisible = false;
-            players[0]->getPlayerBoard().setUseColor(useColors);
-            players[1]->getPlayerBoard().setUseColor(useColors);
-            players[0]->getPlayerBoard().display_board();
-            players[1]->getPlayerBoard().display_board();
-            status = gameConfig::GameStatus::NewGame;
-            GameLoop();
-
-        }
-        // Continue a paused game by displaying player boards and scores
-        else if (keyPressed == (char)gameConfig::MenuOption::CONTINUE_PAUSED_GAME && status == gameConfig::GameStatus::Paused)
-        {
-            system("cls");
-            isMenuVisible = false;
-            players[0]->getPlayerBoard().display_board();
-            players[1]->getPlayerBoard().display_board();
-            players[0]->displayScore();
-            players[1]->displayScore();
-            GameLoop();
-        }
-        else if (keyPressed == (char)gameConfig::MenuOption::PRESENT_INSTRUCTIONS)
-        {
-            system("cls");
-            isMenuVisible = false;
-            Present_instructionsand_keys();
-        }
-        
-        else if (keyPressed == (char)gameConfig::MenuOption::EXIT)
-        {
-            system("cls");
-            isMenuVisible = false;
-            status = gameConfig::GameStatus::Ended;
-            return;
-        }
-    }
-}
-
-void Game::startGame1()
-{
-    bool isMenuVisible = false;
-    char keyPressed = 0;
-    // Main loop for game status handling
-    while (status != gameConfig::GameStatus::Ended)
-    {
-
-        if (status == gameConfig::GameStatus::Finished)
-        {
-            // Announce the winner and reset the game
-            announceWinner();
-            isMenuVisible = false;
-            status = gameConfig::GameStatus::Menu;
-        }
-        // Clear the console, print the menu, and set the menu visibility flag
-        // Using isMenuVisible to prevent continuous blinking if pressing random key
-        if (!isMenuVisible)
-        {
-            system("cls");
-            if (status == gameConfig::GameStatus::Menu)
-            {
-                Print_Menu();
-            }
-            else if (status == gameConfig::GameStatus::MenuWithoutColors)
-            {
-                Print_No_Colors_Menu();
-            }
-            //else 
-            //{
-              //  Print_Computer_Level_Menu();
-           // }
-            isMenuVisible = true;
-        }
-
-
-
-
-
-
-
-
-
-
-        keyPressed = _getch();
-        // Check the pressed key for different menu options
-        switch (keyPressed)
-        {
-        case static_cast<int>(MenuOption::START_NEW_GAME_PVP):
-        {
-            initializePlayers(keyPressed);
-            system("cls");
-            isMenuVisible = false;
-            players[0]->getPlayerBoard().setUseColor(useColors);
-            players[1]->getPlayerBoard().setUseColor(useColors);
-            players[0]->getPlayerBoard().display_board();
-            players[1]->getPlayerBoard().display_board();
-            status = gameConfig::GameStatus::NewGame;
-            GameLoop();
-            break;
-        }
-        case static_cast<int>(MenuOption::START_NEW_GAME_CVC):
-        case static_cast<int>(MenuOption::START_NEW_GAME_PVC):
-        {
-            system("cls");
-            Print_Computer_Level_Menu();
-            gameConfig::ComputerLevel ComuterLevel = Computer_Level_Selection();
-            initializePlayers(keyPressed, ComuterLevel);
-            isMenuVisible = false;
-            players[0]->getPlayerBoard().setUseColor(useColors);
-            players[1]->getPlayerBoard().setUseColor(useColors);
-            players[0]->getPlayerBoard().display_board();
-            players[1]->getPlayerBoard().display_board();
-            status = gameConfig::GameStatus::NewGame;
-            GameLoop();
-        }
-        case static_cast<int>(MenuOption::CONTINUE_PAUSED_GAME):
-        {
-            if (status == gameConfig::GameStatus::Paused)
-            {
-                system("cls");
-                isMenuVisible = false;
-                players[0]->getPlayerBoard().display_board();
-                players[1]->getPlayerBoard().display_board();
-                players[0]->displayScore();
-                players[1]->displayScore();
-                GameLoop();
-            }
-            break;
-        }
-        case static_cast<int>(MenuOption::START_NEW_GAME_WITHOUT_COLORS):
-        {
-            useColors = false;
-            status = gameConfig::GameStatus::MenuWithoutColors;
-            break;
-        }
-        case static_cast<int>(MenuOption::PRESENT_INSTRUCTIONS):
-        {
-            system("cls");
-            isMenuVisible = false;
-            Present_instructionsand_keys();
-            break;
-        }
-        case static_cast<int>(MenuOption::EXIT):
-        {
-            system("cls");
-            isMenuVisible = false;
-            status = gameConfig::GameStatus::Ended;
-            break;
-        }
-        default:
-            break;
-        }
-    }
-}
-
 void Game::startGame()
 {
     bool isMenuVisible = false;
@@ -393,13 +232,11 @@ void Game::startGame()
     // Main loop for game status handling
     while (status != gameConfig::GameStatus::Ended)
     {
-
         if (status == gameConfig::GameStatus::Finished)
         {
             // Announce the winner and reset the game
             announceWinner();
             isMenuVisible = false;
-            status = gameConfig::GameStatus::Menu;
         }
         // Clear the console, print the menu, and set the menu visibility flag
         // Using isMenuVisible to prevent continuous blinking if pressing random key
@@ -425,10 +262,9 @@ void Game::startGame()
             initializePlayers(keyPressed);
             system("cls");
             isMenuVisible = false;
-            players[0]->getPlayerBoard().setUseColor(useColors);
-            players[1]->getPlayerBoard().setUseColor(useColors);
-            players[0]->getPlayerBoard().display_board();
-            players[1]->getPlayerBoard().display_board();
+            if (status != gameConfig::GameStatus::MenuWithoutColors)
+                useColors = true; 
+            set_UseColor_and_display_board(useColors);
             status = gameConfig::GameStatus::NewGame;
             GameLoop();
             break;
@@ -438,14 +274,13 @@ void Game::startGame()
         {
             system("cls");
             Print_Computer_Level_Menu();
-            gameConfig::ComputerLevel computerLevel = Computer_Level_Selection();
+            gameConfig::Difficulty computerLevel = Computer_Level_Selection();
             initializePlayers(keyPressed, computerLevel);
             isMenuVisible = false;
+            if (status != gameConfig::GameStatus::MenuWithoutColors)
+                useColors = true;
 
-            players[0]->getPlayerBoard().setUseColor(useColors);
-            players[1]->getPlayerBoard().setUseColor(useColors);
-            players[0]->getPlayerBoard().display_board();
-            players[1]->getPlayerBoard().display_board();
+            set_UseColor_and_display_board(useColors);
             status = gameConfig::GameStatus::NewGame;
             GameLoop();
             break;
@@ -491,13 +326,26 @@ void Game::startGame()
     }
 }
 
+/**********************************************************************
+Function name:set_UseColor_and_display_board
+Input: bool useColors
+Output:--
+Function:Sets the useColors property for both player boards and displays the updated boards.
+**********************************************************************/
+void Game::set_UseColor_and_display_board(bool useColors)
+{
+    players[0]->getPlayerBoard().setUseColor(useColors);
+    players[1]->getPlayerBoard().setUseColor(useColors);
+    players[0]->getPlayerBoard().display_board();
+    players[1]->getPlayerBoard().display_board();
+}
 
 /**********************************************************************
  Helper function to print a row in the instructionsand_keys.
 **********************************************************************/
 void Game::printRow(const string& firstColumn, const string& secondColumn, const string& thirdColumn)
 {
-    cout << "|" << setw(24) << left << firstColumn << "|" << setw(24) << left << secondColumn << "|" << setw(24) << left << thirdColumn << "|" << std::endl;
+    cout << "|" << std::setw(24) << std::left << firstColumn << "|" << std::setw(24) << std::left << secondColumn << "|" << std::setw(24) << std::left << thirdColumn << "|" << endl;
 }
 /**********************************************************************
  Helper function to print a separator line in the instructionsand_keys.
@@ -537,6 +385,12 @@ void Game:: Print_Menu()
     cout << "(9) EXIT" << endl; 
 }
 
+/**********************************************************************
+Function name: Print_No_Colors_Menu
+Input: None
+Output: None
+Function: Prints the menu options for starting a new game without colors.
+**********************************************************************/
 void Game::Print_No_Colors_Menu()
 {
     cout << "(1) Start a new game without colors- Human vs Human" << endl;
@@ -546,6 +400,12 @@ void Game::Print_No_Colors_Menu()
     cout << "(9) EXIT" << endl;
 }
 
+/**********************************************************************
+Function name:Print_Computer_Level_Menu
+Input: None
+Output: None
+Function: Prints the menu options for selecting the computer level.
+**********************************************************************/
 void Game::Print_Computer_Level_Menu()
 {
     cout << "Choose computer shall have 3 levels" << endl; 
@@ -555,25 +415,31 @@ void Game::Print_Computer_Level_Menu()
 
 }
 
-gameConfig::ComputerLevel Game::Computer_Level_Selection()
+/**********************************************************************
+Function name:Computer_Level_Selection
+Input: None
+Output: gameConfig::Difficulty
+Function: Prompts the user to select a computer difficulty level and returns the selected level.
+**********************************************************************/
+gameConfig::Difficulty Game::Computer_Level_Selection()
 {
-    gameConfig::ComputerLevel level;
+    gameConfig::Difficulty level;
     bool validInput = false;
     while (!validInput)
     {
         char selection = _getch();
         switch (selection)
         {
-        case 'a':
-            level = gameConfig::ComputerLevel::BEST;
+        case static_cast<char>(gameConfig::Difficulty::BEST):
+            level = gameConfig::Difficulty::BEST;
             validInput = true;
             break;
-        case 'b':
-            level = gameConfig::ComputerLevel::GOOD;
+        case static_cast<char>(gameConfig::Difficulty::GOOD):
+            level = gameConfig::Difficulty::GOOD;
             validInput = true;
             break;
-        case 'c':
-            level = gameConfig::ComputerLevel::NOVICE;
+        case static_cast<char>(gameConfig::Difficulty::NOVICE):
+            level = gameConfig::Difficulty::NOVICE;
             validInput = true;
             break;
         default:
@@ -657,7 +523,7 @@ void Game::announceWinner()
 
 /**********************************************************************
 Function name: checkGameValidity
-Input:const Shape& ShapePlayer1, const Shape& ShapePlayer2, bool& isGameOver
+Input:bool& isGameOver
 Output:Returns true if the game is still valid; false if the game is over.
 Function:Checks the validity of the game based on the current positions of player shapes.
 **********************************************************************/
@@ -682,12 +548,13 @@ bool Game::checkGameValidity(bool& isGameOver)
     }
     return true;
 }
+
 /**********************************************************************
-Function name:handleInput
-Input: Shape& curShapePlayer1, Shape& curShapePlayer2
-Output:--
-Function:Handles user input during the game, updating player scores and checking for key presses.
-Calls checkKeyChoice to interpret and act upon key presses, and allows for pausing the game.
+Function name: handleInput
+Input: None
+Output: bool
+Function: Handles the input during the game, updating scores, processing key presses, and triggering player moves.
+Returns true if the game is paused, false otherwise.
 **********************************************************************/
 bool Game::handleInput()
 {
@@ -708,17 +575,20 @@ bool Game::handleInput()
     return false;
 }
 
+/**********************************************************************
+Function name: createRandomShape
+Input: const Player& player
+Output: Shape*
+Function: Creates a random shape for the specified player.
+If a bomb is randomly selected to appear, it creates a Bomb shape.
+Otherwise, it randomly selects one of the standard Tetris shapes (I, O, T, S, Z, J, L) and creates an instance of that shape.
+Returns a pointer to the created shape.
+**********************************************************************/
 Shape* Game::createRandomShape(const Player& player)
 {
 
     Shape* newShape = nullptr;
     bool bombppearance = isBombAppearance(); 
-    /*
-    bool bombppearance = false;
-    static int cont = 0; 
-    cont++; 
-    if(cont==7)
-    */
     if (bombppearance)
     {
       newShape = new Bomb(useColors, player.getStartingX(), player.getStartingY());
@@ -776,7 +646,13 @@ Shape* Game::createRandomShape(const Player& player)
     }
     return newShape; 
 }
-
+/**********************************************************************
+Function name: isBombAppearance
+Input: None
+Output: bool
+Function: Checks whether a bomb shape should appear randomly.
+Returns true if a bomb should appear, false otherwise.
+**********************************************************************/
 bool Game::isBombAppearance()
 {
     int randomNumber = rand() % 20 + 1; 

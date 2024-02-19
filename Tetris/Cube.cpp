@@ -107,7 +107,7 @@ Cube::Cube(int x , int y , int colorIndex, bool active )
     color = colorIndex;
     isActive = active;
 }
-
+/*
 Cube::Cube(gameConfig::PlayerType playerType, int colorIndex, bool active)
 {
     if (playerType == gameConfig::PlayerType::LEFT_PLAYER)
@@ -123,6 +123,7 @@ Cube::Cube(gameConfig::PlayerType playerType, int colorIndex, bool active)
     color = colorIndex; 
     isActive = active; 
 }
+*/
 
 /**********************************************************************
 Function name: set_X
@@ -156,6 +157,14 @@ void Cube::setColor(const int& color)
 {
     this->color = color;
 }
+
+/**********************************************************************
+Function name: getColor
+Input: None
+Output: WORD
+Function: Retrieves the color of the cube.
+          Returns the color value of the cube.
+**********************************************************************/
 WORD Cube::getColor()const
 {
     return color; 

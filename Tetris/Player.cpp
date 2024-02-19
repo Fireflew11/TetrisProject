@@ -12,14 +12,10 @@ Board& Player::getPlayerBoard()
 }
 
 /**********************************************************************
-Function name: Player (Constructor)
-Input:
-    - playerType: Type of the player (gameConfig::PlayerType)
-    - score: Initial score for the player (int)
-    - isWinner: Initial winner status for the player (bool)
-Output: --
-Function:Initializes a Player object with the specified player type, initial score, and winner status.
-The constructor sets the initial values for the player's score, winner status, and retrieves the appropriate starting coordinates and board for the player based on their type.
+Function name: Player::Player
+Input: gameConfig::PlayerType playerType
+Output:--
+Function:Constructor for the Player class. Initializes the player type, score, and player board based on the provided player type.
 **********************************************************************/
  Player:: Player(gameConfig:: PlayerType playerType) : isWinner(false), score(0), playerType(playerType),playerBoard(
     (playerType ==  gameConfig::PlayerType::LEFT_PLAYER) ? gameConfig::MIN_X_LEFT_BOARD : gameConfig::MIN_X_RIGHT_BOARD,
@@ -106,15 +102,34 @@ Function:The function retrieves the current score of the player.
      return score; 
  }
 
+/**********************************************************************
+Function name: Player::getPlayerType
+Input:--
+Output: gameConfig::PlayerType
+Function: Getter function to retrieve the player type.
+**********************************************************************/
  const gameConfig::PlayerType Player:: getPlayerType()const
  {
      return playerType;
  }
 
+ /**********************************************************************
+Function name: Player::getStartingX
+Input:--
+Output: int
+Function: Getter function to retrieve the starting X coordinate of the player's board.
+**********************************************************************/
  const int Player::getStartingX() const
  {
      return startingX; 
  }
+
+ /**********************************************************************
+Function name: Player::getStartingY
+Input:--
+Output: int
+Function: Getter function to retrieve the starting Y coordinate of the player's board.
+**********************************************************************/
  const int Player:: getStartingY() const
  {
      return startingY; 

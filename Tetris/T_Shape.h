@@ -1,5 +1,12 @@
 #pragma once
 #include "ComplexShape.h"
+
+/**********************************************************************
+Class: T_Shape
+
+Description:
+	Represents the T-shaped tetromino in the game. Inherits from the ComplexShape class.
+**********************************************************************/
 /*
 			   * * *
 				 *

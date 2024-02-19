@@ -1,6 +1,7 @@
 ﻿#include "Board.h"
 #include "gameConfig.h"
 #include "ComplexShape.h"
+
 /**********************************************************************
 Function name: display_board
 Input: --
@@ -142,7 +143,12 @@ void  Board::setUseColor(bool useColors)
 	this->useColors = useColors; 
 }
 
-
+/**********************************************************************
+Function name:print_Line
+Input: --
+Output: --
+Function:Prints a line of dashes to the console, used for visual separation in the board display.
+**********************************************************************/
 void Board::print_Line()
 {
 	for (int i = 0; i < gameConfig::GAME_WIDTH + 2; i++)
@@ -152,6 +158,12 @@ void Board::print_Line()
 	cout << endl;
 }
 
+/**********************************************************************
+Function name: isValidPosition
+Input: const int x, const int y
+Output: bool
+Function: Checks if a given position (x, y) is a valid position on the board, considering the board boundaries and whether the cell is occupied.
+**********************************************************************/
 bool Board::isValidPosition(const int x, const int y)const 
 {
 	if ((x >= gameConfig::GAME_WIDTH + startingX) || (x < startingX))
@@ -164,27 +176,56 @@ bool Board::isValidPosition(const int x, const int y)const
 }
 
 
-
+/**********************************************************************
+Function name: set_cube_active_in_board_game
+Input: const int x, const int y
+Output: --
+Function: Sets a cube at position (x, y) on the board to be inactive.
+**********************************************************************/
 void Board::set_cube_active_in_board_game(const int x, const int y) 
 {
 	board_game[y - startingY][x - startingX].setIsActive(false); 
 }
 
-
+/**********************************************************************
+Function name: getStartingX
+Input: --
+Output: const int
+Function: Returns the starting X coordinate of the board.
+**********************************************************************/
 const int Board::getStartingX()const
 {
 	return startingX; 
 }
+
+/**********************************************************************
+Function name: getStartingY
+Input: --
+Output: const int
+Function: Returns the starting Y coordinate of the board.
+**********************************************************************/
 const int Board::getStartingY() const
 {
 	return startingY; 
 }
 
+/**********************************************************************
+Function name: get_to_set_BoardGame
+Input: --
+Output: Cube(&)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
+Function: Returns a reference to the 2D array representing the game board.
+**********************************************************************/
 Cube(&Board::get_to_set_BoardGame())[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH]
 {
 	return board_game;
 }
 
+/**********************************************************************
+Function name: isValidExplosion
+Input: const int x, const int y
+Output: bool
+Function: Checks if a given position (x, y) is a valid position for an explosion on the board, considering the board boundaries.
+**********************************************************************/
 bool Board::isValidExplosion(const int x, const int y)const
 {
 	if ((x >= gameConfig::GAME_WIDTH + startingX) || (x < startingX))
@@ -194,6 +235,12 @@ bool Board::isValidExplosion(const int x, const int y)const
 	return true; 
 }
 
+/**********************************************************************
+Function name: isValidYExplosion
+Input: const int y
+Output: bool
+Function:Checks if a given Y coordinate is a valid position for an explosion on the board, considering the board boundaries.
+**********************************************************************/
 bool Board::isValidYExplosion(const int y)const
 {
 	if (y >= gameConfig::GAME_HEIGHT + startingY || y < startingY)
@@ -201,6 +248,12 @@ bool Board::isValidYExplosion(const int y)const
 	return true; 
 }
 
+/**********************************************************************
+Function name: isValidXExplosion
+Input: const int x
+Output: bool
+Function: Checks if a given X coordinate is a valid position for an explosion on the board, considering the board boundaries.
+**********************************************************************/
 bool Board::isValidXExplosion(const int x)const
 {
 	if ((x >= gameConfig::GAME_WIDTH + startingX) || (x < startingX))
@@ -208,14 +261,18 @@ bool Board::isValidXExplosion(const int x)const
 	return true; 
 }
 
-
+/**********************************************************************
+Function name: moveCubesDownAfterExplosion
+Input: int startingXExplosion, int startingYExplosion, int rangeX, int rangeY
+Output: --
+Function: Moves cubes down after an explosion on the board, adjusting their positions based on the explosion's parameters.
+**********************************************************************/
 void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY)
 {
-	for (int y = startingYExplosion; y >= startingY; y--)
+	for (int y = startingYExplosion- startingY; y >= startingY; y--)
 	{
 		for (int x = startingXExplosion; x < startingXExplosion + rangeX; x++)
 		{
-			//cout << "x: " << x << " " << "y : " << y << endl;
 			board_game[y - startingY + rangeY][x - startingX].setIsActive(board_game[y-startingY][x-startingX].getIsActive());
 			board_game[y - startingY + rangeY][x - startingX].setColor(board_game[y - startingY][x - startingX].getColor());
 			board_game[y - startingY][x - startingX].setIsActive(false); 
@@ -223,32 +280,15 @@ void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExp
 		}
 		
 	}
-	//(board_game[y - 1][(x - startingX - 1)].getIsActive() == true)
+
 }
 
-/*
-void Board::moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY)
-{
-	
-	for (int y = startingYExplosion; y >= startingY; y--)
-	{
-		
-		for (int x = startingXExplosion; x < startingXExplosion + rangeX; x++)
-		{
-			
-			if (x >= startingX && x < startingX + gameConfig::GAME_WIDTH &&
-				y - startingY + rangeY >= 0 && y - startingY + rangeY < gameConfig::GAME_HEIGHT)
-			{
-				
-				board_game[y - startingY + rangeY][x - startingX].setIsActive(board_game[y - startingY][x - startingX].getIsActive());
-				// Set the current position (x, y) as inactive
-				board_game[y - startingY][x - startingX].setIsActive(false);
-			}
-		}
-	}
-}
-*/
-
+/**********************************************************************
+Function name: getMaxHeight
+Input: --
+Output: int
+Function: Determines the maximum height of active cubes on the board.
+**********************************************************************/
 int Board::getMaxHeight()
 {
 	for (int i = 0; i < gameConfig::GAME_HEIGHT; i++)
@@ -262,7 +302,33 @@ int Board::getMaxHeight()
 	return 0;
 }
 
-int Board::getHolesAmount() {
+/**********************************************************************
+Function name: getMaxHeight
+Input: int col
+Output: int
+Function: Determines the maximum height of active cubes in a specific column of the board.
+**********************************************************************/
+int Board::getMaxHeight(int col)
+{
+	int max_height = 0;
+	for (int row = 0; row < gameConfig::GAME_HEIGHT; ++row)
+	{
+		if (board_game[row][col].getIsActive()) {
+			max_height = gameConfig::GAME_HEIGHT - row;
+			break;
+		}
+	}
+	return max_height;
+}
+
+/**********************************************************************
+Function name: getHolesAmount
+Input: --
+Output: int
+Function: Calculates the number of holes (empty spaces beneath active cubes) on the board.
+**********************************************************************/
+int Board::getHolesAmount() 
+{
 	int holes = 0;
 
 	// Iterate through each column
@@ -283,11 +349,19 @@ int Board::getHolesAmount() {
 
 	return holes;
 }
-double Board::calculateSmoothness()
+
+/**********************************************************************
+Function name: calculateSmoothness
+Input: --
+Output: int
+Function: Calculates the smoothness metric of the board, which measures the variation in height between adjacent columns.
+**********************************************************************/
+int Board::calculateSmoothness()
 {
-	double smoothness = 0.0;
+	int smoothness = 0;
 	int minForMaxRow = 0;
-	for (int col = 0; col < gameConfig::GAME_WIDTH - 1; ++col) {
+	for (int col = 0; col < gameConfig::GAME_WIDTH - 1; ++col) 
+	{
 		int height1 = this->getMaxHeight(col);
 		int height2 = this->getMaxHeight(col + 1);
 		smoothness += std::abs(height1 - height2);
@@ -296,53 +370,16 @@ double Board::calculateSmoothness()
 	return smoothness;
 }
 
-int Board::getMaxHeight(int col)
+
+
+/**********************************************************************
+Function name: fillsWell
+Input: Shape* shape
+Output: int
+Function: Calculates how many parts of a shape "fills well" on the board, i.e., how many cubes of the shape are at the bottom and adjacent to the walls.
+**********************************************************************/
+int Board::fillsWell(Shape* shape) const 
 {
-	int max_height = 0;
-	for (int row = 0; row < gameConfig::GAME_HEIGHT; ++row) {
-		if (board_game[row][col].getIsActive()) {
-			max_height = gameConfig::GAME_HEIGHT - row;
-			break;
-		}
-	}
-	return max_height;
-}
-
-int Board::preventTallTowersScore() const 
-{
-	const int TOWER_THRESHOLD = 5; // Adjust as needed
-	int tallTowersPenalty = 0;
-
-	std::vector<int> columnHeights = calculateColumnHeights();
-	for (int height : columnHeights) {
-		if (height > TOWER_THRESHOLD) {
-			// Penalize for each cube exceeding the threshold
-			tallTowersPenalty += (height - TOWER_THRESHOLD) * -150;
-		}
-	}
-
-	return tallTowersPenalty;
-}
-
-vector<int> Board::calculateColumnHeights() const 
-{
-	vector<int> columnHeights(gameConfig::GAME_WIDTH, 0);
-
-	// Iterate through each column
-	for (int col = 0; col < gameConfig::GAME_WIDTH; ++col) {
-		// Iterate through each row, starting from the bottom
-		for (int row = 0; row < gameConfig::GAME_HEIGHT; ++row) {
-			if (board_game[row][col].getIsActive()) {
-				// Increment the height of the current column if an active cube is found
-				columnHeights[col] = gameConfig::GAME_HEIGHT - row;
-				break; // Move to the next column once the height is updated
-			}
-		}
-	}
-
-	return columnHeights;
-}
-int Board::fillsWell(Shape* shape) const {
 	ComplexShape* newShape = dynamic_cast<ComplexShape*>(shape);
 	if (!newShape)
 		return 0;
