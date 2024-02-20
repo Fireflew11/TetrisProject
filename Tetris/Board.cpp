@@ -391,7 +391,8 @@ int Board::fillsWell(Shape* shape) const
 		int currY = newShape->get_cubes()[i].get_Y() - 1;                     // Adjust Y coordinate
 
 		// Check if the cube is against the left or right wall and at the bottom of the board
-		if ((currX == 0 || currX == gameConfig::GAME_WIDTH - 1) && currY == gameConfig::GAME_HEIGHT - 1) {
+		if ((currX == 0 || currX == gameConfig::GAME_WIDTH - 1) && currY == gameConfig::GAME_HEIGHT - 1) 
+		{
 			filledParts++; // Increment the counter for filled parts
 		}
 	}
