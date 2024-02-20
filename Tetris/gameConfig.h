@@ -19,11 +19,10 @@ public:
 
 	enum class Score{ SINGLE_LINE_CLEAR= 100, DOUBLE_LINE_CLEAR=300, TRIPLE_LINE_CLEAR=500, TETRIS_LINE_CLEAR=800};
 
-	enum class MenuOption { START_NEW_GAME = '1', START_NEW_GAME_WITHOUT_COLORS = '3', CONTINUE_PAUSED_GAME = '2', PRESENT_INSTRUCTIONS = '8', EXIT = '9' };
 
-	enum class GameStatus { Running, Paused, NewGame, Ended, Finished, Menu }; // Ended is for if the program is over, Finished is for if the current game is over
+	enum class GameStatus { Running, Paused, NewGame, Ended, Finished, Menu, MenuWithoutColors}; // Ended is for if the program is over, Finished is for if the current game is over
 
-
+	enum class Difficulty { BEST = 'a', GOOD = 'b', NOVICE = 'c' };
 
 
 	static constexpr int ESC = 27;

@@ -4,21 +4,21 @@
 #include "Shape.h"
 #include "Board.h"
 #include "gameConfig.h"
-using namespace std;
 class Shape; 
 /**********************************************************************
-Class: Player
+The Player class represents a player in the game. It serves as a base
+class for both human and computer players.
 
-Description:
-    Represents a player in the Tetris game, managing player-specific data and actions.
-
-Member Variables:
-    - playerType: The type of the player (gameConfig::PlayerType).
-    - score: An integer representing the player's current score.
-    - isWinner: A boolean indicating whether the player is the winner.
-    - playerBoard: An instance of the Board class representing the player's game board.
+Attributes:
+- playerType: The type of player (left player or right player).
+- playerBoard: The game board associated with the player.
+- score: The player's score in the game.
+- isWinner: A flag indicating whether the player has won the game.
+- startingX: The starting X coordinate of the player's board.
+- startingY: The starting Y coordinate of the player's board.
 
 **********************************************************************/
+
 class Player
 {
 public:
@@ -33,18 +33,17 @@ private:
 
 
 public: 
-
+	Player(gameConfig::PlayerType);
 	Board& getPlayerBoard(); 
 	void updateScore(int numClearedLines);
-	void displayScore();
 	void setIsWinner(bool isWinner); 
 	const bool getIsWinner()const; 
-	Player(gameConfig::PlayerType); 
 	const int getScore();
 	const gameConfig::PlayerType getPlayerType() const; 
-	virtual ~Player() = default;
 	virtual void decideMove(Shape& shape, char key) = 0;
 	const int getStartingX() const; 
 	const int getStartingY() const; 
+	void displayScore();
+	virtual ~Player() {};
 };
 

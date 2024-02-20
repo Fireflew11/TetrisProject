@@ -5,7 +5,16 @@
 #include <cctype>
 
 
-
+/**********************************************************************
+Constructor: Shape::Shape
+Input:
+	- int color: The color of the shape.
+	- bool useColors: Flag indicating whether to use colors for display.
+	- int startingX: The starting X coordinate of the shape.
+	- int StartingY: The starting Y coordinate of the shape.
+	- int differentRotations: The number of different rotations the shape can have.
+Function: Constructor for the Shape class.
+**********************************************************************/
 Shape::Shape(int color, bool useColors, int startingX, int StartingY, int differentRotations) : color(color), useColors(useColors), startingX(startingX), StartingY(StartingY), differentRotations(differentRotations) {}
 
 /**********************************************************************
@@ -18,7 +27,15 @@ int Shape::getColor() const
 {
 	return color;
 }
-int Shape::getDifferentRotations() const {
+
+/**********************************************************************
+Function name: getDifferentRotations
+Input: None
+Output: int
+Function: Returns the number of different possible rotations for the shape.
+**********************************************************************/
+int Shape::getDifferentRotations() const 
+{
 	return differentRotations;
 }
 
@@ -37,7 +54,12 @@ bool Shape::drop(const Board& board)
 	return false;
 }
 
-
+/**********************************************************************
+Function name: getUseColors
+Input: --
+Output: bool
+Function: Returns true if colors are used in the game; otherwise, returns false.
+**********************************************************************/
 bool Shape::getUseColors() const
 {
 	return useColors; 

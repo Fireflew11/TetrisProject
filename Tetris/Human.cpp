@@ -1,6 +1,13 @@
 #include "Human.h"
 
-Human::Human(gameConfig::PlayerType playerType) : Player(playerType) {
+/**********************************************************************
+Function name: Human::Human
+Input: gameConfig::PlayerType playerType
+Output:--
+Function:Constructor for the Human class. Initializes the moveFunctions map based on the player type.
+**********************************************************************/
+Human::Human(gameConfig::PlayerType playerType) : Player(playerType) 
+{
     if (playerType == gameConfig::PlayerType::LEFT_PLAYER) {
         moveFunctions[(char)gameConfig::LeftKeys::LEFT] = &Shape::move_Left;
         moveFunctions[(char)gameConfig::LeftKeys::RIGHT] = &Shape::move_Right;
@@ -17,10 +24,17 @@ Human::Human(gameConfig::PlayerType playerType) : Player(playerType) {
     }
 }
 
+/**********************************************************************
+Function name: Human::decideMove
+Input: Shape& shape, char key
+Output:--
+Function:Decides the move based on the pressed key for the Human player.
+**********************************************************************/
 void Human::decideMove(Shape& shape, char key)
 {
     auto func = moveFunctions.find(key);
-    if (func != moveFunctions.end()) {
+    if (func != moveFunctions.end()) 
+    {
         shape.drawShape(false);
         (shape.*(func->second))(getPlayerBoard());
         shape.drawShape(true);

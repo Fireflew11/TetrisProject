@@ -3,10 +3,12 @@
 #include <iostream>
 #include"Shape.h" 
 #include "gameConfig.h"
-#include <vector>
-class Shape; 
-using namespace std;
+#include <vector> 
 
+using std::cout;
+using std::cin;
+using std::endl;
+class Shape;
 /**********************************************************************
 Class: Board
 
@@ -29,14 +31,12 @@ public:
 	void display_board();
 	Board(int starting_X=0, int starting_Y=0,  bool useColors= true);
 	const Cube(&getBoardGame() const)[gameConfig::GAME_HEIGHT][gameConfig::GAME_WIDTH];
-	//bool check_valid_move(const Shape& shape) const;
 	void clearLine(int index_line); 
 	bool IsLineFull(int index_line);
 	int clearFullLines();
-	//void implementShapeToBoard(const Shape& shape);
 	void drawBoardCubes();
 	void setUseColor(bool useColors);
-
+	int fillsWell(Shape* shape) const;
 	bool isValidPosition(const int x, const int y)const;
 	bool isValidExplosion(const int x, const int y)const;
 	void set_cube_active_in_board_game(const int x, const int y);
@@ -49,11 +49,8 @@ public:
 	bool isValidYExplosion(const int y)const;
 	bool isValidXExplosion(const int x)const;
 	void moveCubesDownAfterExplosion(int startingXExplosion, int startingYExplosion, int rangeX, int rangeY);
-
-	double calculateSmoothness();
-	int getMaxHeight(int col);
-	int preventTallTowersScore() const;
-	std::vector<int> calculateColumnHeights() const;
+	int calculateSmoothness();
+	int getMaxHeightOfcol(int col);
 
 private: 
 	void print_Line(); 
