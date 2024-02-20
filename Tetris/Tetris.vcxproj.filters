@@ -111,7 +111,7 @@
     <ClInclude Include="J_Shape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="S_Shape.h">
+    <ClInclude Include="Header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
